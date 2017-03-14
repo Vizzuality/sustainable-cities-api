@@ -50,7 +50,6 @@ cd sustainable_cities
 
     bin/rails s
 
-
 ## USING DOCKER ##
 
 ### REQUIREMENTS FOR DOCKER ###
