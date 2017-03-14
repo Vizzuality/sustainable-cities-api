@@ -1,0 +1,15 @@
+test:
+  build: .
+  command: test
+  volumes:
+    - .:/sustainable_cities
+  links:
+    - postgres
+  env_file: test.env
+
+postgres:
+  image: postgres
+
+redis:
+  image: redis
+  container_name: redis_sustainable_cities

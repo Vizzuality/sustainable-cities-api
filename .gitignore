@@ -6,6 +6,8 @@
 
 # Ignore bundler config.
 /.bundle
+/.gems
+/.rbenv-gemsets
 
 # Ignore all logfiles and tempfiles.
 /log/*
@@ -15,3 +17,25 @@
 
 # Ignore Byebug command history file.
 .byebug_history
+
+# Ignore MacOSX files
+/.DS_Store
+.DS_Store
+spec/.DS_Store
+
+# Ignore generated files
+/vendor/bundle
+/public/assets
+/public/uploads
+/public/system
+/coverage
+/db/files/.~
+
+# Ignore environment variables
+/.env
+/test.env
+/dev.env
+
+# Ignore the default SQLite database.
+/db/*.sqlite3
+/db/*.sqlite3-journal
