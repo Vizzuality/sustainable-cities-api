@@ -30,14 +30,26 @@ gem 'typhoeus', require: false
 # Data
 gem 'active_hash'
 gem 'cancancan'
-gem 'carrierwave', '~> 1.0'
-gem 'devise'
-gem 'mini_magick'
 gem 'seed-fu'
+
+# Auth and Omniauth
+gem 'bcrypt'
+gem 'devise'
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-linkedin'
+
+# Uploads
+gem 'carrierwave', '~> 1.0'
+gem 'mini_magick'
 
 # Templating
 gem 'slim-rails'
 gem 'will_paginate'
+
+# Messages
+gem 'whenever', require: false
 
 group :development, :test do
   gem 'byebug',                    platform: :mri

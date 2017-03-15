@@ -7,13 +7,13 @@ Devise.setup do |config|
   # confirmation, reset password and unlock tokens in the database.
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
-  # config.secret_key = 'e8d6c034e71622eaee8eff1097785cca94380de891afb95387f5af0ca1970ab4b04ffc99d3eb54a3d67f8bb5add2c539205b9a4623ade7e9e52817b5bbb17551'
-
+  # config.secret_key = '7c1b04d4a1e13bab1d32fdff019475468099843bb91959bca67ef65b3726ea81f929c3a0c98a0bf7cdc2097e151e4687d506ad672252938a03084dba4209d860'
+  config.secret_key = ENV["DEVISE_KEY"]
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
+  config.mailer_sender = ENV.fetch('ADMIN_EMAIL') { 'support@vizzuality.org' }
 
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
@@ -47,12 +47,12 @@ Devise.setup do |config|
   # Configure which authentication keys should be case-insensitive.
   # These keys will be downcased upon creating or modifying a user and when used
   # to authenticate or find a user. Default is :email.
-  config.case_insensitive_keys = [:email]
+  config.case_insensitive_keys = [:login]
 
   # Configure which authentication keys should have whitespace stripped.
   # These keys will have whitespace before and after removed upon creating or
   # modifying a user and when used to authenticate or find a user. Default is :email.
-  config.strip_whitespace_keys = [:email]
+  config.strip_whitespace_keys = [:login]
 
   # Tell if authentication through request.params is enabled. True by default.
   # It can be set to an array that will enable params authentication only for the
@@ -109,7 +109,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 11
 
   # Set up a pepper to generate the hashed password.
-  # config.pepper = '184b0d36f54053397fb76152d4c3491195c564799689e64d5e66a580dda9401935249d1afc92a9ebf4acc400a882abc6e9f2cbdfaa78e42dd08fb5920dc99bd3'
+  # config.pepper = '88d63a12bc5f7b1741c50482eaf906ea19e7bb2772c88e57f8e126a8f123d57a358059e35597df763eb468f31302b4bc440bc7d2aee2fa773869ba7e14f8833b'
 
   # Send a notification email when the user's password is changed
   # config.send_password_change_notification = false
@@ -166,6 +166,7 @@ Devise.setup do |config|
   # The time you want to timeout the user session without activity. After this
   # time the user will be asked for credentials again. Default is 30 minutes.
   # config.timeout_in = 30.minutes
+  config.timeout_in = 12.hours
 
   # ==> Configuration for :lockable
   # Defines which strategy will be used to lock an account.
@@ -221,7 +222,7 @@ Devise.setup do |config|
   # Turn scoped views on. Before rendering "sessions/new", it will first check for
   # "users/sessions/new". It's turned off by default because it's slower if you
   # are using only default views.
-  # config.scoped_views = false
+  config.scoped_views = true
 
   # Configure the default scope given to Warden. By default it's the first
   # devise role declared in your routes (usually :user).
@@ -249,6 +250,9 @@ Devise.setup do |config|
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
+  config.omniauth :linkedin,      ENV['LINKEDIN_KEY'],  ENV['LINKEDIN_SECRET']
+  config.omniauth :facebook,      ENV['FACEBOOK_KEY'],  ENV['FACEBOOK_SECRET']
+  config.omniauth :google_oauth2, ENV["GOOGLE_APP_ID"], ENV["GOOGLE_APP_SECRET"], { access_type: 'online', skip_jwt: true }
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
