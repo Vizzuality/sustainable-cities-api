@@ -22,4 +22,14 @@ FactoryGirl.define do
   factory :project do
     name 'A Project'
   end
+
+  factory :study_case, class: Project do
+    name 'A Study case'
+    project_type 'StudyCase'
+  end
+
+  factory :business_model, class: Project do
+    name 'A Business model'
+    project_type 'BusinessModel'
+  end
 end

@@ -15,7 +15,7 @@
 #
 
 class Notification < ActiveRecord::Base
-  belongs_to :user, counter_cache: true
+  belongs_to :user, inverse_of: :notifications, counter_cache: true
   belongs_to :notificable, polymorphic: true
 
   scope :unread,      -> { all                    }

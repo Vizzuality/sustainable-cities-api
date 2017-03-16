@@ -13,5 +13,12 @@
 require 'rails_helper'
 
 RSpec.describe ProjectUser, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  before :each do
+    @project = create(:project)
+    @user    = create(:user, projects: [@project])
+  end
+
+  it 'Count on user project' do
+    expect(@user.projects.count).to eq(1)
+  end
 end

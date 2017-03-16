@@ -16,8 +16,11 @@
 #
 
 class Impact < ApplicationRecord
-  belongs_to :project,  inverse_of: :impacts
   belongs_to :category, inverse_of: :impacts
+  belongs_to :study_case, ->{ where(project_type: 'StudyCase') },
+                          class_name: 'Project',
+                          foreign_key: 'project_id',
+                          inverse_of: :impacts, touch: true
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
 

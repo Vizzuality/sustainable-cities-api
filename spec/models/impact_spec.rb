@@ -19,13 +19,19 @@ require 'rails_helper'
 RSpec.describe Impact, type: :model do
   before :each do
     FactoryGirl.create(:impact, name: 'Z Impact')
-    @category = create(:category)
-    @impact   = create(:impact, category: @category)
+    @study_case = create(:project, name: 'Study case')
+    @category   = create(:category, name: 'Study case category')
+    @impact     = create(:impact, category: @category, study_case: @study_case)
   end
 
   it 'Count on impact with default scope' do
     expect(Impact.count).to           eq(2)
     expect(Impact.all.second.name).to eq('Z Impact')
+  end
+
+  it 'Check for relations' do
+    expect(@impact.study_case.name).to eq('Study case')
+    expect(@impact.category.name).to   eq('Study case category')
   end
 
   it 'Order by name asc' do

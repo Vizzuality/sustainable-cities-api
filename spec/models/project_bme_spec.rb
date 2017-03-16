@@ -12,5 +12,12 @@
 require 'rails_helper'
 
 RSpec.describe ProjectBme, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  before :each do
+    @bme     = create(:bme)
+    @project = create(:project, bmes: [@bme])
+  end
+
+  it 'Count on project bme' do
+    expect(@project.bmes.count).to eq(1)
+  end
 end

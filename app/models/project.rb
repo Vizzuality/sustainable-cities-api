@@ -30,14 +30,20 @@ class Project < ApplicationRecord
   has_many :project_users
   has_many :users, through: :project_users
 
+  has_many :project_bmes
+  has_many :bmes, through: :project_bmes
+
   has_many :photos,           as: :attacheable, dependent: :destroy
   has_many :documents,        as: :attacheable, dependent: :destroy
   has_many :external_sources, as: :attacheable, dependent: :destroy
   has_many :comments,         as: :commentable, dependent: :destroy
+  has_many :impacts,          dependent: :destroy, inverse_of: :study_case
 
   validates :name, presence: true
 
-  scope :by_name_asc, -> { order('projects.name ASC') }
+  scope :by_name_asc,       -> { order('projects.name ASC')           }
+  scope :by_study_case,     -> { where(project_type: 'StudyCase')     }
+  scope :by_business_model, -> { where(project_type: 'BusinessModel') }
 
   default_scope { by_name_asc }
 

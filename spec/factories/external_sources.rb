@@ -13,19 +13,11 @@
 #  updated_at       :datetime         not null
 #
 
-require 'rails_helper'
-
-RSpec.describe ExternalSource, type: :model do
-  before :each do
-    @external_source = create(:external_source)
-  end
-
-  it 'Count on external source' do
-    expect(ExternalSource.count).to eq(1)
-    expect(@external_source.attacheable.name).to eq('A Study case')
-  end
-
-  it 'Sanitize web url' do
-    expect(@external_source.web_url).to eq('http://test-web.org')
+FactoryGirl.define do
+  factory :external_source do
+    name 'External source'
+    web_url 'test-web.org'
+    is_active true
+    association :attacheable, factory: :study_case
   end
 end

@@ -12,5 +12,12 @@
 require 'rails_helper'
 
 RSpec.describe ProjectCity, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  before :each do
+    @city    = create(:city)
+    @project = create(:project, cities: [@city])
+  end
+
+  it 'Count on project city' do
+    expect(@project.cities.count).to eq(1)
+  end
 end

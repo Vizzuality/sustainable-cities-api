@@ -59,7 +59,10 @@ class User < ApplicationRecord
   belongs_to :city,    inverse_of: :users, optional: true
 
   has_many :identities, dependent: :destroy
-  has_many :notifications
+  has_many :notifications, inverse_of: :user, dependent: :destroy
+  has_many :comments,      inverse_of: :user, dependent: :destroy
+  has_many :project_users
+  has_many :projects, through: :project_users
 
   validates :username,    presence: true, uniqueness: { case_sensitive: false }
   validates_uniqueness_of :email

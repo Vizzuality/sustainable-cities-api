@@ -16,4 +16,6 @@
 
 class ExternalSource < ApplicationRecord
   belongs_to :attacheable, polymorphic: true
+
+  include Sanitizable
 end

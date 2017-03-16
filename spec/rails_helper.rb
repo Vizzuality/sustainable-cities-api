@@ -61,6 +61,12 @@ RSpec.configure do |config|
     require 'support/db'
   end
 
+  config.after(:each) do
+    if Rails.env.test? || Rails.env.cucumber?
+      FileUtils.rm_rf(Dir["#{Rails.root}/spec/support/uploads"])
+    end
+  end
+
   if Bullet.enable?
     config.before(:each, type: :controller) do
       Bullet.start_request
