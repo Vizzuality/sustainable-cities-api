@@ -12,7 +12,7 @@ gem 'pg',    '~> 0.18'
 gem 'rails', '~> 5.1.beta1'
 
 # API
-gem 'active_model_serializers', '~> 0.10.2'
+gem 'active_model_serializers', '~> 0.10.4'
 gem 'curb',     require: false
 gem 'json-schema'
 gem 'oj'

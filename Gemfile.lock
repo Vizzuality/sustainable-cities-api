@@ -341,7 +341,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_hash
-  active_model_serializers (~> 0.10.2)
+  active_model_serializers (~> 0.10.4)
   activerecord-import
   annotate
   bcrypt
