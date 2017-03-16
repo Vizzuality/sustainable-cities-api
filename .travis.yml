@@ -27,7 +27,7 @@ before_script:
 script:
   - RAILS_ENV=test bundle exec rake db:create
   - RAILS_ENV=test bundle exec rake db:migrate
-  - bundle exec rake
+  - 'CODECLIMATE_REPO_TOKEN=39c70bda904ad5954415e9b4cf5415ec1dabdb3d53c5d93b282055dc4a2aa8b3 xvfb-run bundle exec rake'
   - bundle exec rubocop
 
 notifications:
@@ -36,3 +36,7 @@ notifications:
       - sebastian.schkudlara@vizzuality.com
     on_failure: change
     on_success: never
+
+addons:
+  code_climate:
+    repo_token: 39c70bda904ad5954415e9b4cf5415ec1dabdb3d53c5d93b282055dc4a2aa8b3
