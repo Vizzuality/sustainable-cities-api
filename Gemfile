@@ -4,23 +4,15 @@ source 'https://rubygems.org'
 ruby '2.4.0'
 
 git_source(:github) do |repo_name|
-  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
+  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?('/')
   "https://github.com/#{repo_name}.git"
 end
 
 gem 'pg',    '~> 0.18'
 gem 'rails', '~> 5.1.beta1'
 
-# Assets managment
-gem 'coffee-rails', '~> 4.2'
-gem 'jbuilder', '~> 2.5'
-gem 'jquery-rails'
-gem 'sass-rails', '~> 5.0'
-gem 'turbolinks', '~> 5'
-gem 'uglifier', '>= 1.3.0'
-
 # API
-gem 'active_model_serializers', '~> 0.10.2'
+gem 'active_model_serializers', '~> 0.10.4'
 gem 'curb',     require: false
 gem 'json-schema'
 gem 'oj'
@@ -28,16 +20,29 @@ gem 'oj_mimic_json'
 gem 'typhoeus', require: false
 
 # Data
+gem 'activerecord-import'
 gem 'active_hash'
 gem 'cancancan'
-gem 'carrierwave', '~> 1.0'
-gem 'devise'
-gem 'mini_magick'
 gem 'seed-fu'
+
+# Auth and Omniauth
+gem 'bcrypt'
+gem 'devise_token_auth'
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-linkedin'
+
+# Uploads
+gem 'carrierwave', '~> 1.0'
+gem 'mini_magick'
 
 # Templating
 gem 'slim-rails'
 gem 'will_paginate'
+
+# Messages
+gem 'whenever', require: false
 
 group :development, :test do
   gem 'byebug',                    platform: :mri
@@ -65,6 +70,7 @@ end
 
 group :test do
   gem 'bullet'
+  gem 'codeclimate-test-reporter', '~> 1.0.0'
   gem 'database_cleaner'
   gem 'email_spec'
   gem 'factory_girl_rails'
@@ -78,5 +84,6 @@ end
 gem 'dotenv-rails'
 gem 'newrelic_rpm'
 gem 'puma'
+gem 'rack-cors'
 gem 'rails_12factor',              group: :production
 gem 'tzinfo-data'
