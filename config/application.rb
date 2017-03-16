@@ -21,15 +21,14 @@ GC::Profiler.enable
 
 module SustainableCities
   class Application < Rails::Application
+    config.api_only = true
+
     config.generators do |g|
-      g.test_framework  :rspec
-      g.template_engine :slim
-      g.view_specs      false
-      g.helper_specs    false
-      g.factory_girl    true
-      g.stylesheets     false
-      g.javascripts     false
-      g.helper          false
+      g.test_framework :rspec,
+                       fixtures: true,
+                       routing_specs: true,
+                       controller_specs: true,
+                       request_specs: true
     end
   end
 end

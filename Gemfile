@@ -4,20 +4,12 @@ source 'https://rubygems.org'
 ruby '2.4.0'
 
 git_source(:github) do |repo_name|
-  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
+  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?('/')
   "https://github.com/#{repo_name}.git"
 end
 
 gem 'pg',    '~> 0.18'
 gem 'rails', '~> 5.1.beta1'
-
-# Assets managment
-gem 'coffee-rails', '~> 4.2'
-gem 'jbuilder', '~> 2.5'
-gem 'jquery-rails'
-gem 'sass-rails', '~> 5.0'
-gem 'turbolinks', '~> 5'
-gem 'uglifier', '>= 1.3.0'
 
 # API
 gem 'active_model_serializers', '~> 0.10.2'
@@ -35,7 +27,7 @@ gem 'seed-fu'
 
 # Auth and Omniauth
 gem 'bcrypt'
-gem 'devise'
+gem 'devise_token_auth'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
@@ -92,5 +84,6 @@ end
 gem 'dotenv-rails'
 gem 'newrelic_rpm'
 gem 'puma'
+gem 'rack-cors'
 gem 'rails_12factor',              group: :production
 gem 'tzinfo-data'

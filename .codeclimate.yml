@@ -1,6 +1,5 @@
 languages:
   Ruby: true
-  JavaScript: true
 engines:
   rubocop:
     enabled: true
@@ -11,12 +10,8 @@ engines:
 ratings:
   paths:
   - "**.rb"
-  - "**.js"
-  - "**.jsx"
   - Gemfile.lock
 exclude_paths:
-- "features/step_definitions"
-- "features/support"
 - "db/schema.rb"
 - "db/seeds.rb"
 - "db/fixtures/**/*"

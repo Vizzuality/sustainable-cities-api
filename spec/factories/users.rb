@@ -3,7 +3,8 @@
 # Table name: users
 #
 #  id                     :integer          not null, primary key
-#  email                  :string           default(""), not null
+#  provider               :string           default("email"), not null
+#  uid                    :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
 #  reset_password_token   :string
 #  reset_password_sent_at :datetime
@@ -11,21 +12,20 @@
 #  sign_in_count          :integer          default(0), not null
 #  current_sign_in_at     :datetime
 #  last_sign_in_at        :datetime
-#  current_sign_in_ip     :inet
-#  last_sign_in_ip        :inet
+#  current_sign_in_ip     :string
+#  last_sign_in_ip        :string
 #  confirmation_token     :string
 #  confirmed_at           :datetime
 #  confirmation_sent_at   :datetime
 #  unconfirmed_email      :string
-#  failed_attempts        :integer          default(0), not null
-#  unlock_token           :string
-#  locked_at              :datetime
+#  email                  :string
+#  tokens                 :json
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  role                   :integer          default("user")
 #  country_id             :integer
 #  city_id                :integer
-#  username               :string
+#  nickname               :string
 #  name                   :string
 #  institution            :string
 #  position               :string
@@ -33,7 +33,7 @@
 #  linkedin_account       :string
 #  is_active              :boolean          default(TRUE)
 #  deactivated_at         :datetime
-#  avatar                 :string
+#  image                  :string
 #  notifications_mailer   :boolean          default(TRUE)
 #  notifications_count    :integer          default(0)
 #
@@ -41,7 +41,7 @@
 FactoryGirl.define do
   factory :user do
     sequence(:email)    { |n| "pepe#{n}@vizzuality.com" }
-    sequence(:username) { |n| "pepe#{n}"                }
+    sequence(:nickname) { |n| "pepe#{n}"                }
 
     password 'password'
     password_confirmation { |u| u.password }
@@ -51,7 +51,7 @@ FactoryGirl.define do
 
   factory :editor, class: User do
     sequence(:email)    { |n| "editor#{n}@vizzuality.com" }
-    sequence(:username) { |n| "editor#{n}"                }
+    sequence(:nickname) { |n| "editor#{n}"                }
 
     password 'password'
     password_confirmation { |u| u.password }
@@ -62,7 +62,7 @@ FactoryGirl.define do
 
   factory :publisher, class: User do
     sequence(:email)    { |n| "publisher#{n}@vizzuality.com" }
-    sequence(:username) { |n| "publisher#{n}"                }
+    sequence(:nickname) { |n| "publisher#{n}"                }
 
     password 'password'
     password_confirmation { |u| u.password }
@@ -73,7 +73,7 @@ FactoryGirl.define do
 
   factory :admin, class: User do
     sequence(:email)    { |n| "admin#{n}@vizzuality.com" }
-    sequence(:username) { |n| "admin#{n}"                }
+    sequence(:nickname) { |n| "admin#{n}"                }
 
     password 'password'
     password_confirmation { |u| u.password }

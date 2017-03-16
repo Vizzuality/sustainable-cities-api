@@ -1,4 +1,6 @@
 # frozen_string_literal: true
+require 'carrierwave/processing/mini_magick'
+
 class AvatarUploader < CarrierWave::Uploader::Base
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
@@ -16,10 +18,6 @@ class AvatarUploader < CarrierWave::Uploader::Base
 
   def extension_whitelist
     %w(jpg jpeg gif png)
-  end
-
-  def default_url(*args)
-    ActionController::Base.helpers.asset_path('' + [version_name, 'placeholder.png'].compact.join('_'))
   end
 
   process resize_to_fit: [800, 800]
