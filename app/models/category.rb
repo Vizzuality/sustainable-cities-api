@@ -13,7 +13,7 @@
 #
 
 class Category < ApplicationRecord
-  enum project_type: { Solution: 0, Bme: 1, Impact: 2 }
+  enum project_type: { Category: 0, StudyCase: 1, Bme: 2, Impact: 3, Enabling: 4 }
 
   has_many :bmes,      inverse_of: :category
   has_many :enablings, inverse_of: :category

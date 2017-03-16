@@ -40,6 +40,8 @@ GEM
       activemodel (= 5.1.0.beta1)
       activesupport (= 5.1.0.beta1)
       arel (~> 8.0)
+    activerecord-import (0.17.2)
+      activerecord (>= 3.2)
     activesupport (5.1.0.beta1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (~> 0.7)
@@ -93,6 +95,8 @@ GEM
     case_transform (0.2)
       activesupport
     chronic (0.10.2)
+    codeclimate-test-reporter (1.0.7)
+      simplecov
     coderay (1.1.1)
     coffee-rails (4.2.1)
       coffee-script (>= 2.2.0)
@@ -361,6 +365,7 @@ PLATFORMS
 DEPENDENCIES
   active_hash
   active_model_serializers (~> 0.10.2)
+  activerecord-import
   annotate
   bcrypt
   brakeman
@@ -376,6 +381,7 @@ DEPENDENCIES
   capistrano-rvm
   capistrano-secrets-yml
   carrierwave (~> 1.0)
+  codeclimate-test-reporter (~> 1.0.0)
   coffee-rails (~> 4.2)
   curb
   database_cleaner

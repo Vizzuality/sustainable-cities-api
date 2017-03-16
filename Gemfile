@@ -28,6 +28,7 @@ gem 'oj_mimic_json'
 gem 'typhoeus', require: false
 
 # Data
+gem 'activerecord-import'
 gem 'active_hash'
 gem 'cancancan'
 gem 'seed-fu'
@@ -77,6 +78,7 @@ end
 
 group :test do
   gem 'bullet'
+  gem 'codeclimate-test-reporter', '~> 1.0.0'
   gem 'database_cleaner'
   gem 'email_spec'
   gem 'factory_girl_rails'

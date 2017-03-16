@@ -39,7 +39,8 @@ class Notification < ActiveRecord::Base
     end
 
     def build_summary(notificable=nil, summary_action=nil)
-      summary  = "The #{notificable.model_name.human} " if notificable.present?
+      summary  = ''
+      summary += "The #{notificable.model_name.human} " if notificable.present?
       summary += notificable_title(notificable)         if notificable.present?
       summary += ' '
       summary += summary_action

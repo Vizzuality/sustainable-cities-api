@@ -37,6 +37,7 @@ class Project < ApplicationRecord
   has_many :documents,        as: :attacheable, dependent: :destroy
   has_many :external_sources, as: :attacheable, dependent: :destroy
   has_many :comments,         as: :commentable, dependent: :destroy
+  has_many :notifications,    as: :notificable, dependent: :destroy
   has_many :impacts,          dependent: :destroy, inverse_of: :study_case
 
   validates :name, presence: true

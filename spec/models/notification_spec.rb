@@ -16,8 +16,8 @@
 require 'rails_helper'
 
 RSpec.describe Notification, type: :model do
-  describe "Unread (scope)" do
-    it "returns only unread notifications" do
+  describe 'Unread (scope)' do
+    it 'returns only unread notifications' do
       FactoryGirl.create(:notification)
       project = create(:project)
       FactoryGirl.create(:notification, notificable: project)
@@ -25,8 +25,8 @@ RSpec.describe Notification, type: :model do
     end
   end
 
-  describe "Recent (scope)" do
-    it "returns notifications sorted by id descendant" do
+  describe 'Recent (scope)' do
+    it 'returns notifications sorted by id descendant' do
       project          = create(:project)
       old_notification = create(:notification)
       new_notification = create(:notification, notificable: project)
@@ -38,15 +38,15 @@ RSpec.describe Notification, type: :model do
     end
   end
 
-  describe "For_render (scope)" do
-    it "returns notifications including notificable and user" do
+  describe 'For_render (scope)' do
+    it 'returns notifications including notificable and user' do
       expect(Notification).to receive(:includes).with(:notificable).exactly(:once)
       Notification.for_render
     end
   end
 
-  describe "Timestamp" do
-    it "returns the timestamp of the trackable object" do
+  describe 'Timestamp' do
+    it 'returns the timestamp of the trackable object' do
       project      = create(:project)
       notification = create(:notification, notificable: project)
 
@@ -54,9 +54,9 @@ RSpec.describe Notification, type: :model do
     end
   end
 
-  describe "Mark_as_read" do
-    it "destroys notification" do
-      notification = create :notification
+  describe 'Mark_as_read' do
+    it 'destroys notification' do
+      notification = create(:notification)
       expect(Notification.unread.size).to eq 1
 
       notification.mark_as_read
@@ -64,13 +64,27 @@ RSpec.describe Notification, type: :model do
     end
   end
 
-  describe "Daily_notifications_task" do
-    it "email notification" do
-      notification = create :notification
+  describe 'Daily_notifications_task' do
+    it 'email notification' do
+      notification = create(:notification)
       expect(Notification.unread.size).to eq 1
 
       Notification.daily_notifications_task
       expect(notification.reload.emailed_at.to_date).to eq(Time.now.to_date)
+    end
+  end
+
+  describe 'Build notification' do
+    it 'Notification on project' do
+      user    = create(:editor)
+      project = create(:study_case)
+      Notification.build([user.id], project, 'Lorem ipsum..')
+      notification = Notification.last
+
+      expect(notification.user_id).to          eq(user.id)
+      expect(notification.notificable_type).to eq('Project')
+      expect(project.notifications.size).to    eq(1)
+      expect(user.reload.notifications_count).to      eq(1)
     end
   end
 end
