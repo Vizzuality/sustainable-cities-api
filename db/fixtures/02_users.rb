@@ -6,13 +6,13 @@ unless User.find_by(nickname: 'admin')
                         nil
                       end
 
-  @user = User.new(email: 'admin@example.com', password: 'password', password_confirmation: 'password', name: 'Admin', nickname: 'admin', country_id: assign_country_id, role: :admin)
+  @user = User.new(email: 'admin@example.com', password: ENV['ADMIN_PASSWORD'], password_confirmation: ENV['ADMIN_PASSWORD'], name: 'Admin', nickname: 'admin', country_id: assign_country_id, role: :admin)
   @user.skip_confirmation_notification!
   @user.save
 
   puts '*************************************************************************'
   puts '*                                                                       *'
-  puts '* Admin user created (email: "admin@example.com", password: "password") *'
+  puts "* Admin user created (email: 'admin@example.com', password: #{ENV['ADMIN_PASSWORD']})   *"
   puts '* visit http://localhost:3000/                                          *'
   puts '*                                                                       *'
   puts '*************************************************************************'
