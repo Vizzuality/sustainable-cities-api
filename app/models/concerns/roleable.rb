@@ -19,6 +19,22 @@ module Roleable
       role.in?('user')
     end
 
+    def is_active_admin?
+      admin? && is_active?
+    end
+
+    def is_active_publisher?
+      publisher? && is_active?
+    end
+
+    def is_active_editor?
+      editor? && is_active?
+    end
+
+    def is_active_user?
+      user? && is_active?
+    end
+
     def role_name
       case role
       when 'admin'     then 'Admin'
