@@ -7,6 +7,10 @@
 #  name             :string
 #  description      :text
 #  web_url          :string
+#  source_type      :integer          default(0)
+#  author           :string
+#  publication_year :datetime
+#  institution      :string
 #  attacheable_type :string
 #  attacheable_id   :integer
 #  is_active        :boolean          default(FALSE)

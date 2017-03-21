@@ -13,12 +13,14 @@
 #
 
 class Category < ApplicationRecord
-  enum project_type: { Category: 0, StudyCase: 1, Bme: 2, Impact: 3, Enabling: 4 }
+  enum project_type: { Category: 0, Solution: 1, Bme: 2, Impact: 3, Enabling: 4, Timing: 5 }
 
-  has_many :bmes,      inverse_of: :category
   has_many :enablings, inverse_of: :category
   has_many :projects,  inverse_of: :category
   has_many :impacts,   inverse_of: :category
+
+  has_many :bme_categories
+  has_many :bmes, through: :bme_categories
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
 

@@ -5,7 +5,6 @@
 #  id          :integer          not null, primary key
 #  name        :string
 #  description :text
-#  category_id :integer
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
@@ -15,8 +14,7 @@ require 'rails_helper'
 RSpec.describe Bme, type: :model do
   before :each do
     FactoryGirl.create(:bme, name: 'Z Bme')
-    @category = create(:category)
-    @bme = create(:bme, category: @category)
+    @bme = create(:bme)
   end
 
   it 'Count on bme with default scope' do

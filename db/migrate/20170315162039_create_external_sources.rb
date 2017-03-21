@@ -5,6 +5,10 @@ class CreateExternalSources < ActiveRecord::Migration[5.1]
       t.string     :name
       t.text       :description
       t.string     :web_url
+      t.integer    :source_type, default: 0
+      t.string     :author
+      t.datetime   :publication_year
+      t.string     :institution
       t.references :attacheable, polymorphic: true
       t.boolean    :is_active, default: false
 

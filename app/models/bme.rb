@@ -6,16 +6,16 @@
 #  id          :integer          not null, primary key
 #  name        :string
 #  description :text
-#  category_id :integer
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
 
 class Bme < ApplicationRecord
-  belongs_to :category, inverse_of: :bmes
-
   has_many :bme_enablings
   has_many :enablings, through: :bme_enablings
+
+  has_many :bme_categories
+  has_many :categories, through: :bme_categories
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
 
