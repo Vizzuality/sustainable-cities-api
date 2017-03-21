@@ -1,17 +1,16 @@
 # frozen_string_literal: true
 # == Schema Information
 #
-# Table name: project_bmes
+# Table name: bme_categories
 #
 #  id          :integer          not null, primary key
 #  bme_id      :integer
-#  project_id  :integer
-#  description :text
+#  category_id :integer
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
 
-class ProjectBme < ApplicationRecord
-  belongs_to :project
+class BmeCategory < ApplicationRecord
   belongs_to :bme
+  belongs_to :category
 end

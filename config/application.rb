@@ -21,9 +21,12 @@ GC::Profiler.enable
 
 module SustainableCities
   class Application < Rails::Application
+    config.autoload_paths << Rails.root.join('lib')
+
     config.api_only = true
 
     config.generators do |g|
+      g.template_engine nil
       g.test_framework :rspec,
                        fixtures: true,
                        routing_specs: true,
