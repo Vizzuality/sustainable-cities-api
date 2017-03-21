@@ -3,52 +3,33 @@
 #
 # Table name: users
 #
-#  id                     :integer          not null, primary key
-#  provider               :string           default("email"), not null
-#  uid                    :string           default(""), not null
-#  encrypted_password     :string           default(""), not null
-#  reset_password_token   :string
-#  reset_password_sent_at :datetime
-#  remember_created_at    :datetime
-#  sign_in_count          :integer          default(0), not null
-#  current_sign_in_at     :datetime
-#  last_sign_in_at        :datetime
-#  current_sign_in_ip     :string
-#  last_sign_in_ip        :string
-#  confirmation_token     :string
-#  confirmed_at           :datetime
-#  confirmation_sent_at   :datetime
-#  unconfirmed_email      :string
-#  email                  :string
-#  tokens                 :json
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  role                   :integer          default("user")
-#  country_id             :integer
-#  city_id                :integer
-#  nickname               :string
-#  name                   :string
-#  institution            :string
-#  position               :string
-#  twitter_account        :string
-#  linkedin_account       :string
-#  is_active              :boolean          default(TRUE)
-#  deactivated_at         :datetime
-#  image                  :string
-#  notifications_mailer   :boolean          default(TRUE)
-#  notifications_count    :integer          default(0)
+#  id                   :integer          not null, primary key
+#  email                :string
+#  password_digest      :string
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  role                 :integer          default("user")
+#  country_id           :integer
+#  city_id              :integer
+#  nickname             :string
+#  name                 :string
+#  institution          :string
+#  position             :string
+#  twitter_account      :string
+#  linkedin_account     :string
+#  is_active            :boolean          default(TRUE)
+#  deactivated_at       :datetime
+#  image                :string
+#  notifications_mailer :boolean          default(TRUE)
+#  notifications_count  :integer          default(0)
 #
 
 class User < ApplicationRecord
+  has_secure_password
+
   enum role: { user: 0, editor: 1, publisher: 2, admin: 3 }
 
   # Include default devise modules.
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable,
-         :confirmable, :omniauthable
-
-  include DeviseTokenAuth::Concerns::User
-
   TEMP_EMAIL_REGEX = /\Achange@tmp/
 
   mount_uploader :image, AvatarUploader
@@ -72,6 +53,9 @@ class User < ApplicationRecord
   validates_format_of :nickname, with: /\A[a-z0-9_\.][-a-z0-9]{1,19}\Z/i,
                                  exclusion: { in: %w(admin superuser about root publisher editor faq conntact user) },
                                  multiline: true
+
+  validates :password, confirmation: true
+  validates :password_confirmation, presence: true
 
   include Activable
   include Roleable

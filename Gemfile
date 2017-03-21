@@ -27,11 +27,7 @@ gem 'seed-fu'
 
 # Auth and Omniauth
 gem 'bcrypt'
-gem 'devise_token_auth'
-gem 'omniauth'
-gem 'omniauth-facebook'
-gem 'omniauth-google-oauth2'
-gem 'omniauth-linkedin'
+gem 'jwt'
 
 # Uploads
 gem 'carrierwave', '~> 1.0'
