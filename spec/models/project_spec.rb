@@ -2,20 +2,22 @@
 #
 # Table name: projects
 #
-#  id               :integer          not null, primary key
-#  name             :string
-#  situation        :text
-#  solution         :text
-#  category_id      :integer
-#  country_id       :integer
-#  operational_year :datetime
-#  project_type     :integer
-#  is_active        :boolean          default(FALSE)
-#  deactivated_at   :datetime
-#  publish_request  :boolean          default(FALSE)
-#  published_at     :datetime
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
+#  id                :integer          not null, primary key
+#  name              :string
+#  situation         :text
+#  solution          :text
+#  category_id       :integer
+#  country_id        :integer
+#  city_id           :integer
+#  operational_year  :datetime
+#  project_type      :integer
+#  is_active         :boolean          default(FALSE)
+#  deactivated_at    :datetime
+#  publish_request   :boolean          default(FALSE)
+#  published_at      :datetime
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  tmp_study_case_id :integer
 #
 
 require 'rails_helper'

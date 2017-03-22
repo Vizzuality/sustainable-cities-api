@@ -4,7 +4,7 @@ class CreateEnablings < ActiveRecord::Migration[5.1]
     create_table :enablings do |t|
       t.string     :name
       t.text       :description
-      t.decimal    :assessment_value
+      t.integer    :assessment_value, default: 1
       t.references :category, index: true, foreign_key: true
 
       t.timestamps

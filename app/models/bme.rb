@@ -8,6 +8,7 @@
 #  description :text
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  tmp_bme_id  :integer
 #
 
 class Bme < ApplicationRecord
@@ -16,6 +17,12 @@ class Bme < ApplicationRecord
 
   has_many :bme_categories
   has_many :categories, through: :bme_categories
+
+  has_many :project_bmes
+  has_many :projects, through: :project_bmes
+
+  accepts_nested_attributes_for :categories
+  accepts_nested_attributes_for :projects
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
 

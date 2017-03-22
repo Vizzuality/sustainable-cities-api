@@ -7,6 +7,7 @@ class CreateProjects < ActiveRecord::Migration[5.1]
       t.text       :solution
       t.references :category, index: true, foreign_key: true
       t.integer    :country_id
+      t.integer    :city_id
       t.datetime   :operational_year
       t.integer    :project_type
       t.boolean    :is_active, default: false

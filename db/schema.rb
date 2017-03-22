@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170321114313) do
+ActiveRecord::Schema.define(version: 20170321160544) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 20170321114313) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "tmp_bme_id"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -53,6 +54,7 @@ ActiveRecord::Schema.define(version: 20170321114313) do
   create_table "cities", force: :cascade do |t|
     t.string "name"
     t.bigint "country_id"
+    t.string "iso"
     t.decimal "lat"
     t.decimal "lng"
     t.string "province"
@@ -101,7 +103,7 @@ ActiveRecord::Schema.define(version: 20170321114313) do
   create_table "enablings", force: :cascade do |t|
     t.string "name"
     t.text "description"
-    t.decimal "assessment_value"
+    t.integer "assessment_value", default: 1
     t.bigint "category_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -200,6 +202,7 @@ ActiveRecord::Schema.define(version: 20170321114313) do
     t.text "solution"
     t.bigint "category_id"
     t.integer "country_id"
+    t.integer "city_id"
     t.datetime "operational_year"
     t.integer "project_type"
     t.boolean "is_active", default: false
@@ -208,6 +211,7 @@ ActiveRecord::Schema.define(version: 20170321114313) do
     t.datetime "published_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "tmp_study_case_id"
     t.index ["category_id"], name: "index_projects_on_category_id"
   end
 

@@ -37,6 +37,10 @@ RSpec.describe Country, type: :model do
       expect(Country.fetch_all(nil).count).to eq(1)
     end
 
+    it 'Select for countries' do
+      expect(Country.country_select.count).to eq(1)
+    end
+
     it 'Select for active countries' do
       expect(Country.active_country_select.count).to eq(1)
     end
