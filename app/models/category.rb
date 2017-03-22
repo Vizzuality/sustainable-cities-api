@@ -22,7 +22,7 @@ class Category < ApplicationRecord
   has_many :bme_categories
   has_many :bmes, through: :bme_categories
 
-  validates :name, presence: true, uniqueness: { case_sensitive: false }
+  validates :name, presence: true, uniqueness: { case_sensitive: false, scope: :category_type }
 
   scope :by_name_asc, -> { order('categories.name ASC') }
 

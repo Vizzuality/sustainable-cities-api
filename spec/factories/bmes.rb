@@ -7,6 +7,7 @@
 #  description :text
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  tmp_bme_id  :integer
 #
 
 FactoryGirl.define do

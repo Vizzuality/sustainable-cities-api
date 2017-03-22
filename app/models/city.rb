@@ -6,6 +6,7 @@
 #  id         :integer          not null, primary key
 #  name       :string
 #  country_id :integer
+#  iso        :string
 #  lat        :decimal(, )
 #  lng        :decimal(, )
 #  province   :string

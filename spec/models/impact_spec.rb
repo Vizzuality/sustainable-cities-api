@@ -38,11 +38,11 @@ RSpec.describe Impact, type: :model do
     expect(Impact.by_name_asc.first.name).to eq('A Impact')
   end
 
-  it 'Common and scientific name validation' do
-    @impact = Impact.new(name: '')
+  it 'Common and scientific impact_value validation' do
+    @impact = Impact.new(impact_value: '')
 
     @impact.valid?
-    expect { @impact.save! }.to raise_error(ActiveRecord::RecordInvalid, "Validation failed: Name can't be blank")
+    expect { @impact.save! }.to raise_error(ActiveRecord::RecordInvalid, "Validation failed: Impact value can't be blank")
   end
 
   it 'Fetch all impacts' do
