@@ -80,10 +80,9 @@ class Notification < ActiveRecord::Base
 
     def mark_as_emailed(ids)
       date_now = Time.now.to_formatted_s(:db)
-      ActiveRecord::Base.connection.execute <<-SQL
-        UPDATE notifications SET emailed_at = '#{date_now}'
-                             WHERE notifications.id = ANY(ARRAY#{ids});
-      SQL
+      query = ActiveRecord::Base.send(:sanitize_sql_array, ["UPDATE notifications SET emailed_at = ?
+                                                             WHERE notifications.id = ANY(ARRAY#{ids});", date_now])
+      ActiveRecord::Base.connection.execute(query)
     end
   end
 
