@@ -16,7 +16,7 @@
 class Photo < ApplicationRecord
   mount_uploader :attachment, PhotoUploader
 
-  belongs_to :attacheable, polymorphic: true
+  belongs_to :attacheable, polymorphic: true, touch: true
 
   after_destroy :remove_attachment_id_directory
 

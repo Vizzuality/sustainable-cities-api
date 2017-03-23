@@ -15,7 +15,7 @@
 class Enabling < ApplicationRecord
   enum assessment_value: { Success: 1, Barrier: 2 }
 
-  belongs_to :category, inverse_of: :enablings
+  belongs_to :category, inverse_of: :enablings, touch: true
 
   has_many :bme_enablings
   has_many :bmes, through: :bme_enablings
