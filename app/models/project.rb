@@ -25,6 +25,7 @@ class Project < ApplicationRecord
   enum project_type: { BusinessModel: 0, StudyCase: 1 }
 
   belongs_to :category, inverse_of: :projects
+  belongs_to :country,  inverse_of: :projects, optional: true
 
   has_many :project_cities
   has_many :cities, through: :project_cities

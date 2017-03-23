@@ -14,42 +14,6 @@ module V1
 
     let!(:user) { User.create(email: 'test@email.com', password: 'password', password_confirmation: 'password', nickname: 'test', name: 'Test user') }
 
-    context 'Show users' do
-      describe 'Request without valid authorization' do
-        it 'Get users list' do
-          get '/users', headers: @headers
-          expect(status).to eq(200)
-        end
-
-        it 'Get specific user' do
-          get "/users/#{user.id}", headers: @headers
-          expect(status).to eq(200)
-        end
-      end
-
-      describe 'Authenticated request' do
-        it 'Get users list' do
-          token = JWT.encode({ user: user.id }, ENV['AUTH_SECRET'], 'HS256')
-
-          headers = @headers.merge("Authorization" => "Bearer #{token}")
-
-          get '/users', headers: headers
-          expect(status).to  eq(200)
-          expect(json[1]).to eq({"id"=>"#{user.id}", "type"=>"users", "attributes"=>{"name"=>"Test user", "email"=>"test@email.com"}})
-        end
-
-        it 'Get specific user' do
-          token = JWT.encode({ user: user.id }, ENV['AUTH_SECRET'], 'HS256')
-
-          headers = @headers.merge("Authorization" => "Bearer #{token}")
-
-          get "/users/#{user.id}", headers: headers
-          expect(status).to eq(200)
-          expect(json).to   eq({"id"=>"#{user.id}", "type"=>"users", "attributes"=>{"name"=>"Test user", "email"=>"test@email.com"}})
-        end
-      end
-    end
-
     context 'Create and register users' do
       let!(:error) { { errors: [{ title: "nickname can't be blank" },
                                 { title: "nickname is invalid"},

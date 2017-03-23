@@ -18,10 +18,12 @@ class Notification < ActiveRecord::Base
   belongs_to :user, inverse_of: :notifications, counter_cache: true
   belongs_to :notificable, polymorphic: true
 
-  scope :unread,      -> { all                    }
-  scope :recent,      -> { order(id: :desc)       }
-  scope :not_emailed, -> { where(emailed_at: nil) }
-  scope :for_render,  -> { includes(:notificable) }
+  scope :unread,      -> { all                            }
+  scope :recent,      -> { order('notifications.id DESC') }
+  scope :not_emailed, -> { where(emailed_at: nil)         }
+  scope :for_render,  -> { includes(:notificable)         }
+
+  default_scope { recent }
 
   class << self
     def build(users, notificable, summary)
@@ -41,13 +43,13 @@ class Notification < ActiveRecord::Base
     def build_summary(notificable=nil, summary_action=nil)
       summary  = ''
       summary += "The #{notificable.model_name.human} " if notificable.present?
-      summary += notificable_title(notificable)         if notificable.present?
+      summary += notificable_name(notificable)          if notificable.present?
       summary += ' '
       summary += summary_action
       summary
     end
 
-    def notificable_title(notificable)
+    def notificable_name(notificable)
       notificable.try(:name)
     end
 
