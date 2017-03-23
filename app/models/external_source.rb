@@ -19,7 +19,7 @@
 #
 
 class ExternalSource < ApplicationRecord
-  belongs_to :attacheable, polymorphic: true
+  belongs_to :attacheable, polymorphic: true, touch: true
 
   include Activable
   include Sanitizable
