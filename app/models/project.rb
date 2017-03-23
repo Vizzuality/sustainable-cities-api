@@ -25,6 +25,7 @@ class Project < ApplicationRecord
   enum project_type: { BusinessModel: 0, StudyCase: 1 }
 
   belongs_to :category, inverse_of: :projects
+  belongs_to :country,  inverse_of: :projects, optional: true
 
   has_many :project_cities
   has_many :cities, through: :project_cities
@@ -45,6 +46,8 @@ class Project < ApplicationRecord
   accepts_nested_attributes_for :bmes
 
   validates :name, presence: true
+
+  include Activable
 
   scope :by_name_asc,       -> { order('projects.name ASC')           }
   scope :by_study_case,     -> { where(project_type: 'StudyCase')     }

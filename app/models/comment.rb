@@ -22,8 +22,12 @@ class Comment < ActiveRecord::Base
 
   validate :validate_body_length
 
+  include Activable
+
   scope :recent,             -> { order('comments.id DESC')                 }
   scope :sort_by_created_at, -> { order('comments.sort_by_created_at DESC') }
+
+  default_scope { sort_by_created_at }
 
   class << self
     def build(commentable, user, body)

@@ -16,10 +16,13 @@
 #
 
 class Country < ApplicationRecord
-  has_many :users,  inverse_of: :country
-  has_many :cities, inverse_of: :country
+  has_many :users,    inverse_of: :country
+  has_many :cities,   inverse_of: :country
+  has_many :projects, inverse_of: :country
 
   validates :name, :iso, presence: true, uniqueness: { case_sensitive: false }
+
+  include Activable
 
   scope :by_name_asc,  -> { order('countries.name ASC') }
   scope :by_activated, -> { where(is_active: true)      }

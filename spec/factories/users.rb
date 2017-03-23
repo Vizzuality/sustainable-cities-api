@@ -62,4 +62,17 @@ FactoryGirl.define do
     name 'Admin user'
     role 3
   end
+
+  factory :webuser, class: User do
+    sequence(:email)    { |n| "webuser#{n}@vizzuality.com" }
+    sequence(:nickname) { |n| "webuser#{n}"                }
+
+    password 'password'
+    password_confirmation { |u| u.password }
+    name 'Web user'
+
+    after(:create) do |user|
+      user.regenerate_api_key
+    end
+  end
 end

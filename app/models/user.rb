@@ -37,6 +37,7 @@ class User < ApplicationRecord
   belongs_to :country, inverse_of: :users, optional: true
   belongs_to :city,    inverse_of: :users, optional: true
 
+  has_one  :api_key
   has_many :notifications, inverse_of: :user, dependent: :destroy
   has_many :comments,      inverse_of: :user, dependent: :destroy
   has_many :project_users
@@ -81,6 +82,23 @@ class User < ApplicationRecord
 
   def inactive_message
     'You are not allowed to sign in.'
+  end
+
+  def api_key_exists?
+    !self.api_key.expired?
+  end
+
+  def regenerate_api_key
+    token = Auth.issue({ user: id })
+    if ::APIKey.where(user_id: id).first_or_create
+      api_key.update(access_token: token, is_active: true, expires_at: DateTime.now + 1.year)
+    end
+  end
+
+  def delete_api_key
+    if self.api_key
+      APIKey.where(user_id: self.id).delete_all
+    end
   end
 
   private

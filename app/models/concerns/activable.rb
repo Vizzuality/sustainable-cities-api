@@ -9,11 +9,11 @@ module Activable
     scope :filter_inactives, -> { where(is_active: false) }
 
     def activate
-      update is_active: true
+      update! is_active: true
     end
 
     def deactivate
-      update is_active: false
+      update! is_active: false
     end
 
     def deactivated?
