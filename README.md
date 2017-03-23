@@ -1,4 +1,4 @@
-# Sustainable Cities #
+# Sustainable Cities API #
 
 [![Build Status](https://travis-ci.org/Vizzuality/sustainable_cities.svg?branch=develop)](https://travis-ci.org/Vizzuality/sustainable_cities) [![Code Climate](https://codeclimate.com/github/Vizzuality/sustainable_cities/badges/gpa.svg)](https://codeclimate.com/github/Vizzuality/sustainable_cities)
 

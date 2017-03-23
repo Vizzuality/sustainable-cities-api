@@ -9,11 +9,10 @@ git_source(:github) do |repo_name|
 end
 
 gem 'pg',    '~> 0.18'
-gem 'rails', '~> 5.1.beta1'
+gem 'rails', '~> 5.1.0.rc1'
 
 # API
 gem 'active_model_serializers', '~> 0.10.4'
-gem 'curb',     require: false
 gem 'json-schema'
 gem 'oj'
 gem 'oj_mimic_json'

@@ -15,7 +15,7 @@
 #
 
 class City < ApplicationRecord
-  belongs_to :country, inverse_of: :cities
+  belongs_to :country, inverse_of: :cities, touch: true
 
   has_many :users, inverse_of: :city
   has_many :project_cities
