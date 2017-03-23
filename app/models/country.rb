@@ -24,6 +24,8 @@ class Country < ApplicationRecord
   scope :by_name_asc,  -> { order('countries.name ASC') }
   scope :by_activated, -> { where(is_active: true)      }
 
+  include Activable
+
   default_scope { by_name_asc }
 
   class << self

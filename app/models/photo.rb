@@ -20,6 +20,8 @@ class Photo < ApplicationRecord
 
   after_destroy :remove_attachment_id_directory
 
+  include Activable
+
   private
 
     def remove_attachment_id_directory

@@ -46,6 +46,8 @@ class Project < ApplicationRecord
 
   validates :name, presence: true
 
+  include Activable
+
   scope :by_name_asc,       -> { order('projects.name ASC')           }
   scope :by_study_case,     -> { where(project_type: 'StudyCase')     }
   scope :by_business_model, -> { where(project_type: 'BusinessModel') }

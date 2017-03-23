@@ -10,11 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170321160544) do
+ActiveRecord::Schema.define(version: 20170322161754) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "citext"
+
+  create_table "api_keys", force: :cascade do |t|
+    t.string "access_token"
+    t.datetime "expires_at"
+    t.bigint "user_id"
+    t.boolean "is_active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["access_token"], name: "index_api_keys_on_access_token", unique: true
+    t.index ["user_id"], name: "index_api_keys_on_user_id"
+  end
 
   create_table "bme_categories", force: :cascade do |t|
     t.integer "bme_id"
@@ -237,6 +248,7 @@ ActiveRecord::Schema.define(version: 20170321160544) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "api_keys", "users"
   add_foreign_key "cities", "countries"
   add_foreign_key "comments", "users"
   add_foreign_key "enablings", "categories"
