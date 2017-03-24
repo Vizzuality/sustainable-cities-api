@@ -9,7 +9,7 @@ module V1
 
         @headers = {
           "ACCEPT" => "application/json",
-          "SC_API_KEY" => "Bearer #{token}"
+          "HTTP_SC_API_KEY" => "Bearer #{token}"
         }
       end
 

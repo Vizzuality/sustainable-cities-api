@@ -8,7 +8,7 @@ module V1
 
       @headers = {
         "ACCEPT" => "application/json",
-        "SC_API_KEY" => "Bearer #{token}"
+        "HTTP_SC_API_KEY" => "Bearer #{token}"
       }
     end
 
@@ -21,13 +21,13 @@ module V1
                                 { title: "password_confirmation can't be blank" }]}}
 
       describe 'Registration' do
-        it "Returns error object when the user cannot be created" do
+        it 'Returns error object when the user cannot be created' do
           post '/users', params: {"user": { "email": "test@gmail.com", "password": "password" }}, headers: @headers
           expect(status).to eq(422)
           expect(body).to   eq(error.to_json)
         end
 
-        it "Register valid user" do
+        it 'Register valid user' do
           post '/users', params: {"user": { "email": "test@gmail.com", "nickname": "sebanew", "password": "password", "password_confirmation": "password", "name": "Test user new" }},
                          headers: @headers
           expect(status).to eq(201)
@@ -60,8 +60,6 @@ module V1
           token = JWT.encode({ user: user.id }, ENV['AUTH_SECRET'], 'HS256')
 
           headers = @headers.merge("Authorization" => "Bearer #{token}")
-
-          puts headers.inspect
 
           get '/users/current-user', headers: headers
           expect(status).to eq(200)

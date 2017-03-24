@@ -25,11 +25,9 @@ class City < ApplicationRecord
 
   scope :by_name_asc, -> { order('cities.name ASC') }
 
-  default_scope { by_name_asc }
-
   class << self
     def fetch_all(options)
-      all
+      all.includes(:country)
     end
 
     def city_select
