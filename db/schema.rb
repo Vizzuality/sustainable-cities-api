@@ -213,7 +213,6 @@ ActiveRecord::Schema.define(version: 20170322161754) do
     t.text "solution"
     t.bigint "category_id"
     t.integer "country_id"
-    t.integer "city_id"
     t.datetime "operational_year"
     t.integer "project_type"
     t.boolean "is_active", default: false

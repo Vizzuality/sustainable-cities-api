@@ -12,5 +12,6 @@ Rails.application.routes.draw do
     resources :users
     resources :cities
     resources :countries
+    resources :projects
   end
 end

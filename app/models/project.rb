@@ -9,7 +9,6 @@
 #  solution          :text
 #  category_id       :integer
 #  country_id        :integer
-#  city_id           :integer
 #  operational_year  :datetime
 #  project_type      :integer
 #  is_active         :boolean          default(FALSE)
@@ -52,8 +51,6 @@ class Project < ApplicationRecord
   scope :by_name_asc,       -> { order('projects.name ASC')           }
   scope :by_study_case,     -> { where(project_type: 'StudyCase')     }
   scope :by_business_model, -> { where(project_type: 'BusinessModel') }
-
-  default_scope { by_name_asc }
 
   class << self
     def fetch_all(options)
