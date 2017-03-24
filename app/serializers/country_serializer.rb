@@ -17,5 +17,4 @@
 
 class CountrySerializer < ActiveModel::Serializer
   attributes :id, :name, :region_name, :iso, :region_iso, :country_centroid, :region_centroid, :is_active
-  has_many :cities, serializer: CitySerializer
 end

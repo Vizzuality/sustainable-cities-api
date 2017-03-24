@@ -193,7 +193,7 @@ namespace :import_study_cases_csv do
         data_study_cases[:project_type]      = 'StudyCase'
 
         project = Project.where(data_study_cases).first_or_create
-        project.update!(category_id: category_id, country_id: assign_country_id, city_id: assign_city_id, published_at: DateTime.now, is_active: true)
+        project.update!(category_id: category_id, country_id: assign_country_id, city_ids: [assign_city_id], published_at: DateTime.now, is_active: true)
       end
     end
     puts "Study cases loaded"

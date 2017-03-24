@@ -8,7 +8,6 @@
 #  solution          :text
 #  category_id       :integer
 #  country_id        :integer
-#  city_id           :integer
 #  operational_year  :datetime
 #  project_type      :integer
 #  is_active         :boolean          default(FALSE)

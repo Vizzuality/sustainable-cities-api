@@ -26,7 +26,6 @@ module V1
     end
 
     def create
-      authorize! :create, Country
       @country = Country.new(country_params)
       if @country.save
         render json: { messages: [{ status: 201, title: 'Country successfully created!' }] }, status: 201
