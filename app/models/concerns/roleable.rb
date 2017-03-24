@@ -12,7 +12,7 @@ module Roleable
     end
 
     def editor?
-      user_permission.user_role.in?('editor')
+      role.in?('editor')
     end
 
     def user?

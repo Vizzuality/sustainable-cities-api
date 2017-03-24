@@ -56,6 +56,7 @@ RSpec.describe Ability, type: :model do
     end
 
     it 'can manage objects' do
+      expect_any_instance_of(Abilities::Editor).to receive(:can).with(:read, :all)
       expect_any_instance_of(Abilities::Editor).to receive(:can).with(:manage, ::Project, project_users: { user_id: @editor.id, is_owner: true })
       expect_any_instance_of(Abilities::Editor).to receive(:can).with(:update, ::User, id: @editor.id)
       expect_any_instance_of(Abilities::Editor).to receive(:can).with(:update, ::Project, project_users: { user_id: @editor.id })
@@ -69,6 +70,7 @@ RSpec.describe Ability, type: :model do
     end
 
     it 'can manage objects' do
+      expect_any_instance_of(Abilities::User).to receive(:can).with(:read, :all)
       expect_any_instance_of(Abilities::User).to receive(:can).with(:update, ::User, id: @user.id)
       expect_any_instance_of(Abilities::User).to receive(:can).with(:update, ::Project, project_users: { user_id: @user.id })
       Abilities::User.new @user
@@ -76,12 +78,8 @@ RSpec.describe Ability, type: :model do
   end
 
   context 'guest' do
-    before :each do
-      @user = create(:user)
-    end
-
     it 'can manage objects' do
-      expect_any_instance_of(Abilities::Guest).to receive(:can).with(:update, ::User, id: @user.id)
+      expect_any_instance_of(Abilities::Guest).to receive(:can).with(:read, :all)
       Abilities::Guest.new @user
     end
   end

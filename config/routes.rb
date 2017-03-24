@@ -9,5 +9,7 @@ Rails.application.routes.draw do
 
     # Resources
     resources :users
+    resources :cities
+    resources :countries
   end
 end

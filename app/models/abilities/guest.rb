@@ -3,8 +3,8 @@ module Abilities
   class Guest
     include CanCan::Ability
 
-    def initialize(user)
-      can :update, ::User, id: user.id
+    def initialize(user=nil)
+      can :read, :all
     end
   end
 end

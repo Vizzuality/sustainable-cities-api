@@ -27,11 +27,9 @@ class Country < ApplicationRecord
   scope :by_name_asc,  -> { order('countries.name ASC') }
   scope :by_activated, -> { where(is_active: true)      }
 
-  default_scope { by_name_asc }
-
   class << self
     def fetch_all(options)
-      all
+      all.includes(:cities)
     end
 
     def country_select
