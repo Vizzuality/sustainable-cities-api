@@ -56,16 +56,20 @@ class User < ApplicationRecord
                                  multiline: true
 
   validates :password, confirmation: true
-  validates :password_confirmation, presence: true
+  validates :password_confirmation, presence: true, on: :create
 
   include Activable
   include Roleable
   include Sanitizable
 
-  scope :recent,          -> { order('updated_at DESC')    }
-  scope :by_nickname_asc, -> { order('users.nickname ASC') }
+  scope :recent,          -> { order('users.updated_at DESC') }
+  scope :by_nickname_asc, -> { order('users.nickname ASC')    }
 
   class << self
+    def fetch_all(options)
+      all
+    end
+
     def user_select
       by_nickname_asc.map { |c| [c.nickname, c.id] }
     end

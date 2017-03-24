@@ -2,7 +2,8 @@
 Rails.application.routes.draw do
   scope module: :v1, constraints: APIVersion.new(version: 1, current: true) do
     # Account
-    post '/login', to: 'sessions#create'
+    post '/login',    to: 'sessions#create'
+    post '/register', to: 'registrations#create'
 
     # Helper requests
     get '/users/current-user', to: 'current_user#show'
