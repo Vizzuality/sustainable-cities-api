@@ -22,6 +22,7 @@ GC::Profiler.enable
 module SustainableCities
   class Application < Rails::Application
     config.autoload_paths << Rails.root.join('lib')
+    config.autoload_paths << Rails.root.join('app', 'models', 'indexes')
 
     config.api_only = true
 

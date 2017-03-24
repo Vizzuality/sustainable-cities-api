@@ -2,6 +2,8 @@
 require 'oj'
 
 class ApplicationController < ActionController::API
+  include CanCan::ControllerAdditions
+
   before_action :check_access, :authenticate
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
@@ -55,7 +57,7 @@ class ApplicationController < ActionController::API
     end
 
     def api_key
-      request.env['SC_API_KEY'].scan(/Bearer (.*)$/).flatten.last
+      request.env['HTTP_SC_API_KEY'].scan(/Bearer (.*)$/).flatten.last
     end
 
     def auth
@@ -67,7 +69,7 @@ class ApplicationController < ActionController::API
     end
 
     def api_key_present?
-      !!request.env.fetch('SC_API_KEY', '').scan(/Bearer/).flatten.first
+      !!request.env.fetch('HTTP_SC_API_KEY', '').scan(/Bearer/).flatten.first
     end
 
     def auth_present?

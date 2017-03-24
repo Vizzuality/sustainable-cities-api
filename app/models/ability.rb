@@ -3,13 +3,18 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    case user
-    when user.is_active_admin?     then merge Abilities::Admin.new(user)
-    when user.is_active_publisher? then merge Abilities::Publisher.new(user)
-    when user.is_active_editor?    then merge Abilities::Editor.new(user)
-    when user.is_active_user?      then merge Abilities::User.new(user)
+    if user # devise session users
+      if user.is_active_admin?
+        merge Abilities::Admin.new(user)
+      elsif user.is_active_publisher?
+        merge Abilities::Publisher.new(user)
+      elsif user.is_active_editor?
+        merge Abilities::Editor.new(user)
+      else
+        merge Abilities::User.new(user)
+      end
     else
-      merge Abilities::Guest.new(user)
+      merge Abilities::Guest.new
     end
   end
 end
