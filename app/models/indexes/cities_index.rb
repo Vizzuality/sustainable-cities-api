@@ -4,7 +4,7 @@ class CitiesIndex
   SORTABLE_FIELDS = [:name, :updated_at, :created_at]
   PER_PAGE = 10
 
-  delegate :params,      to: :controller
+  delegate :params,     to: :controller
   delegate :cities_url, to: :controller
 
   attr_reader :controller
@@ -31,7 +31,7 @@ class CitiesIndex
   private
 
     def options_filter
-      params.permit(:name, :sort, :city, city: {}).tap do |filter_params|
+      params.permit(:id, :name, :sort, :city, city: {}).tap do |filter_params|
         filter_params[:page]= {}
         filter_params[:page][:number] = params[:page][:number] if params[:page].present? && params[:page][:number].present?
         filter_params[:page][:size]   = params[:page][:size]   if params[:page].present? && params[:page][:size].present?

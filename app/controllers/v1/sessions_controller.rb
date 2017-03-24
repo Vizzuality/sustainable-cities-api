@@ -1,21 +1,25 @@
 # frozen_string_literal: true
-class V1::SessionsController < ApplicationController
-  skip_before_action :authenticate, only: [:create]
+module V1
+  class SessionsController < ApplicationController
+    include ErrorSerializer
 
-  def create
-    @user = User.find_by(email: auth_params[:email])
+    skip_before_action :authenticate, only: [:create]
 
-    if @user && @user.authenticate(auth_params[:password])
-      token = Auth.issue({ user: @user.id })
-      render json: { token: token }
-    else
-      render json: { errors: [{ title: 'Incorrect email or password' }] }, status: 401
+    def create
+      @user = User.find_by(email: auth_params[:email])
+
+      if @user && @user.authenticate(auth_params[:password])
+        token = Auth.issue({ user: @user.id })
+        render json: { token: token }
+      else
+        render json: { errors: [{ title: 'Incorrect email or password' }] }, status: 401
+      end
     end
+
+    private
+
+      def auth_params
+        params.require(:auth).permit(:email, :password)
+      end
   end
-
-  private
-
-    def auth_params
-      params.require(:auth).permit(:email, :password)
-    end
 end
