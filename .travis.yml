@@ -27,7 +27,7 @@ before_script:
 script:
   - RAILS_ENV=test bundle exec rake db:create
   - RAILS_ENV=test bundle exec rake db:migrate
-  - 'CODECLIMATE_REPO_TOKEN=39c70bda904ad5954415e9b4cf5415ec1dabdb3d53c5d93b282055dc4a2aa8b3 xvfb-run bundle exec rake'
+  - 'CODECLIMATE_REPO_TOKEN=39c70bda904ad5954415e9b4cf5415ec1dabdb3d53c5d93b282055dc4a2aa8b3 xvfb-run bundle exec rspec'
   - bundle exec rubocop
 
 notifications:
