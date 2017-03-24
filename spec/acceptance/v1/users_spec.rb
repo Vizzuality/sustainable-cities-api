@@ -165,7 +165,7 @@ module V1
           expect(body).to   eq({ messages: [{ status: 200, title: 'User successfully updated!' }] }.to_json)
         end
 
-        it 'Returns error object when the user intent to update role' do
+        it 'Do not allow user to change the role' do
           patch "/users/#{user.id}", params: {"user": { "role": "admin" }}, headers: @headers
           expect(status).to           eq(200)
           expect(user.reload.role).to eq('user')
