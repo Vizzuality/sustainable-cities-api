@@ -24,8 +24,8 @@ class Comment < ActiveRecord::Base
 
   include Activable
 
-  scope :recent,             -> { order('comments.id DESC')                 }
-  scope :sort_by_created_at, -> { order('comments.sort_by_created_at DESC') }
+  scope :recent,             -> { order('comments.id DESC')         }
+  scope :sort_by_created_at, -> { order('comments.created_at DESC') }
 
   default_scope { sort_by_created_at }
 

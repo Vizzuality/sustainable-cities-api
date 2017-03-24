@@ -1,6 +1,10 @@
 # frozen_string_literal: true
-class V1::CurrentUserController < ApplicationController
-  def show
-    render json: current_user, serializer: UserSerializer
+module V1
+  class CurrentUserController < ApplicationController
+    include ErrorSerializer
+
+    def show
+      render json: current_user, serializer: UserSerializer
+    end
   end
 end

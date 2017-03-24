@@ -1,11 +1,11 @@
 # frozen_string_literal: true
-class CountriesIndex
+class UsersIndex
   DEFAULT_SORTING = { updated_at: :desc }
   SORTABLE_FIELDS = [:name, :updated_at, :created_at]
   PER_PAGE = 10
 
-  delegate :params,        to: :controller
-  delegate :countries_url, to: :controller
+  delegate :params,    to: :controller
+  delegate :users_url, to: :controller
 
   attr_reader :controller
 
@@ -13,25 +13,25 @@ class CountriesIndex
     @controller = controller
   end
 
-  def countries
-    @countries ||= Country.fetch_all(options_filter)
-                          .order(sort_params)
-                          .paginate(page: current_page, per_page: per_page)
+  def users
+    @users ||= User.fetch_all(options_filter)
+                   .order(sort_params)
+                   .paginate(page: current_page, per_page: per_page)
   end
 
   def links
     {
-      first: countries_url(rebuild_params.merge(first_page)),
-      prev:  countries_url(rebuild_params.merge(prev_page)),
-      next:  countries_url(rebuild_params.merge(next_page)),
-      last:  countries_url(rebuild_params.merge(last_page))
+      first: users_url(rebuild_params.merge(first_page)),
+      prev:  users_url(rebuild_params.merge(prev_page)),
+      next:  users_url(rebuild_params.merge(next_page)),
+      last:  users_url(rebuild_params.merge(last_page))
     }
   end
 
   private
 
     def options_filter
-      params.permit(:id, :name, :sort, :country, country: {}).tap do |filter_params|
+      params.permit(:id, :name, :sort, :user, user: {}).tap do |filter_params|
         filter_params[:page]= {}
         filter_params[:page][:number] = params[:page][:number] if params[:page].present? && params[:page][:number].present?
         filter_params[:page][:size]   = params[:page][:size]   if params[:page].present? && params[:page][:size].present?
@@ -64,7 +64,7 @@ class CountriesIndex
     end
 
     def total_pages
-      @total_pages ||= countries.total_pages
+      @total_pages ||= users.total_pages
     end
 
     def sort_params
