@@ -18,6 +18,7 @@ require 'carrierwave'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 GC::Profiler.enable
+ActiveSupport::Deprecation.silenced = true
 
 module SustainableCities
   class Application < Rails::Application
