@@ -10,7 +10,7 @@ module V1
 
     def index
       @cities = CitiesIndex.new(self)
-      render json: @cities.cities, each_serializer: CitySerializer, include: ['country'], links: @cities.links
+      render json: @cities.cities, each_serializer: CitySerializer, links: @cities.links
     end
 
     def show
