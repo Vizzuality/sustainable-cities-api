@@ -46,7 +46,7 @@ RSpec.describe Project, type: :model do
   end
 
   it 'Common and scientific name validation' do
-    @study_case = Project.new(name: '')
+    @study_case = Project.new(name: '', project_type: 'BusinessModel')
 
     @study_case.valid?
     expect { @study_case.save! }.to raise_error(ActiveRecord::RecordInvalid, "Validation failed: Name can't be blank")

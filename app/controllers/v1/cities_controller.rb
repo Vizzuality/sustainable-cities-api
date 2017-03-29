@@ -21,7 +21,7 @@ module V1
       if @city.update(city_params)
         render json: { messages: [{ status: 200, title: "City successfully updated!" }] }, status: 200
       else
-        render json: ErrorSerializer.serialize(@city.errors), status: 422
+        render json: ErrorSerializer.serialize(@city.errors, 422), status: 422
       end
     end
 
@@ -30,7 +30,7 @@ module V1
       if @city.save
         render json: { messages: [{ status: 201, title: 'City successfully created!' }] }, status: 201
       else
-        render json: ErrorSerializer.serialize(@city.errors), status: 422
+        render json: ErrorSerializer.serialize(@city.errors, 422), status: 422
       end
     end
 
@@ -38,7 +38,7 @@ module V1
       if @city.destroy
         render json: { messages: [{ status: 200, title: 'City successfully deleted!' }] }, status: 200
       else
-        render json: ErrorSerializer.serialize(@city.errors), status: 422
+        render json: ErrorSerializer.serialize(@city.errors, 422), status: 422
       end
     end
 

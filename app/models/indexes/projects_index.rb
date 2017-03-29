@@ -9,14 +9,15 @@ class ProjectsIndex
 
   attr_reader :controller
 
-  def initialize(controller)
-    @controller = controller
+  def initialize(controller, current_user=nil)
+    @controller   = controller
+    @current_user = current_user
   end
 
   def projects
     @projects ||= Project.fetch_all(options_filter)
-                      .order(sort_params)
-                      .paginate(page: current_page, per_page: per_page)
+                         .order(sort_params)
+                         .paginate(page: current_page, per_page: per_page)
   end
 
   def links
@@ -31,11 +32,11 @@ class ProjectsIndex
   private
 
     def options_filter
-      params.permit(:id, :name, :sort, :project, project: {}).tap do |filter_params|
+      params.permit('id', 'name', 'sort', 'project', 'study_cases', 'business_models', 'project' => {}).tap do |filter_params|
         filter_params[:page]= {}
         filter_params[:page][:number] = params[:page][:number] if params[:page].present? && params[:page][:number].present?
         filter_params[:page][:size]   = params[:page][:size]   if params[:page].present? && params[:page][:size].present?
-        filter_params
+        filter_params[:current_user]  = @current_user
       end
     end
 

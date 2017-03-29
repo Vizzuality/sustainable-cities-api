@@ -43,18 +43,44 @@ class Project < ApplicationRecord
   has_many :impacts,          dependent: :destroy, inverse_of: :study_case
 
   accepts_nested_attributes_for :bmes
+  accepts_nested_attributes_for :external_sources
+  accepts_nested_attributes_for :documents
+  accepts_nested_attributes_for :photos
+  accepts_nested_attributes_for :impacts
 
   validates :name, presence: true
+  validates :project_type, presence: true, inclusion: { in: %w(BusinessModel StudyCase) }, on: :create
 
   include Activable
 
-  scope :by_name_asc,       -> { order('projects.name ASC')           }
-  scope :by_study_case,     -> { where(project_type: 'StudyCase')     }
-  scope :by_business_model, -> { where(project_type: 'BusinessModel') }
+  scope :by_name_asc,            ->     { order('projects.name ASC')                                                                          }
+  scope :by_study_case,          ->     { where(project_type: 'StudyCase')                                                                    }
+  scope :by_business_model,      ->     { where(project_type: 'BusinessModel')                                                                }
+  scope :by_user_business_model, ->user { joins(:project_users).where('project_users.user_id = ?', user).where(project_type: 'BusinessModel') }
+  scope :available,              ->     { where(is_active: true)                                                                              }
 
   class << self
-    def fetch_all(options)
-      all
+    def fetch_all(options=nil)
+      study_cases     = options['study_cases']     if options.present? && options['study_cases'].present?
+      business_models = options['business_models'] if options.present? && options['business_models'].present?
+      user            = options['current_user']    if options.present? && options['current_user'].present?
+
+      projects = available.includes(:country, :category, :bmes,
+                                    :impacts, :cities, { cities: :country },
+                                    :users, :photos, :documents, :external_sources, :comments)
+
+      if study_cases.present?
+        projects = projects.by_study_case
+      end
+
+      if business_models.present? && user.present?
+        if user.is_active_user? || user.is_active_editor?
+          projects = projects.by_user_business_model(user.id)
+        elsif user.is_active_admin? || user.is_active_publisher?
+          projects = projects.by_business_model
+        end
+      end
+      projects
     end
   end
 end

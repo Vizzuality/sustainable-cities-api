@@ -19,7 +19,24 @@ module V1
 
     let!(:project)   { FactoryGirl.create(:project, name: '00 Project one') }
 
-    context 'Show projects' do
+    context 'Do not show projects for not admin user' do
+      it 'Get projects list' do
+        get '/projects', headers: @headers
+        expect(status).to eq(401)
+      end
+
+      it 'Get specific project' do
+        get "/projects/#{project.id}", headers: @headers
+        expect(status).to eq(401)
+      end
+    end
+
+    context 'Show projects for admin user' do
+      before(:each) do
+        token    = JWT.encode({ user: admin.id }, ENV['AUTH_SECRET'], 'HS256')
+        @headers = @headers.merge("Authorization" => "Bearer #{token}")
+      end
+
       it 'Get projects list' do
         get '/projects', headers: @headers
         expect(status).to eq(200)
@@ -32,6 +49,11 @@ module V1
     end
 
     context 'Pagination and sort for projects' do
+      before(:each) do
+        token    = JWT.encode({ user: admin.id }, ENV['AUTH_SECRET'], 'HS256')
+        @headers = @headers.merge("Authorization" => "Bearer #{token}")
+      end
+
       let!(:projects) {
         projects = []
         projects << FactoryGirl.create_list(:project, 4)
@@ -70,7 +92,7 @@ module V1
     end
 
     context 'Create projects' do
-      let!(:error) { { errors: [{ title: "name can't be blank" }]}}
+      let!(:error) { { errors: [{ status: 422, title: "name can't be blank" }]}}
 
       describe 'For admin user' do
         before(:each) do
@@ -78,23 +100,26 @@ module V1
           @headers = @headers.merge("Authorization" => "Bearer #{token}")
         end
 
+        let(:city) { FactoryGirl.create(:city) }
+
         it 'Returns error object when the project cannot be created by admin' do
-          post '/projects', params: {"project": { "name": "" }}, headers: @headers
+          post '/projects', params: {"project": { "name": "", "project_type": "BusinessModel" }}, headers: @headers
           expect(status).to eq(422)
           expect(body).to   eq(error.to_json)
         end
 
         it 'Returns success object when the project was seccessfully created by admin' do
-          post '/projects', params: {"project": { "name": "Project one" }},
+          post '/projects', params: {"project": { "name": "Project one", "project_type": "BusinessModel", "city_ids": [city.id] }},
                             headers: @headers
-          expect(status).to eq(201)
-          expect(body).to   eq({ messages: [{ status: 201, title: 'Project successfully created!' }] }.to_json)
+          expect(status).to                  eq(201)
+          expect(body).to                    eq({ messages: [{ status: 201, title: 'Project successfully created!' }] }.to_json)
+          expect(City.last.projects.size).to eq(1)
         end
       end
 
       describe 'For not admin user' do
         before(:each) do
-          token         = JWT.encode({ user: user.id }, ENV['AUTH_SECRET'], 'HS256')
+          token         = JWT.encode({ user: publisher.id }, ENV['AUTH_SECRET'], 'HS256')
           @headers_user = @headers.merge("Authorization" => "Bearer #{token}")
         end
 
@@ -102,17 +127,16 @@ module V1
           { errors: [{ status: '401', title: 'You are not authorized to access this page.' }] }
         }
 
-        it 'Do not allows to create project by not admin user' do
-          post '/projects', params: {"project": { "name": "Project one" }},
-                             headers: @headers_user
-          expect(status).to eq(401)
-          expect(body).to   eq(error_unauthorized.to_json)
+        it 'Allows to create project by publisher user' do
+          post '/projects', params: {"project": { "name": "Project one", project_type: 'BusinessModel' }},
+                            headers: @headers_user
+          expect(status).to eq(201)
         end
       end
     end
 
     context 'Edit projects' do
-      let!(:error) { { errors: [{ title: "name can't be blank" }]}}
+      let!(:error) { { errors: [{ status: 422, title: "name can't be blank" }]}}
 
       describe 'For admin user' do
         before(:each) do

@@ -70,7 +70,7 @@ module V1
     end
 
     context 'Create cities' do
-      let!(:error) { { errors: [{ title: "name can't be blank" }]}}
+      let!(:error) { { errors: [{ status: 422, title: "name can't be blank" }]}}
 
       describe 'For admin user' do
         before(:each) do
@@ -112,7 +112,7 @@ module V1
     end
 
     context 'Edit cities' do
-      let!(:error) { { errors: [{ title: "name can't be blank" }]}}
+      let!(:error) { { errors: [{ status: 422, title: "name can't be blank" }]}}
 
       describe 'For admin user' do
         before(:each) do
