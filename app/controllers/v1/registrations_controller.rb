@@ -10,7 +10,7 @@ module V1
       if @user.save
         render json: { messages: [{ status: 201, title: 'User successfully registrated!' }] }, status: 201
       else
-        render json: ErrorSerializer.serialize(@user.errors), status: 422
+        render json: ErrorSerializer.serialize(@user.errors, 422), status: 422
       end
     end
 

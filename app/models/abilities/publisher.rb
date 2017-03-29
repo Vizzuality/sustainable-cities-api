@@ -17,7 +17,9 @@ module Abilities
       can [:publish, :unpublish],   ::Project
 
       can :manage, ::Project, project_users: { user_id: user.id, is_owner: true }
+      can :create, ::Project
       can :update, ::Project, project_users: { user_id: user.id                 }
+      can [:read, :index_all, :show_project_and_bm], ::Project
       can :update, ::User,    id: user.id
 
       cannot [:activate, :deactivate], ::User, id: user.id

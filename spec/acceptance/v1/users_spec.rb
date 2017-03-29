@@ -69,10 +69,10 @@ module V1
     end
 
     context 'Register users' do
-      let!(:error) { { errors: [{ title: "nickname can't be blank" },
-                                { title: "nickname is invalid"},
-                                { title: "name can't be blank"},
-                                { title: "password_confirmation can't be blank" }]}}
+      let!(:error) { { errors: [{ status: 422, title: "nickname can't be blank" },
+                                { status: 422, title: "nickname is invalid"},
+                                { status: 422, title: "name can't be blank"},
+                                { status: 422, title: "password_confirmation can't be blank" }]}}
 
       describe 'Registration' do
         it 'Returns error object when the user cannot be registrated' do
@@ -96,10 +96,10 @@ module V1
         @headers = @headers.merge("Authorization" => "Bearer #{token}")
       end
 
-      let!(:error) { { errors: [{ title: "nickname can't be blank" },
-                                { title: "nickname is invalid"},
-                                { title: "name can't be blank"},
-                                { title: "password_confirmation can't be blank" }]}}
+      let!(:error) { { errors: [{ status: 422, title: "nickname can't be blank" },
+                                { status: 422, title: "nickname is invalid"},
+                                { status: 422, title: "name can't be blank"},
+                                { status: 422, title: "password_confirmation can't be blank" }]}}
 
       describe 'Create user by admin' do
         it 'Returns error object when the user cannot be created' do
@@ -118,7 +118,7 @@ module V1
     end
 
     context 'Update users' do
-      let!(:error) { { errors: [{ title: "name can't be blank"}]}}
+      let!(:error) { { errors: [{ status: 422, title: "name can't be blank"}]}}
 
       describe 'Update user by admin' do
         before(:each) do
@@ -174,7 +174,7 @@ module V1
     end
 
     context 'Login and authenticate user' do
-      let!(:error) { { errors: [{ title: "Incorrect email or password" }]}}
+      let!(:error) { { errors: [{ status: '401', title: "Incorrect email or password" }]}}
 
       it 'Returns error object when the user cannot login' do
         post '/login', params: {"auth": { "email": "test@gmail.com", "password": "wrong password" }}, headers: @headers
@@ -201,10 +201,10 @@ module V1
           get '/users/current-user', headers: headers
           expect(status).to eq(200)
           expect(json).to   eq({"id"=>"#{user.id}", "type"=>"users", "attributes"=>{"name"=>"00 User one", "email"=>"test@email.com",
-                                                                                    "role"=>"user", "country-id"=>nil, "city-id"=>nil,
+                                                                                    "role"=>"user", "country_id"=>nil, "city_id"=>nil,
                                                                                     "nickname"=>"test", "institution"=>nil, "position"=>nil,
-                                                                                    "twitter-account"=>nil, "linkedin-account"=>nil,
-                                                                                    "is-active"=>true, "deactivated-at"=>nil,
+                                                                                    "twitter_account"=>nil, "linkedin_account"=>nil,
+                                                                                    "is_active"=>true, "deactivated_at"=>nil,
                                                                                     "image"=>{"url"=>nil, "thumbnail"=>{"url"=>nil}, "square"=>{"url"=>nil}}}})
         end
 

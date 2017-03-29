@@ -70,7 +70,7 @@ module V1
     end
 
     context 'Create countries' do
-      let!(:error) { { errors: [{ title: "iso can't be blank" }]}}
+      let!(:error) { { errors: [{ status: 422, title: "iso can't be blank" }]}}
 
       describe 'For admin user' do
         before(:each) do
@@ -112,7 +112,7 @@ module V1
     end
 
     context 'Edit countries' do
-      let!(:error) { { errors: [{ title: "iso can't be blank" }]}}
+      let!(:error) { { errors: [{ status: 422, title: "iso can't be blank" }]}}
 
       describe 'For admin user' do
         before(:each) do

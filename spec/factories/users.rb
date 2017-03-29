@@ -31,6 +31,7 @@ FactoryGirl.define do
     password 'password'
     password_confirmation { |u| u.password }
     name 'Test user'
+    role 'user'
     is_active true
   end
 
@@ -41,7 +42,7 @@ FactoryGirl.define do
     password 'password'
     password_confirmation { |u| u.password }
     name 'Editor user'
-    role 1
+    role 'editor'
     is_active true
   end
 
@@ -52,7 +53,7 @@ FactoryGirl.define do
     password 'password'
     password_confirmation { |u| u.password }
     name 'Publisher user'
-    role 2
+    role 'publisher'
     is_active true
   end
 
@@ -63,7 +64,7 @@ FactoryGirl.define do
     password 'password'
     password_confirmation { |u| u.password }
     name 'Admin user'
-    role 3
+    role 'admin'
     is_active true
   end
 
@@ -75,6 +76,7 @@ FactoryGirl.define do
     password_confirmation { |u| u.password }
     name 'Web user'
     is_active true
+    role 'user'
 
     after(:create) do |user|
       user.regenerate_api_key

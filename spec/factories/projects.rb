@@ -21,16 +21,20 @@
 
 FactoryGirl.define do
   factory :project do
-    name 'A Project'
+    name         'A Project'
+    project_type 'StudyCase'
+    is_active    true
   end
 
   factory :study_case, class: Project do
-    name 'A Study case'
+    name         'A Study case'
     project_type 'StudyCase'
+    is_active    true
   end
 
   factory :business_model, class: Project do
-    name 'A Business model'
+    name         'A Business model'
     project_type 'BusinessModel'
+    is_active    true
   end
 end

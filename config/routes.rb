@@ -6,12 +6,18 @@ Rails.application.routes.draw do
     post '/register', to: 'registrations#create'
 
     # Helper requests
-    get '/users/current-user', to: 'current_user#show'
+    get '/users/current-user',  to: 'current_user#show'
+    get '/study-cases',         to: 'projects#index',     study_cases: true
+    get '/study-cases/:id',     to: 'projects#show'
+    get '/business-models',     to: 'projects#index_all', business_models: true
+    get '/business-models/:id', to: 'projects#show_project_and_bm'
+    get '/projects',            to: 'projects#index_all'
+    get '/projects/:id',        to: 'projects#show_project_and_bm'
 
     # Resources
     resources :users
     resources :cities
     resources :countries
-    resources :projects
+    resources :projects, except: [:index, :show]
   end
 end
