@@ -21,7 +21,7 @@ module V1
       if @country.update(country_params)
         render json: { messages: [{ status: 200, title: "Country successfully updated!" }] }, status: 200
       else
-        render json: ErrorSerializer.serialize(@country.errors), status: 422
+        render json: ErrorSerializer.serialize(@country.errors, 422), status: 422
       end
     end
 
@@ -30,7 +30,7 @@ module V1
       if @country.save
         render json: { messages: [{ status: 201, title: 'Country successfully created!' }] }, status: 201
       else
-        render json: ErrorSerializer.serialize(@country.errors), status: 422
+        render json: ErrorSerializer.serialize(@country.errors, 422), status: 422
       end
     end
 
@@ -38,7 +38,7 @@ module V1
       if @country.destroy
         render json: { messages: [{ status: 200, title: 'Country successfully deleted!' }] }, status: 200
       else
-        render json: ErrorSerializer.serialize(@country.errors), status: 422
+        render json: ErrorSerializer.serialize(@country.errors, 422), status: 422
       end
     end
 

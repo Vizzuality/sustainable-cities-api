@@ -7,12 +7,11 @@ module V1
 
     def create
       @user = User.find_by(email: auth_params[:email])
-
       if @user && @user.authenticate(auth_params[:password])
         token = Auth.issue({ user: @user.id })
         render json: { token: token }
       else
-        render json: { errors: [{ title: 'Incorrect email or password' }] }, status: 401
+        render json: { errors: [{ status: '401', title: 'Incorrect email or password' }] }, status: 401
       end
     end
 
