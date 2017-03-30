@@ -13,4 +13,9 @@
 #
 
 class EnablingSerializer < ActiveModel::Serializer
+  attributes :id, :name, :description, :assessment_value
+
+  belongs_to :category, serializer: CategorySerializer
+
+  has_many :bmes, serializer: BmeSerializer
 end

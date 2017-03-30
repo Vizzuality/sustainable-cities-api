@@ -22,5 +22,6 @@ Rails.application.routes.draw do
     resources :bmes, path: 'business-model-elements'
     resources :categories
     resources :impacts
+    resources :enablings
   end
 end

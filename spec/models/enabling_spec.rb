@@ -20,13 +20,12 @@ RSpec.describe Enabling, type: :model do
     @enabling = create(:enabling, category: @category)
   end
 
-  it 'Count on enabling with default scope' do
-    expect(Enabling.count).to           eq(2)
-    expect(Enabling.all.second.name).to eq('Z Enabling')
+  it 'Count on enabling' do
+    expect(Enabling.count).to eq(2)
   end
 
   it 'Order by name asc' do
-    expect(Enabling.by_name_asc.first.name).to eq('A Enabling')
+    expect(Enabling.by_name_asc.first.name).to match('Enabling')
   end
 
   it 'Common and scientific name validation' do

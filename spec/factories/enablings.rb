@@ -13,6 +13,6 @@
 
 FactoryGirl.define do
   factory :enabling do
-    name 'A Enabling'
+    sequence(:name) { |n| "#{n} Enabling #{Faker::Lorem.sentence}" }
   end
 end
