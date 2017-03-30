@@ -67,9 +67,7 @@ module V1
 
       def render_projects
         @projects = ProjectsIndex.new(self, @current_user)
-        render json: @projects.projects, each_serializer: ProjectSerializer, include: ['category', 'country', 'cities', 'users',
-                                                                                       'bmes', 'photos', 'documents', 'external_sources',
-                                                                                       'comments', 'impacts'], links: @projects.links
+        render json: @projects.projects, each_serializer: ProjectSerializer, links: @projects.links
       end
 
       def set_project
@@ -91,13 +89,13 @@ module V1
           impact_ids:          params[:project][:impact_ids]
         }
 
-        return_params[:user_ids]  = params[:project][:user_ids]  if @current_user.admin?
+        return_params[:user_ids]  = params[:project][:user_ids]  if @current_user.is_active_admin?
         return_params[:user_ids]  = [@current_user.id]           if :create && return_params[:user_ids].blank?
-        return_params[:is_active] = params[:project][:is_active] if @current_user.admin? || @current_user.publisher?
+        return_params[:is_active] = params[:project][:is_active] if @current_user.is_active_admin? || @current_user.is_active_publisher?
 
-        if @current_user.admin?
+        if @current_user.is_active_admin?
           return_params[:project_type] = params[:project][:project_type]
-        elsif :create && (@current_user.editor? || @current_user.publisher?)
+        elsif :create && (@current_user.is_active_editor? || @current_user.is_active_publisher?)
           return_params[:project_type] = params[:project][:project_type] if params[:project][:project_type].include?('BusinessModel')
           render json: { errors: [{ status: '401', title: 'Unauthorized to create a study case.' }] }, status: 401 if return_params[:project_type].blank?
         end

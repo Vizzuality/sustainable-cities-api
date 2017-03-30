@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # == Schema Information
 #
 # Table name: enablings
@@ -11,8 +12,10 @@
 #  updated_at       :datetime         not null
 #
 
-FactoryGirl.define do
-  factory :enabling do
-    sequence(:name) { |n| "#{n} Enabling #{Faker::Lorem.sentence}" }
-  end
+class EnablingSerializer < ActiveModel::Serializer
+  attributes :id, :name, :description, :assessment_value
+
+  belongs_to :category, serializer: CategorySerializer
+
+  has_many :bmes, serializer: BmeSerializer
 end

@@ -12,6 +12,6 @@
 
 FactoryGirl.define do
   factory :bme do
-    name 'A Bme'
+    sequence(:name) { |n| "#{n} BME #{Faker::Lorem.sentence}" }
   end
 end

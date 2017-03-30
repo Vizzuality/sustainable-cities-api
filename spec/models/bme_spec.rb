@@ -19,12 +19,11 @@ RSpec.describe Bme, type: :model do
   end
 
   it 'Count on bme with default scope' do
-    expect(Bme.count).to           eq(2)
-    expect(Bme.all.second.name).to eq('Z Bme')
+    expect(Bme.count).to eq(2)
   end
 
   it 'Order by name asc' do
-    expect(Bme.by_name_asc.first.name).to eq('A Bme')
+    expect(Bme.by_name_asc.first.name).to match('BME')
   end
 
   it 'Common and scientific name validation' do

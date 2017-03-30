@@ -25,7 +25,7 @@ RSpec.describe Project, type: :model do
   before :each do
     FactoryGirl.create(:business_model)
     FactoryGirl.create(:study_case)
-    @category   = create(:category,   name: 'Study case category')
+    @category   = create(:category,   name: 'Study case category', category_type: 'Solution')
     @study_case = create(:study_case, name: 'Study case', category: @category, impacts: [FactoryGirl.create(:impact, name: 'Z Impact')])
   end
 

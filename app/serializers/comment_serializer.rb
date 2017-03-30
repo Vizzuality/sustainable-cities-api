@@ -14,4 +14,8 @@
 #
 
 class CommentSerializer < ActiveModel::Serializer
+  attributes :id, :body, :is_active
+
+  belongs_to :user, serializer: UserSerializer
+  belongs_to :commentable
 end

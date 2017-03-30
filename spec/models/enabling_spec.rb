@@ -16,17 +16,16 @@ require 'rails_helper'
 RSpec.describe Enabling, type: :model do
   before :each do
     FactoryGirl.create(:enabling, name: 'Z Enabling')
-    @category = create(:category)
+    @category = create(:category, category_type: 'Enabling')
     @enabling = create(:enabling, category: @category)
   end
 
-  it 'Count on enabling with default scope' do
-    expect(Enabling.count).to           eq(2)
-    expect(Enabling.all.second.name).to eq('Z Enabling')
+  it 'Count on enabling' do
+    expect(Enabling.count).to eq(2)
   end
 
   it 'Order by name asc' do
-    expect(Enabling.by_name_asc.first.name).to eq('A Enabling')
+    expect(Enabling.by_name_asc.first.name).to match('Enabling')
   end
 
   it 'Common and scientific name validation' do
