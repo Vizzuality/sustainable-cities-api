@@ -15,21 +15,20 @@ require 'rails_helper'
 
 RSpec.describe Category, type: :model do
   before :each do
-    FactoryGirl.create(:category, name: 'Z Category')
-    @category = create(:category)
+    FactoryGirl.create(:category, name: 'Z Category', category_type: 'Category')
+    @category = create(:category, category_type: 'Category')
   end
 
-  it 'Count on category with default scope' do
-    expect(Category.count).to           eq(2)
-    expect(Category.all.second.name).to eq('Z Category')
+  it 'Count on category' do
+    expect(Category.count).to eq(2)
   end
 
   it 'Order by name asc' do
-    expect(Category.by_name_asc.first.name).to eq('A Category')
+    expect(Category.by_name_asc.first.name).to match('Category')
   end
 
   it 'Common and scientific name validation' do
-    @category = Category.new(name: '')
+    @category = Category.new(name: '', category_type: 'Category')
 
     @category.valid?
     expect { @category.save! }.to raise_error(ActiveRecord::RecordInvalid, "Validation failed: Name can't be blank")

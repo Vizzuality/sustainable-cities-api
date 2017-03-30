@@ -49,7 +49,7 @@ module V1
       end
 
       def country_params
-        params.require(:country).permit(:id, :name, :region_name, :iso, :region_iso, :country_centroid, :region_centroid, :is_active)
+        params.require(:country).permit(:name, :region_name, :iso, :region_iso, :country_centroid, :region_centroid, :is_active)
       end
   end
 end

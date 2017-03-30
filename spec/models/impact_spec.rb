@@ -20,7 +20,7 @@ RSpec.describe Impact, type: :model do
   before :each do
     FactoryGirl.create(:impact, name: 'Z Impact')
     @study_case = create(:project, name: 'Study case')
-    @category   = create(:category, name: 'Study case category')
+    @category   = create(:category, name: 'Study case category', category_type: 'Impact')
     @impact     = create(:impact, category: @category, study_case: @study_case)
   end
 

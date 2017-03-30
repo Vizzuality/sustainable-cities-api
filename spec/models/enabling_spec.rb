@@ -16,7 +16,7 @@ require 'rails_helper'
 RSpec.describe Enabling, type: :model do
   before :each do
     FactoryGirl.create(:enabling, name: 'Z Enabling')
-    @category = create(:category)
+    @category = create(:category, category_type: 'Enabling')
     @enabling = create(:enabling, category: @category)
   end
 
