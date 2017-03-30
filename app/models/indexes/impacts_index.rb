@@ -1,11 +1,11 @@
 # frozen_string_literal: true
-class BmesIndex
+class ImpactsIndex
   DEFAULT_SORTING = { updated_at: :desc }
   SORTABLE_FIELDS = [:name, :updated_at, :created_at]
   PER_PAGE = 10
 
-  delegate :params,   to: :controller
-  delegate :bmes_url, to: :controller
+  delegate :params,      to: :controller
+  delegate :impacts_url, to: :controller
 
   attr_reader :controller
 
@@ -13,25 +13,25 @@ class BmesIndex
     @controller = controller
   end
 
-  def bmes
-    @bmes ||= Bme.fetch_all(options_filter)
-                 .order(sort_params)
-                 .paginate(page: current_page, per_page: per_page)
+  def impacts
+    @impacts ||= Impact.fetch_all(options_filter)
+                       .order(sort_params)
+                       .paginate(page: current_page, per_page: per_page)
   end
 
   def links
     {
-      first: bmes_url(rebuild_params.merge(first_page)),
-      prev:  bmes_url(rebuild_params.merge(prev_page)),
-      next:  bmes_url(rebuild_params.merge(next_page)),
-      last:  bmes_url(rebuild_params.merge(last_page))
+      first: impacts_url(rebuild_params.merge(first_page)),
+      prev:  impacts_url(rebuild_params.merge(prev_page)),
+      next:  impacts_url(rebuild_params.merge(next_page)),
+      last:  impacts_url(rebuild_params.merge(last_page))
     }
   end
 
   private
 
     def options_filter
-      params.permit('id', 'name', 'sort', 'bme', 'bme' => {}).tap do |filter_params|
+      params.permit('id', 'name', 'sort', 'impact', 'impact' => {}).tap do |filter_params|
         filter_params[:page]= {}
         filter_params[:page][:number] = params[:page][:number] if params[:page].present? && params[:page][:number].present?
         filter_params[:page][:size]   = params[:page][:size]   if params[:page].present? && params[:page][:size].present?
@@ -64,7 +64,7 @@ class BmesIndex
     end
 
     def total_pages
-      @total_pages ||= bmes.total_pages
+      @total_pages ||= impacts.total_pages
     end
 
     def sort_params

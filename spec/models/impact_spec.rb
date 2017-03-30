@@ -24,9 +24,8 @@ RSpec.describe Impact, type: :model do
     @impact     = create(:impact, category: @category, study_case: @study_case)
   end
 
-  it 'Count on impact with default scope' do
-    expect(Impact.count).to           eq(2)
-    expect(Impact.all.second.name).to eq('Z Impact')
+  it 'Count on impact' do
+    expect(Impact.count).to eq(2)
   end
 
   it 'Check for relations' do
