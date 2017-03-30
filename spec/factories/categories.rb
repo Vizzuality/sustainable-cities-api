@@ -13,6 +13,7 @@
 
 FactoryGirl.define do
   factory :category do
-    name 'A Category'
+    sequence(:name) { |n| "#{n} Category #{Faker::Lorem.sentence}" }
+    category_type 'Category'
   end
 end

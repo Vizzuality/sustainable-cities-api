@@ -20,13 +20,12 @@ RSpec.describe Impact, type: :model do
   before :each do
     FactoryGirl.create(:impact, name: 'Z Impact')
     @study_case = create(:project, name: 'Study case')
-    @category   = create(:category, name: 'Study case category')
+    @category   = create(:category, name: 'Study case category', category_type: 'Impact')
     @impact     = create(:impact, category: @category, study_case: @study_case)
   end
 
-  it 'Count on impact with default scope' do
-    expect(Impact.count).to           eq(2)
-    expect(Impact.all.second.name).to eq('Z Impact')
+  it 'Count on impact' do
+    expect(Impact.count).to eq(2)
   end
 
   it 'Check for relations' do

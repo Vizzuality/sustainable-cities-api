@@ -28,11 +28,9 @@ class Bme < ApplicationRecord
 
   scope :by_name_asc, -> { order('bmes.name ASC') }
 
-  default_scope { by_name_asc }
-
   class << self
     def fetch_all(options)
-      all
+      all.includes(:categories, :enablings)
     end
   end
 end

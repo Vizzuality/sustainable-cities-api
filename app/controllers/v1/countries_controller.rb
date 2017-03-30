@@ -10,7 +10,7 @@ module V1
 
     def index
       @countries = CountriesIndex.new(self)
-      render json: @countries.countries, each_serializer: CountrySerializer, include: ['cities'], links: @countries.links
+      render json: @countries.countries, each_serializer: CountrySerializer, links: @countries.links
     end
 
     def show
@@ -49,7 +49,7 @@ module V1
       end
 
       def country_params
-        params.require(:country).permit(:id, :name, :region_name, :iso, :region_iso, :country_centroid, :region_centroid, :is_active)
+        params.require(:country).permit(:name, :region_name, :iso, :region_iso, :country_centroid, :region_centroid, :is_active)
       end
   end
 end

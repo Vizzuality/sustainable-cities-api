@@ -13,4 +13,7 @@
 #
 
 class CategorySerializer < ActiveModel::Serializer
+  attributes :id, :name, :description, :category_type
+
+  belongs_to :parent, serializer: CategorySerializer
 end

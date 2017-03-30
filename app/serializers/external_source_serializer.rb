@@ -7,7 +7,7 @@
 #  name             :string
 #  description      :text
 #  web_url          :string
-#  source_type      :integer          default(0)
+#  source_type      :string
 #  author           :string
 #  publication_year :datetime
 #  institution      :string
@@ -19,4 +19,7 @@
 #
 
 class ExternalSourceSerializer < ActiveModel::Serializer
+  attributes :id, :name, :description, :web_url, :source_type, :author, :publication_year, :institution, :is_active
+
+  belongs_to :attacheable
 end

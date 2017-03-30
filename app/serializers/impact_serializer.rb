@@ -16,4 +16,8 @@
 #
 
 class ImpactSerializer < ActiveModel::Serializer
+  attributes :id, :name, :description, :impact_value, :impact_unit, :is_active
+
+  belongs_to :study_case, serializer: ProjectSerializer
+  belongs_to :category,   serializer: CategorySerializer
 end

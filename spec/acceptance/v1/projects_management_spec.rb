@@ -328,12 +328,12 @@ module V1
     end
 
     context 'Edit projects' do
-      let!(:category) { FactoryGirl.create(:category)        }
-      let!(:country)  { FactoryGirl.create(:country)         }
-      let!(:city)     { FactoryGirl.create(:city)            }
-      let!(:bme)      { FactoryGirl.create(:bme)             }
-      let!(:source)   { FactoryGirl.create(:external_source) }
-      let!(:impact)   { FactoryGirl.create(:impact)          }
+      let!(:category) { FactoryGirl.create(:category, category_type: 'Solution') }
+      let!(:country)  { FactoryGirl.create(:country)                             }
+      let!(:city)     { FactoryGirl.create(:city)                                }
+      let!(:bme)      { FactoryGirl.create(:bme)                                 }
+      let!(:source)   { FactoryGirl.create(:external_source)                     }
+      let!(:impact)   { FactoryGirl.create(:impact)                              }
 
       let!(:error)    { { errors: [{ status: 422, title: "name can't be blank" }]}}
 
