@@ -6,7 +6,7 @@
 #  name             :string
 #  description      :text
 #  web_url          :string
-#  source_type      :integer          default(0)
+#  source_type      :string
 #  author           :string
 #  publication_year :datetime
 #  institution      :string

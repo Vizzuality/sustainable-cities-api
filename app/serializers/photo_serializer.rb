@@ -14,4 +14,7 @@
 #
 
 class PhotoSerializer < ActiveModel::Serializer
+  attributes :id, :name, :attachment, :is_active
+
+  belongs_to :attacheable
 end

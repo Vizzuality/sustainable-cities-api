@@ -125,7 +125,7 @@ ActiveRecord::Schema.define(version: 20170322161754) do
     t.string "name"
     t.text "description"
     t.string "web_url"
-    t.integer "source_type", default: 0
+    t.string "source_type"
     t.string "author"
     t.datetime "publication_year"
     t.string "institution"
