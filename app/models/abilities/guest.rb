@@ -6,6 +6,7 @@ module Abilities
     def initialize(user=nil)
       can    :read, :all
       cannot :read, ::Project, project_type: 'BusinessModel'
+      cannot :read, ::Comment
     end
   end
 end

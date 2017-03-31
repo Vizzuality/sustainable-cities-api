@@ -22,7 +22,7 @@ RSpec.describe Comment, type: :model do
   end
 
   it 'Comment on projects' do
-    @comment = Comment.build(@project, @user, @body)
+    @comment = Comment.build(@project.id, @project.class.name, @user, @body)
     @comment.save!
     expect(@comment.valid?).to           eq(true)
     expect(@comment.commentable_type).to eq('Project')

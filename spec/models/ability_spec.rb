@@ -49,6 +49,7 @@ RSpec.describe Ability, type: :model do
 
       expect_any_instance_of(Abilities::Publisher).to receive(:can).with([:read, :index_all, :show_project_and_bm], ::Project)
       expect_any_instance_of(Abilities::Publisher).to receive(:can).with(:create, ::Project)
+      expect_any_instance_of(Abilities::Publisher).to receive(:can).with(:create, ::Comment)
 
       expect_any_instance_of(Abilities::Publisher).to receive(:cannot).with([:activate, :deactivate], ::User, id: @publisher.id)
       Abilities::Publisher.new @publisher
@@ -68,6 +69,9 @@ RSpec.describe Ability, type: :model do
       expect_any_instance_of(Abilities::Editor).to receive(:can).with(:update, ::User, id: @editor.id)
       expect_any_instance_of(Abilities::Editor).to receive(:can).with(:update, ::Project, project_users: { user_id: @editor.id })
       expect_any_instance_of(Abilities::Editor).to receive(:can).with(:create, ::Project)
+      expect_any_instance_of(Abilities::Editor).to receive(:can).with(:create, ::Comment)
+
+      expect_any_instance_of(Abilities::Editor).to receive(:cannot).with(:read, ::Comment)
       Abilities::Editor.new @editor
     end
   end
@@ -83,6 +87,9 @@ RSpec.describe Ability, type: :model do
       expect_any_instance_of(Abilities::User).to receive(:can).with([:index_all, :show_project_and_bm], ::Project, project_users: { user_id: @user.id })
       expect_any_instance_of(Abilities::User).to receive(:can).with(:update, ::User, id: @user.id)
       expect_any_instance_of(Abilities::User).to receive(:can).with(:update, ::Project, project_users: { user_id: @user.id })
+      expect_any_instance_of(Abilities::User).to receive(:can).with(:create, ::Comment)
+
+      expect_any_instance_of(Abilities::User).to receive(:cannot).with(:read, ::Comment)
       Abilities::User.new @user
     end
   end
@@ -91,6 +98,7 @@ RSpec.describe Ability, type: :model do
     it 'can manage objects' do
       expect_any_instance_of(Abilities::Guest).to receive(:can).with(:read,    :all)
       expect_any_instance_of(Abilities::Guest).to receive(:cannot).with(:read, ::Project, project_type: 'BusinessModel')
+      expect_any_instance_of(Abilities::Guest).to receive(:cannot).with(:read, ::Comment)
       Abilities::Guest.new @user
     end
   end
