@@ -14,7 +14,8 @@ module V1
     end
 
     def show
-      render json: @impact, serializer: ImpactSerializer, meta: { updated_at: @impact.updated_at, created_at: @impact.created_at }
+      render json: @impact, serializer: ImpactSerializer, include: [:external_sources], meta: { updated_at: @impact.updated_at,
+                                                                                                created_at: @impact.created_at }
     end
 
     def update
