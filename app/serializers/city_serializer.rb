@@ -16,5 +16,6 @@
 
 class CitySerializer < ActiveModel::Serializer
   attributes :id, :name, :iso, :lat, :lng, :province
+
   belongs_to :country, serializer: CountrySerializer
 end

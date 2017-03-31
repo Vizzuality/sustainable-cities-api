@@ -89,7 +89,7 @@ class User < ApplicationRecord
   end
 
   def api_key_exists?
-    !self.api_key.expired?
+    !self.api_key.expired? if self.api_key.present?
   end
 
   def regenerate_api_key

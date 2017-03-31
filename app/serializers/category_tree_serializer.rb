@@ -12,9 +12,15 @@
 #  updated_at    :datetime         not null
 #
 
-class CategorySerializer < ActiveModel::Serializer
-  attributes :id, :name, :description, :category_type
+class CategoryTreeSerializer < ActiveModel::Serializer
+  attributes :id, :name, :description, :category_type, :parent_id, :children
 
-  belongs_to :parent,   serializer: CategorySerializer
-  has_many   :children, serializer: CategorySerializer
+  def children
+    if !object.is_leaf?
+      @children = object.with_children
+      @children.map do |child|
+        CategoryTreeSerializer.new(child).serializable_hash
+      end
+    end
+  end
 end

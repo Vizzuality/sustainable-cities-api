@@ -41,18 +41,16 @@ namespace :import_bmes_csv do
         category_bme_1 = data_row['category_bme_1']
         if category_bme_1.present?
           category_1 = Category.where(name: category_bme_1, category_type: 'Bme').first_or_create
-          categories << category_1
         end
 
         category_bme_2 = data_row['category_bme_2']
         if category_bme_2.present?
-          category_2 = Category.where(name: category_bme_2, category_type: 'Bme', parent_id: category_1).first_or_create
-          categories << category_2
+          category_2 = Category.where(name: category_bme_2, category_type: 'Bme', parent_id: category_1.id).first_or_create
         end
 
         category_bme_3 = data_row['category_bme_3']
         if category_bme_3.present?
-          categories << Category.where(name: category_bme_3, category_type: 'Bme', parent_id: category_2).first_or_create
+          category_3 = Category.where(name: category_bme_3, category_type: 'Bme', parent_id: category_2.id).first_or_create
         end
 
         category_timing_1 = data_row['category_timing_1']
@@ -62,6 +60,10 @@ namespace :import_bmes_csv do
             categories << Category.where(name: timing, category_type: 'Timing').first_or_create
           end
         end
+
+        category = category_3 || category_2 || category_1
+
+        categories << category
 
         data_bmes = {}
         data_bmes[:name]        = data_row['name']
@@ -108,30 +110,24 @@ namespace :import_enabling_categories_csv do
       CSV.foreach(filename, col_sep: ';', row_sep: :auto, headers: true, encoding: 'UTF-8') do |row|
         data_row = row.to_h
 
-        categories = []
-
         category_0 = data_row['category_0']
         if category_0.present?
           category_0 = Category.where(name: category_0, category_type: 'Enabling').first_or_create
-          categories << category_0
         end
 
         category_1 = data_row['category_1']
         if category_1.present?
-          category_1 = Category.where(name: category_1, category_type: 'Enabling', parent_id: category_0).first_or_create
-          categories << category_1
+          category_1 = Category.where(name: category_1, category_type: 'Enabling', parent_id: category_0.id).first_or_create
         end
 
         category_2 = data_row['category_2']
         if category_2.present?
-          category_2 = Category.where(name: category_2, category_type: 'Enabling', parent_id: category_1).first_or_create
-          categories << category_2
+          category_2 = Category.where(name: category_2, category_type: 'Enabling', parent_id: category_1.id).first_or_create
         end
 
         category_3 = data_row['category_3']
         if category_3.present?
-          category_3 = Category.where(name: category_3, category_type: 'Enabling', parent_id: category_2).first_or_create
-          categories << category_3
+          category_3 = Category.where(name: category_3, category_type: 'Enabling', parent_id: category_2.id).first_or_create
         end
 
         category = category_3 || category_2 || category_1 || category_0
@@ -153,24 +149,19 @@ namespace :import_study_cases_csv do
       CSV.foreach(filename, col_sep: ';', row_sep: :auto, headers: true, encoding: 'UTF-8') do |row|
         data_row = row.to_h
 
-        categories = []
-
         category_1 = data_row['category_1']
         if category_1.present?
           category_1 = Category.where(name: category_1, category_type: 'Solution').first_or_create
-          categories << category_1
         end
 
         category_2 = data_row['category_2']
         if category_2.present?
-          category_2 = Category.where(name: category_2, category_type: 'Solution', parent_id: category_1).first_or_create
-          categories << category_2
+          category_2 = Category.where(name: category_2, category_type: 'Solution', parent_id: category_1.id).first_or_create
         end
 
         category_3 = data_row['category_3']
         if category_3.present?
-          category_3 = Category.where(name: category_3, category_type: 'Solution', parent_id: category_2).first_or_create
-          categories << category_3
+          category_3 = Category.where(name: category_3, category_type: 'Solution', parent_id: category_2.id).first_or_create
         end
 
         category    = category_3 || category_2 || category_1
@@ -277,18 +268,14 @@ namespace :import_impacts_csv do
       CSV.foreach(filename, col_sep: ';', row_sep: :auto, headers: true, encoding: 'UTF-8') do |row|
         data_row = row.to_h
 
-        categories = []
-
         category_1 = data_row['category_1']
         if category_1.present?
           category_1 = Category.where(name: category_1, category_type: 'Impact').first_or_create
-          categories << category_1
         end
 
         category_2 = data_row['category_2']
         if category_2.present?
-          category_2 = Category.where(name: category_2, category_type: 'Impact', parent_id: category_1).first_or_create
-          categories << category_2
+          category_2 = Category.where(name: category_2, category_type: 'Impact', parent_id: category_1.id).first_or_create
         end
 
         category    = category_2 || category_1
