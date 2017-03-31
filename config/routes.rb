@@ -37,5 +37,6 @@ Rails.application.routes.draw do
     resources :categories, except: [:index]
     resources :impacts
     resources :enablings
+    resources :comments, except: :show
   end
 end

@@ -1,4 +1,3 @@
-# frozen_string_literal: true
 # == Schema Information
 #
 # Table name: comments
@@ -13,9 +12,9 @@
 #  updated_at       :datetime         not null
 #
 
-class CommentSerializer < ActiveModel::Serializer
-  attributes :id, :body, :is_active, :created_at, :updated_at
-
-  belongs_to :user, serializer: UserSerializer
-  belongs_to :commentable
+FactoryGirl.define do
+  factory :comment do
+    sequence(:body) { |n| "#{n} Comment #{Faker::Address.country}" }
+    is_active true
+  end
 end
