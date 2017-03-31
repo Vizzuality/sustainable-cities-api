@@ -10,7 +10,8 @@ module V1
 
     def index
       @categories = CategoriesIndex.new(self)
-      render json: @categories.categories, each_serializer: CategorySerializer, links: @categories.links
+      render json: @categories.categories, each_serializer: params['category_type'].match?('Tree') ? CategoryTreeSerializer : CategorySerializer,
+             links: @categories.links
     end
 
     def show
