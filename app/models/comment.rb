@@ -26,10 +26,13 @@ class Comment < ActiveRecord::Base
 
   scope :recent, -> { order('comments.id DESC') }
 
-  default_scope { recent }
-
   class << self
-    def build(commentable, user, body)
+    def fetch_all(options)
+      recent
+    end
+
+    def build(commentable_id, commentable_type, user, body)
+      commentable = commentable_type.classify.constantize.find(commentable_id.to_i)
       new commentable: commentable,
           user_id:     user.id,
           body:        body
