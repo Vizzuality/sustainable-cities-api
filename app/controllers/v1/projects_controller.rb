@@ -13,13 +13,8 @@ module V1
     end
 
     def index_all
-      if @current_user.is_active_user? || @current_user.is_active_editor?
-        if params[:business_models].present?
-          render_projects
-        else
-          render json: { errors: [{ status: '401', title: 'Unauthorized' }] }, status: 401
-        end
-      elsif @current_user.is_active_admin? || @current_user.is_active_publisher?
+      if (@current_user.is_active_admin? || @current_user.is_active_publisher?) ||
+         (params[:business_models].present? && (@current_user.is_active_editor? || @current_user.is_active_user?))
         render_projects
       else
         render json: { errors: [{ status: '401', title: 'Unauthorized' }] }, status: 401
@@ -62,7 +57,16 @@ module V1
     private
 
       def render_project
-        render json: @project, serializer: ProjectSerializer, meta: { updated_at: @project.updated_at, created_at: @project.created_at }
+        render json: @project, serializer: ProjectSerializer, include: [:country,
+                                                                        :category,
+                                                                        :bmes,
+                                                                        :impacts,
+                                                                        :cities,
+                                                                        :external_sources,
+                                                                        :photos,
+                                                                        :documents,
+                                                                        :comments],
+               meta: { updated_at: @project.updated_at, created_at: @project.created_at }
       end
 
       def render_projects
