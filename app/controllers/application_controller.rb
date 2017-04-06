@@ -7,6 +7,7 @@ class ApplicationController < ActionController::API
   before_action :check_access, :authenticate
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+  rescue_from JWT::VerificationError,       with: :bad_request
 
   rescue_from CanCan::AccessDenied do |exception|
     render json: { errors: [{ status: '401', title: exception.message }] }, status: 401
@@ -74,5 +75,9 @@ class ApplicationController < ActionController::API
 
     def auth_present?
       !!request.env.fetch('HTTP_AUTHORIZATION', '').scan(/Bearer/).flatten.first
+    end
+
+    def bad_request
+      render json: { errors: [{ status: '400', title: 'Not valid Keys' }] }, status: 400
     end
 end
