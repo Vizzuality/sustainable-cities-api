@@ -6,7 +6,8 @@ module V1
     skip_before_action :authenticate, only: [:index, :show]
     load_and_authorize_resource class: 'Project'
 
-    before_action :set_project, only: [:show, :show_projects_and_bms, :update, :destroy]
+    before_action :set_full_project, only: [:show, :show_project_and_bm]
+    before_action :set_project,      only: [:update, :destroy]
 
     def index
       render_projects
@@ -76,6 +77,10 @@ module V1
 
       def set_project
         @project = Project.find(params[:id])
+      end
+
+      def set_full_project
+        @project = Project.include_relations.find(params[:id])
       end
 
       def project_params

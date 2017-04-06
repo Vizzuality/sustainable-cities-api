@@ -59,6 +59,13 @@ class Project < ApplicationRecord
   scope :by_user_business_model, ->user { joins(:project_users).where('project_users.user_id = ?', user).where(project_type: 'BusinessModel') }
   scope :available,              ->     { where(is_active: true)                                                                              }
 
+  scope :include_relations, -> {
+    includes(:category, { category: [:parent, :children] }, :country,
+             :bmes, { bmes: [:categories, :enablings] }, :impacts,
+             :cities, :users, :photos, :documents,
+             :external_sources, :comments)
+  }
+
   class << self
     def fetch_all(options=nil)
       study_cases     = options['study_cases']     if options.present? && options['study_cases'].present?
