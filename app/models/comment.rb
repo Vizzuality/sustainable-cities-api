@@ -28,7 +28,7 @@ class Comment < ActiveRecord::Base
 
   class << self
     def fetch_all(options)
-      recent
+      recent.includes(:user, :commentable)
     end
 
     def build(commentable_id, commentable_type, user, body)
