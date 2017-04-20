@@ -3,7 +3,7 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    if user # devise session users
+    if user
       if user.is_active_admin?
         merge Abilities::Admin.new(user)
       elsif user.is_active_publisher?

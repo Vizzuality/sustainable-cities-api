@@ -205,7 +205,14 @@ module V1
                                                                                     "nickname"=>"test", "institution"=>nil, "position"=>nil,
                                                                                     "twitter_account"=>nil, "linkedin_account"=>nil,
                                                                                     "is_active"=>true, "deactivated_at"=>nil,
-                                                                                    "image"=>{"url"=>nil, "thumbnail"=>{"url"=>nil}, "square"=>{"url"=>nil}}}})
+                                                                                    "image"=>{"url"=>nil, "thumbnail"=>{"url"=>nil}, "square"=>{"url"=>nil}},
+                                                                                    "permissions"=>{"all"=>{"StudyCase"=>["read"], "BusinessModel"=>[],
+                                                                                                            "Bme"=>["read"], "Category"=>["read"], "City"=>["read"],
+                                                                                                            "Comment"=>["create"], "Country"=>["read"], "Document"=>["read"],
+                                                                                                            "Enabling"=>["read"], "ExternalSource"=>["read"], "Impact"=>["read"],
+                                                                                                            "Photo"=>["read"], "User"=>["read"]},
+                                                                                                    "owner"=>{"User"=>["update"]},
+                                                                                                    "member"=>{"StudyCase"=>["update"], "BusinessModel"=>["read", "update"]}}}})
         end
 
         let!(:error) {

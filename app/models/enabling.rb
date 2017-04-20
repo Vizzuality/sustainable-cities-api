@@ -13,7 +13,7 @@
 #
 
 class Enabling < ApplicationRecord
-  enum assessment_value: { Success: 1, Barrier: 2 }
+  enum assessment_value: { Success: 1, Barrier: 2 }.freeze
 
   belongs_to :category, inverse_of: :enablings, touch: true
 
