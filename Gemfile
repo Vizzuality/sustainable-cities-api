@@ -29,7 +29,7 @@ gem 'bcrypt'
 gem 'jwt'
 
 # Uploads
-gem 'carrierwave', '~> 1.0'
+gem 'carrierwave-base64'
 gem 'mini_magick'
 
 # Templating
