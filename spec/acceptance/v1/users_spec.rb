@@ -147,6 +147,10 @@ module V1
       end
 
       describe 'User can update profile' do
+        let!(:photo_data) {
+          "data:image/jpeg;base64,#{Base64.encode64(File.read(File.join(Rails.root, 'spec', 'support', 'files', 'image.jpg')))}"
+        }
+
         before(:each) do
           token    = JWT.encode({ user: user.id }, ENV['AUTH_SECRET'], 'HS256')
           @headers = @headers.merge("Authorization" => "Bearer #{token}")
@@ -169,6 +173,13 @@ module V1
           patch "/users/#{user.id}", params: {"user": { "role": "admin" }}, headers: @headers
           expect(status).to           eq(200)
           expect(user.reload.role).to eq('user')
+        end
+
+        it 'Upload avatar and returns success object when the user was seccessfully updated' do
+          patch "/users/#{user.id}", params: {"user": { "image": photo_data }},
+                                     headers: @headers
+          expect(status).to eq(200)
+          expect(body).to   eq({ messages: [{ status: 200, title: 'User successfully updated!' }] }.to_json)
         end
       end
     end
