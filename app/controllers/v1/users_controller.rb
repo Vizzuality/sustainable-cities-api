@@ -2,6 +2,7 @@
 module V1
   class UsersController < ApplicationController
     include ErrorSerializer
+    include ApiUploads
 
     skip_before_action :authenticate, only: [:index, :show]
     load_and_authorize_resource class: 'User'
@@ -56,7 +57,9 @@ module V1
           set_user_params << [:role, :is_active]
         end
 
-        params.require(:user).permit(set_user_params)
+        final_user_params         = params.require(:user).permit(set_user_params)
+        final_user_params[:image] = process_file_base64(final_user_params[:image]) if final_user_params[:image].present?
+        final_user_params
       end
   end
 end

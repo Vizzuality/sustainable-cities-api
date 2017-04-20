@@ -32,7 +32,7 @@ class User < ApplicationRecord
   # Include default devise modules.
   TEMP_EMAIL_REGEX = /\Achange@tmp/
 
-  mount_uploader :image, AvatarUploader
+  mount_base64_uploader :image, AvatarUploader
 
   belongs_to :country, inverse_of: :users, optional: true
   belongs_to :city,    inverse_of: :users, optional: true
