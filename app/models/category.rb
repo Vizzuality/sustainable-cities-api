@@ -13,7 +13,7 @@
 #
 
 class Category < ApplicationRecord
-  enum project_type: { Category: 0, Solution: 1, Bme: 2, Impact: 3, Enabling: 4, Timing: 5 }
+  enum project_type: { Category: 0, Solution: 1, Bme: 2, Impact: 3, Enabling: 4, Timing: 5 }.freeze
 
   # Parent-Children-Relations
   belongs_to :parent,   class_name: 'Category', touch: true

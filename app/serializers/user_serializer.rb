@@ -28,5 +28,9 @@ class UserSerializer < ActiveModel::Serializer
   attributes :id, :name, :email, :role, :country_id,
              :city_id, :nickname, :institution, :position,
              :twitter_account, :linkedin_account, :is_active,
-             :deactivated_at, :image
+             :deactivated_at, :image, :permissions
+
+  def permissions
+    object.permissions
+  end
 end

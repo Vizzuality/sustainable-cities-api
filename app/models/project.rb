@@ -21,7 +21,7 @@
 #
 
 class Project < ApplicationRecord
-  enum project_type: { BusinessModel: 0, StudyCase: 1 }
+  enum project_type: { BusinessModel: 0, StudyCase: 1 }.freeze
 
   belongs_to :category, inverse_of: :projects, touch: true
   belongs_to :country,  inverse_of: :projects, optional: true, touch: true
