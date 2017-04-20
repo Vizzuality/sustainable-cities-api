@@ -27,7 +27,7 @@
 class User < ApplicationRecord
   has_secure_password
 
-  enum role: { user: 0, editor: 1, publisher: 2, admin: 3 }
+  enum role: { user: 0, editor: 1, publisher: 2, admin: 3 }.freeze
 
   # Include default devise modules.
   TEMP_EMAIL_REGEX = /\Achange@tmp/
@@ -72,6 +72,17 @@ class User < ApplicationRecord
 
     def user_select
       by_nickname_asc.map { |c| [c.nickname, c.id] }
+    end
+  end
+
+  def permissions
+    if self.is_active?
+      role_class  = '::Permissions'
+      role_class += "::#{self.role.classify}"
+
+      role_class.constantize.send('abilities')
+    else
+      ::Permissions::Guest.abilities
     end
   end
 
