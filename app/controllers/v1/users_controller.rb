@@ -53,13 +53,18 @@ module V1
         set_user_params = [:name, :email, :country_id, :password, :password_confirmation,
                            :city_id, :nickname, :institution, :position,
                            :twitter_account, :linkedin_account, :image]
-        if @current_user.is_active_admin?
-          set_user_params << [:role, :is_active]
+
+        if @current_user.is_active_admin? || @current_user.is_active_publisher?
+          set_user_params << [:is_active]
         end
 
-        final_user_params         = params.require(:user).permit(set_user_params)
-        final_user_params[:image] = process_file_base64(final_user_params[:image]) if final_user_params[:image].present?
-        final_user_params
+        if @current_user.is_active_admin?
+          set_user_params << [:role]
+        end
+
+        return_params         = params.require(:user).permit(set_user_params)
+        return_params[:image] = process_file_base64(return_params[:image]) if return_params[:image].present?
+        return_params
       end
   end
 end

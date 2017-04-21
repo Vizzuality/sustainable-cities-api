@@ -51,7 +51,8 @@ module V1
 
       def impact_params
         set_impact_params = [:name, :description, :impact_value, :impact_unit, :project_id, :category_id]
-        if @current_user.is_active_admin?
+
+        if @current_user.is_active_admin? || @current_user.is_active_publisher?
           set_impact_params << [:is_active]
         end
 

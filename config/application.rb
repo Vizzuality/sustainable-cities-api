@@ -32,7 +32,7 @@ module SustainableCities
       g.test_framework :rspec,
                        fixtures: true,
                        routing_specs: true,
-                       controller_specs: true,
+                       controller_specs: false,
                        request_specs: true
     end
   end
