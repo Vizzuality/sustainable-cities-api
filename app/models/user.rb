@@ -55,7 +55,9 @@ class User < ApplicationRecord
                                  exclusion: { in: %w(admin superuser about root publisher editor faq conntact user) },
                                  multiline: true
 
-  validates :password, confirmation: true
+  validates :password, confirmation: true,
+                       length: { within: 8..20 },
+                       on: :create
   validates :password_confirmation, presence: true, on: :create
 
   include Activable
