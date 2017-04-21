@@ -128,9 +128,40 @@ module V1
         }
 
         it 'Allows to create project by publisher user' do
-          post '/projects', params: {"project": { "name": "Project one", project_type: 'BusinessModel' }},
+          post '/projects', params: {"project": { "name": "Project one", "project_type": 'BusinessModel' }},
                             headers: @headers_user
           expect(status).to eq(201)
+        end
+      end
+
+      describe 'User can upload attachment to project' do
+        let!(:photo_data) {
+          "data:image/jpeg;base64,#{Base64.encode64(File.read(File.join(Rails.root, 'spec', 'support', 'files', 'image.jpg')))}"
+        }
+
+        let!(:document_data) {
+          "data:application/pdf;base64,#{Base64.encode64(File.read(File.join(Rails.root, 'spec', 'support', 'files', 'doc.pdf')))}"
+        }
+
+        before(:each) do
+          token         = JWT.encode({ user: editor.id }, ENV['AUTH_SECRET'], 'HS256')
+          @headers_user = @headers.merge("Authorization" => "Bearer #{token}")
+        end
+
+        it 'Upload image and returns success object when the project was seccessfully created' do
+          post '/projects', params: {"project": { "name": "Project one with photo", "project_type": 'BusinessModel', "photos_attributes": [{"name": "project photo", "attachment": photo_data }]}},
+                            headers: @headers_user
+          expect(status).to eq(201)
+          expect(body).to   eq({ messages: [{ status: 201, title: 'Project successfully created!' }] }.to_json)
+          expect(Project.find_by(name: 'Project one with photo').photos.first.attachment.present?).to be(true)
+        end
+
+        it 'Upload document and returns success object when the project was seccessfully created' do
+          post '/projects', params: {"project": { "name": "Project one with document", "project_type": 'BusinessModel', "documents_attributes": [{"name": "project doc", "attachment": document_data }]}},
+                            headers: @headers_user
+          expect(status).to eq(201)
+          expect(body).to   eq({ messages: [{ status: 201, title: 'Project successfully created!' }] }.to_json)
+          expect(Project.find_by(name: 'Project one with document').documents.first.attachment.present?).to be(true)
         end
       end
     end

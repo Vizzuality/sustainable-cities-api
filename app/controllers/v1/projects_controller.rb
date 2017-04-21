@@ -2,6 +2,7 @@
 module V1
   class ProjectsController < ApplicationController
     include ErrorSerializer
+    include ApiUploads
 
     skip_before_action :authenticate, only: [:index, :show]
     load_and_authorize_resource class: 'Project'
@@ -84,31 +85,44 @@ module V1
       end
 
       def project_params
-        params.require(:project)
-        return_params = {
-          name:                params[:project][:name],
-          situation:           params[:project][:situation],
-          solution:            params[:project][:solution],
-          category_id:         params[:project][:category_id],
-          country_id:          params[:project][:country_id],
-          operational_year:    params[:project][:operational_year],
-          city_ids:            params[:project][:city_ids],
-          bme_ids:             params[:project][:bme_ids],
-          external_source_ids: params[:project][:external_source_ids],
-          impact_ids:          params[:project][:impact_ids]
-        }
+        return_params = params.require(:project).permit(:name, :situation, :solution, :category_id, :project_type,
+                                                        :country_id, :operational_year, { user_ids: [] }, { city_ids: [] },
+                                                        { bme_ids: [] }, { external_source_ids: [] }, { photo_ids: [] },
+                                                        { document_ids: [] }, { impact_ids: [] },
+                                                        { photos_attributes: [:id, :name, :attachment, :is_active, :_destroy] },
+                                                        { documents_attributes: [:id, :name, :attachment, :is_active, :_destroy] },
+                                                        { external_sources_attributes: [:id, :name, :description, :web_url, :source_type,
+                                                                                        :author, :publication_year, :institution, :is_active, :_destroy] })
 
-        return_params[:user_ids]  = params[:project][:user_ids]  if @current_user.is_active_admin?
-        return_params[:user_ids]  = [@current_user.id]           if :create && return_params[:user_ids].blank?
-        return_params[:is_active] = params[:project][:is_active] if @current_user.is_active_admin? || @current_user.is_active_publisher?
+        return_params[:user_ids] = params[:project][:user_ids] if @current_user.is_active_admin?
+        return_params[:user_ids] = [@current_user.id]          if :create && return_params[:user_ids].blank?
+        if @current_user.is_active_admin? || @current_user.is_active_publisher?
+          return_params[:is_active] = params[:project][:is_active]
+        else
+          return_params[:is_active] = false
+        end
 
         if @current_user.is_active_admin?
           return_params[:project_type] = params[:project][:project_type]
         elsif :create && (@current_user.is_active_editor? || @current_user.is_active_publisher?)
-          return_params[:project_type] = params[:project][:project_type] if params[:project][:project_type].include?('BusinessModel')
-          render json: { errors: [{ status: '401', title: 'Unauthorized to create a study case.' }] }, status: 401 if return_params[:project_type].blank?
+          if params[:project][:project_type].include?('BusinessModel')
+            return_params[:project_type] = params[:project][:project_type]
+          else
+            render json: { errors: [{ status: '401', title: 'Unauthorized to create a study case.' }] }, status: 401
+          end
         end
 
+        if params[:project][:photos_attributes].present?
+          params[:project][:photos_attributes].each do |photo_attributes|
+            photo_attributes[:attachment] = process_file_base64(photo_attributes[:attachment].to_s) if photo_attributes[:attachment].present?
+          end
+        end
+
+        if params[:project][:documents_attributes].present?
+          params[:project][:documents_attributes].each do |document_attributes|
+            document_attributes[:attachment] = process_file_base64(document_attributes[:attachment].to_s) if document_attributes[:attachment].present?
+          end
+        end
         return_params
       end
   end

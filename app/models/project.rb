@@ -35,17 +35,17 @@ class Project < ApplicationRecord
   has_many :project_bmes
   has_many :bmes, through: :project_bmes
 
-  has_many :photos,           as: :attacheable, dependent: :destroy
-  has_many :documents,        as: :attacheable, dependent: :destroy
-  has_many :external_sources, as: :attacheable, dependent: :destroy
-  has_many :comments,         as: :commentable, dependent: :destroy
-  has_many :notifications,    as: :notificable, dependent: :destroy
-  has_many :impacts,          dependent: :destroy, inverse_of: :study_case
+  has_many :photos,           as: :attacheable,        dependent: :destroy
+  has_many :documents,        as: :attacheable,        dependent: :destroy
+  has_many :external_sources, as: :attacheable,        dependent: :destroy
+  has_many :comments,         as: :commentable,        dependent: :destroy
+  has_many :notifications,    as: :notificable,        dependent: :destroy
+  has_many :impacts,          inverse_of: :study_case, dependent: :destroy
 
   accepts_nested_attributes_for :bmes
-  accepts_nested_attributes_for :external_sources
-  accepts_nested_attributes_for :documents
-  accepts_nested_attributes_for :photos
+  accepts_nested_attributes_for :external_sources, allow_destroy: true
+  accepts_nested_attributes_for :documents,        allow_destroy: true
+  accepts_nested_attributes_for :photos,           allow_destroy: true
   accepts_nested_attributes_for :impacts
 
   validates :name, presence: true
@@ -62,7 +62,7 @@ class Project < ApplicationRecord
   scope :include_relations, -> {
     includes(:category, { category: [:parent, :children] }, :country,
              :bmes, { bmes: [:categories, :enablings] }, :impacts,
-             :cities, :users, :photos, :documents,
+             :cities, { cities: :country }, :users, :photos, :documents,
              :external_sources, :comments)
   }
 
@@ -75,7 +75,6 @@ class Project < ApplicationRecord
       projects = available.includes(:country, :category, :bmes,
                                     :impacts, :cities, { cities: :country },
                                     :users, :photos, :documents, :external_sources, :comments)
-
       if study_cases.present?
         projects = projects.by_study_case
       end
