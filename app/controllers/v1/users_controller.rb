@@ -11,7 +11,7 @@ module V1
 
     def index
       @users = UsersIndex.new(self)
-      render json: @users.users, each_serializer: UserSerializer, links: @users.links
+      render json: @users.users, each_serializer: UserSerializer, links: @users.links, meta: { total_items: @users.total_items }
     end
 
     def show

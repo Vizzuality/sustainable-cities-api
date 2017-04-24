@@ -14,9 +14,13 @@ class ImpactsIndex
   end
 
   def impacts
-    @impacts ||= Impact.fetch_all(options_filter)
-                       .order(sort_params)
-                       .paginate(page: current_page, per_page: per_page)
+    @impacts       ||= Impact.fetch_all(options_filter)
+    @impacts_items ||= @impacts.order(sort_params)
+                               .paginate(page: current_page, per_page: per_page)
+  end
+
+  def total_items
+    @total_items ||= @impacts.size
   end
 
   def links

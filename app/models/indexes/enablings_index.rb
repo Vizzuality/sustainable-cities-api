@@ -14,9 +14,13 @@ class EnablingsIndex
   end
 
   def enablings
-    @enablings ||= Enabling.fetch_all(options_filter)
-                           .order(sort_params)
-                           .paginate(page: current_page, per_page: per_page)
+    @enablings       ||= Enabling.fetch_all(options_filter)
+    @enablings_items ||= @enablings.order(sort_params)
+                                   .paginate(page: current_page, per_page: per_page)
+  end
+
+  def total_items
+    @total_items ||= @enablings.size
   end
 
   def links
