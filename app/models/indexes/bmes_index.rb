@@ -14,9 +14,13 @@ class BmesIndex
   end
 
   def bmes
-    @bmes ||= Bme.fetch_all(options_filter)
-                 .order(sort_params)
-                 .paginate(page: current_page, per_page: per_page)
+    @bmes       ||= Bme.fetch_all(options_filter)
+    @bmes_items ||= @bmes.order(sort_params)
+                         .paginate(page: current_page, per_page: per_page)
+  end
+
+  def total_items
+    @total_items ||= @bmes.size
   end
 
   def links

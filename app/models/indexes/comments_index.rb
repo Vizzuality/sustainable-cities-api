@@ -14,9 +14,13 @@ class CommentsIndex
   end
 
   def comments
-    @comments ||= Comment.fetch_all(options_filter)
-                         .order(sort_params)
-                         .paginate(page: current_page, per_page: per_page)
+    @comments       ||= Comment.fetch_all(options_filter)
+    @comments_items ||= @comments.order(sort_params)
+                                 .paginate(page: current_page, per_page: per_page)
+  end
+
+  def total_items
+    @total_items ||= @comments.size
   end
 
   def links

@@ -10,7 +10,7 @@ module V1
 
     def index
       @enablings = EnablingsIndex.new(self)
-      render json: @enablings.enablings, each_serializer: EnablingSerializer, links: @enablings.links
+      render json: @enablings.enablings, each_serializer: EnablingSerializer, links: @enablings.links, meta: { total_items: @enablings.total_items }
     end
 
     def show

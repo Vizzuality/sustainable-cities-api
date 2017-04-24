@@ -14,9 +14,13 @@ class CitiesIndex
   end
 
   def cities
-    @cities ||= City.fetch_all(options_filter)
-                    .order(sort_params)
-                    .paginate(page: current_page, per_page: per_page)
+    @cities       ||= City.fetch_all(options_filter)
+    @cities_items ||= @cities.order(sort_params)
+                             .paginate(page: current_page, per_page: per_page)
+  end
+
+  def total_items
+    @total_items ||= @cities.size
   end
 
   def links

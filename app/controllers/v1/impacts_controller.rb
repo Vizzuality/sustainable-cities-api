@@ -10,7 +10,7 @@ module V1
 
     def index
       @impacts = ImpactsIndex.new(self)
-      render json: @impacts.impacts, each_serializer: ImpactSerializer, links: @impacts.links
+      render json: @impacts.impacts, each_serializer: ImpactSerializer, links: @impacts.links, meta: { total_items: @impacts.total_items }
     end
 
     def show

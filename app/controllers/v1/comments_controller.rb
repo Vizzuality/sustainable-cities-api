@@ -9,7 +9,7 @@ module V1
 
     def index
       @comments = CommentsIndex.new(self)
-      render json: @comments.comments, each_serializer: CommentSerializer, links: @comments.links
+      render json: @comments.comments, each_serializer: CommentSerializer, links: @comments.links, meta: { total_items: @comments.total_items }
     end
 
     def update

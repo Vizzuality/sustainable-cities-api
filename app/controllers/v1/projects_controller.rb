@@ -73,7 +73,7 @@ module V1
 
       def render_projects
         @projects = ProjectsIndex.new(self, @current_user)
-        render json: @projects.projects, each_serializer: ProjectSerializer, links: @projects.links
+        render json: @projects.projects, each_serializer: ProjectSerializer, links: @projects.links, meta: { total_items: @projects.total_items }
       end
 
       def set_project
