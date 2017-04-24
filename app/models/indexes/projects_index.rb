@@ -15,9 +15,13 @@ class ProjectsIndex
   end
 
   def projects
-    @projects ||= Project.fetch_all(options_filter)
-                         .order(sort_params)
-                         .paginate(page: current_page, per_page: per_page)
+    @projects       ||= Project.fetch_all(options_filter)
+    @projects_items ||= @projects.order(sort_params)
+                                 .paginate(page: current_page, per_page: per_page)
+  end
+
+  def total_items
+    @total_items ||= @projects.size
   end
 
   def links
