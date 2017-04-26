@@ -59,6 +59,7 @@ group :development do
   gem 'capistrano-secrets-yml'
   gem 'listen',                    '~> 3.0.5'
   gem 'pry-rails'
+  gem 'rails-erd'
   gem 'spring'
   gem 'spring-watcher-listen',     '~> 2.0.0'
 end
