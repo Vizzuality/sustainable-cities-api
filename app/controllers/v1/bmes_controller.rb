@@ -49,7 +49,7 @@ module V1
       end
 
       def bme_params
-        params.require(:bme).permit(:name, :description, :enabling_ids, :category_ids, :project_ids)
+        params.require(:bme).permit(:name, :description, { enabling_ids: [] }, { category_ids: [] })
       end
   end
 end
