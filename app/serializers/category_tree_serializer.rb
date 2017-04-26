@@ -15,6 +15,14 @@
 class CategoryTreeSerializer < ActiveModel::Serializer
   attributes :id, :name, :description, :category_type, :parent_id, :children
 
+  def id
+    object.id.to_s
+  end
+
+  def parent_id
+    object.parent_id.to_s if object.parent_id.present?
+  end
+
   def children
     if !object.is_leaf?
       @children = object.with_children
