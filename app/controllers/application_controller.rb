@@ -6,8 +6,9 @@ class ApplicationController < ActionController::API
 
   before_action :check_access, :authenticate
 
-  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
-  rescue_from JWT::VerificationError,       with: :bad_auth_key
+  rescue_from ActiveRecord::RecordNotFound,   with: :record_not_found
+  rescue_from ActionController::RoutingError, with: :record_not_found
+  rescue_from JWT::VerificationError,         with: :bad_auth_key
 
   rescue_from CanCan::AccessDenied do |exception|
     render json: { errors: [{ status: '401', title: exception.message }] }, status: 401
