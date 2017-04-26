@@ -16,6 +16,8 @@ module V1
     let!(:admin)     { FactoryGirl.create(:admin)     }
     let!(:editor)    { FactoryGirl.create(:editor)    }
     let!(:publisher) { FactoryGirl.create(:publisher) }
+    let!(:category)  { FactoryGirl.create(:category)  }
+    let!(:enabling)  { FactoryGirl.create(:enabling)  }
 
     let!(:bme)      { FactoryGirl.create(:bme, name: '00 Business model element one') }
 
@@ -85,10 +87,12 @@ module V1
         end
 
         it 'Returns success object when the bme was seccessfully created by admin' do
-          post '/business-model-elements', params: {"bme": { "name": "Business model element one", "description": "Lorem ipsum.." }},
+          post '/business-model-elements', params: {"bme": { "name": "Business model element one", "description": "Lorem ipsum..", "category_ids": [category.id], "enabling_ids": [enabling.id] }},
                         headers: @headers
           expect(status).to eq(201)
           expect(body).to   eq({ messages: [{ status: 201, title: 'Business model element successfully created!' }] }.to_json)
+          expect(Bme.find_by(name: 'Business model element one').categories.size).to eq(1)
+          expect(Bme.find_by(name: 'Business model element one').enablings.size).to  eq(1)
         end
       end
 
