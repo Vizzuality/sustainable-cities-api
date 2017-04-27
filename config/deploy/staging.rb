@@ -62,6 +62,11 @@
 #     # password: "please use keys"
 #   }
 
+role :resque_worker, "cities"
+role :resque_scheduler, "cities"
+
+set :workers, { 'mailer' => 2 }
+
 server ENV['STAGING_IP'],
 user: ENV['SSH_USER'],
 roles: %w{web app db}, primary: true
