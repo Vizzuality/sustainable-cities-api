@@ -1,9 +1,0 @@
-p
-  |  Dear
-  = @name
-  | ,
-p
-  |  Your daily summary:
-- @notifications.each do |notification|
-  p
-    / = link_to notification.summary, url_for(notification.notificable)

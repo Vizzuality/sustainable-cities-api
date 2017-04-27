@@ -3,25 +3,32 @@
 #
 # Table name: users
 #
-#  id                   :integer          not null, primary key
-#  email                :string
-#  password_digest      :string
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
-#  role                 :integer          default("user")
-#  country_id           :integer
-#  city_id              :integer
-#  nickname             :string
-#  name                 :string
-#  institution          :string
-#  position             :string
-#  twitter_account      :string
-#  linkedin_account     :string
-#  is_active            :boolean          default(TRUE)
-#  deactivated_at       :datetime
-#  image                :string
-#  notifications_mailer :boolean          default(TRUE)
-#  notifications_count  :integer          default(0)
+#  id                     :integer          not null, primary key
+#  email                  :string
+#  password_digest        :string
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  role                   :integer          default("user")
+#  country_id             :integer
+#  city_id                :integer
+#  nickname               :string
+#  name                   :string
+#  institution            :string
+#  position               :string
+#  twitter_account        :string
+#  linkedin_account       :string
+#  is_active              :boolean          default(TRUE)
+#  deactivated_at         :datetime
+#  image                  :string
+#  notifications_mailer   :boolean          default(TRUE)
+#  notifications_count    :integer          default(0)
+#  reset_password_token   :string
+#  reset_password_sent_at :datetime
+#  sign_in_count          :integer          default(0), not null
+#  current_sign_in_at     :datetime
+#  last_sign_in_at        :datetime
+#  current_sign_in_ip     :inet
+#  last_sign_in_ip        :inet
 #
 
 class User < ApplicationRecord
@@ -38,8 +45,7 @@ class User < ApplicationRecord
   belongs_to :city,    inverse_of: :users, optional: true
 
   has_one  :api_key
-  has_many :notifications, inverse_of: :user, dependent: :destroy
-  has_many :comments,      inverse_of: :user, dependent: :destroy
+  has_many :comments, inverse_of: :user, dependent: :destroy
   has_many :project_users
   has_many :projects, through: :project_users
 
@@ -71,10 +77,6 @@ class User < ApplicationRecord
     def fetch_all(options)
       all
     end
-
-    def user_select
-      by_nickname_asc.map { |c| [c.nickname, c.id] }
-    end
   end
 
   def permissions
@@ -89,7 +91,7 @@ class User < ApplicationRecord
   end
 
   def display_name
-    return "#{half_email}" if name.blank?
+    "#{half_email}" if name.blank?
     "#{name}"
   end
 
@@ -118,7 +120,42 @@ class User < ApplicationRecord
     end
   end
 
+  def send_reset_password_instructions(options)
+    reset_url  = options[:reset_url]
+    reset_url += '?reset_password_token='
+    reset_url += generate_reset_token(self)
+
+    PasswordMailer.password_email(display_name, email, reset_url).deliver
+  end
+
+  def reset_password_by_token(options)
+    if reset_password_sent_at.present? && DateTime.now <= reset_password_sent_at + 2.hours
+      update(password: options[:password],
+             password_confirmation: options[:password_confirmation],
+             reset_password_sent_at: nil)
+    else
+      self.errors.add(:reset_password_token, 'link expired.')
+      self
+    end
+  end
+
+  def reset_password_by_current_user(options)
+    if update(password: options[:password],
+              password_confirmation: options[:password_confirmation])
+      self
+    else
+      self.errors.add(:password, 'could not be updated!')
+      self
+    end
+  end
+
   private
+
+    def generate_reset_token(user)
+      token = SecureRandom.uuid
+      user.update(reset_password_token: token, reset_password_sent_at: DateTime.now)
+      user.reset_password_token
+    end
 
     def remove_attachment_id_directory
       FileUtils.rm_rf(File.join('public', 'uploads', 'user', 'image', self.id.to_s)) if self.image
@@ -131,9 +168,9 @@ class User < ApplicationRecord
     end
 
     def half_email
-      return "" if email.blank?
+      '' if email.blank?
       index = email.index('@')
-      return "" if index.nil? || index.to_i.zero?
+      '' if index.nil? || index.to_i.zero?
       email[0, index.to_i]
     end
 end

@@ -19,7 +19,3 @@
 # end
 
 # Learn more: http://github.com/javan/whenever
-
-every 1.day, at: '05:30am' do
-  runner 'Notification.daily_notifications_task'
-end
