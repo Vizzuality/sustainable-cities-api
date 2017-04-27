@@ -35,9 +35,5 @@ RSpec.describe City, type: :model do
     it 'Fetch all cities' do
       expect(City.fetch_all(nil).count).to eq(1)
     end
-
-    it 'Select for active cities' do
-      expect(City.city_select.count).to eq(1)
-    end
   end
 end

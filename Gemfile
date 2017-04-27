@@ -80,4 +80,8 @@ gem 'newrelic_rpm'
 gem 'puma'
 gem 'rack-cors'
 gem 'rails_12factor',              group: :production
+gem 'redis-rails'
+gem 'resque'
+gem 'resque-scheduler'
+gem 'resque_mailer'
 gem 'tzinfo-data'
