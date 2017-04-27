@@ -39,7 +39,6 @@ class Project < ApplicationRecord
   has_many :documents,        as: :attacheable,        dependent: :destroy
   has_many :external_sources, as: :attacheable,        dependent: :destroy
   has_many :comments,         as: :commentable,        dependent: :destroy
-  has_many :notifications,    as: :notificable,        dependent: :destroy
   has_many :impacts,          inverse_of: :study_case, dependent: :destroy
 
   accepts_nested_attributes_for :bmes
