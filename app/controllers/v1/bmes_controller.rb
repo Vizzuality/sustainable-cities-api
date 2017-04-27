@@ -14,7 +14,7 @@ module V1
     end
 
     def show
-      render json: @bme, serializer: BmeSerializer, meta: { updated_at: @bme.updated_at, created_at: @bme.created_at }
+      render json: @bme, serializer: BmeSerializer, include: [:categories, :enablings], meta: { updated_at: @bme.updated_at, created_at: @bme.created_at }
     end
 
     def update

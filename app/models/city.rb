@@ -29,9 +29,5 @@ class City < ApplicationRecord
     def fetch_all(options)
       all.includes(:country)
     end
-
-    def city_select
-      by_name_asc.map { |c| [c.name, c.id] }
-    end
   end
 end

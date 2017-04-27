@@ -31,13 +31,5 @@ class Country < ApplicationRecord
     def fetch_all(options)
       all.includes(:cities)
     end
-
-    def country_select
-      by_name_asc.map { |c| [c.name, c.id] }
-    end
-
-    def active_country_select
-      by_activated.by_name_asc.map { |c| [c.name, c.id] }
-    end
   end
 end
