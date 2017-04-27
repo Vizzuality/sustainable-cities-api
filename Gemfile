@@ -54,6 +54,7 @@ group :development do
   gem 'capistrano-env-config'
   gem 'capistrano-passenger'
   gem 'capistrano-rails',          '~> 1.2'
+  gem 'capistrano-resque',         require: false
   gem 'capistrano-rvm'
   gem 'listen',                    '~> 3.0.5'
   gem 'pry-rails'

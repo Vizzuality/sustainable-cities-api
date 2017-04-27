@@ -65,6 +65,7 @@
 server ENV['STAGING_IP'],
 user: ENV['SSH_USER'],
 roles: %w{web app db}, primary: true
+
 set :ssh_options, {
   forward_agent: true,
   auth_methods: %w(publickey password),
@@ -72,3 +73,10 @@ set :ssh_options, {
 }
 set :branch, 'staging'
 set :deploy_to, '~/sustainable-cities-api-staging'
+
+role :resque_worker, ENV['STAGING_IP']
+role :resque_scheduler, ENV['STAGING_IP']
+
+set :workers, {
+    ENV['STAGING_IP'] => { 'mailer' => 2 }
+}

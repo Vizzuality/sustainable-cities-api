@@ -15,6 +15,7 @@ set :default_env, {
 }
 
 set :passenger_restart_with_touch, true
+set :resque_environment_task, true
 
 set :rvm_type, :user
 set :rvm_ruby_version, '2.4.0'
@@ -29,5 +30,5 @@ set :rvm_map_bins, fetch(:rvm_map_bins, []).push('rvmsudo')
 
 namespace :deploy do
   after :finishing, 'deploy:cleanup'
-  after 'deploy:publishing', 'deploy:symlink:linked_files', 'deploy:symlink:linked_dirs', 'deploy:restart'
+  after 'deploy:publishing', 'deploy:symlink:linked_files', 'deploy:symlink:linked_dirs', 'deploy:restart', 'resque:restart'
 end
