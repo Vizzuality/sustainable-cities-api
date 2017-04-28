@@ -8,6 +8,7 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  tmp_bme_id  :integer
+#  is_featured :boolean          default(FALSE)
 #
 
 require 'rails_helper'
