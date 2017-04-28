@@ -50,7 +50,7 @@ module V1
       end
 
       def enabling_params
-        params.require(:enabling).permit(:name, :description, :assessment_value, :category_id, { bme_ids: [] })
+        params.require(:enabling).permit(:name, :description, :is_featured, :assessment_value, :category_id, { bme_ids: [] })
       end
   end
 end

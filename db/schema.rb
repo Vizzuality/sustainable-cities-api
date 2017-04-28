@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170426152950) do
+ActiveRecord::Schema.define(version: 20170428104544) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(version: 20170426152950) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "tmp_bme_id"
+    t.boolean "is_featured", default: false
   end
 
   create_table "categories", force: :cascade do |t|
@@ -71,6 +72,7 @@ ActiveRecord::Schema.define(version: 20170426152950) do
     t.string "province"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_featured", default: false
     t.index ["country_id"], name: "index_cities_on_country_id"
   end
 
@@ -118,6 +120,7 @@ ActiveRecord::Schema.define(version: 20170426152950) do
     t.bigint "category_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_featured", default: false
     t.index ["category_id"], name: "index_enablings_on_category_id"
   end
 
@@ -222,6 +225,7 @@ ActiveRecord::Schema.define(version: 20170426152950) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "tmp_study_case_id"
+    t.boolean "is_featured", default: false
     t.index ["category_id"], name: "index_projects_on_category_id"
   end
 

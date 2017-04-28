@@ -9,10 +9,11 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  tmp_bme_id  :integer
+#  is_featured :boolean          default(FALSE)
 #
 
 class BmeSerializer < ActiveModel::Serializer
-  attributes :id, :name, :description
+  attributes :id, :name, :description, :is_featured
 
   has_many :enablings,  serializer: EnablingSerializer
   has_many :categories, serializer: CategorySerializer
