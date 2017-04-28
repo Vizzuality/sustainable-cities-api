@@ -49,7 +49,7 @@ module V1
       end
 
       def city_params
-        params.require(:city).permit(:name, :country_id, :iso, :lat, :lng, :province)
+        params.require(:city).permit(:name, :country_id, :is_featured, :iso, :lat, :lng, :province)
       end
   end
 end
