@@ -10,7 +10,8 @@ module V1
 
     def index
       @bmes = BmesIndex.new(self)
-      render json: @bmes.bmes, each_serializer: BmeSerializer, links: @bmes.links, meta: { total_items: @bmes.total_items }
+      render json: @bmes.bmes, each_serializer: BmeSerializer, include: [:categories, :enablings],
+             links: @bmes.links, meta: { total_items: @bmes.total_items }
     end
 
     def show
