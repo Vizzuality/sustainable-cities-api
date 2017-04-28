@@ -17,6 +17,7 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  tmp_study_case_id :integer
+#  is_featured       :boolean          default(FALSE)
 #
 
 FactoryGirl.define do

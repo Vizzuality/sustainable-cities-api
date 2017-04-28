@@ -18,12 +18,13 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  tmp_study_case_id :integer
+#  is_featured       :boolean          default(FALSE)
 #
 
 class ProjectSerializer < ActiveModel::Serializer
   attributes :id, :name, :situation, :solution, :category_id, :country_id,
-             :operational_year, :project_type, :is_active, :deactivated_at,
-             :publish_request, :published_at
+             :operational_year, :project_type, :is_active, :is_featured,
+             :deactivated_at, :publish_request, :published_at
 
   belongs_to :country,  serializer: CountrySerializer
   belongs_to :category, serializer: CategorySerializer

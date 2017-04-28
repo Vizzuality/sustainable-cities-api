@@ -10,11 +10,12 @@ module V1
 
     def index
       @enablings = EnablingsIndex.new(self)
-      render json: @enablings.enablings, each_serializer: EnablingSerializer, links: @enablings.links, meta: { total_items: @enablings.total_items }
+      render json: @enablings.enablings, each_serializer: EnablingSerializer, include: [:category, :bmes],
+             links: @enablings.links, meta: { total_items: @enablings.total_items }
     end
 
     def show
-      render json: @enabling, serializer: EnablingSerializer, meta: { updated_at: @enabling.updated_at, created_at: @enabling.created_at }
+      render json: @enabling, serializer: EnablingSerializer, include: [:category, :bmes], meta: { updated_at: @enabling.updated_at, created_at: @enabling.created_at }
     end
 
     def update
@@ -49,7 +50,7 @@ module V1
       end
 
       def enabling_params
-        params.require(:enabling).permit(:name, :description, :assessment_value, :category_id, { bme_ids: [] })
+        params.require(:enabling).permit(:name, :description, :is_featured, :assessment_value, :category_id, { bme_ids: [] })
       end
   end
 end

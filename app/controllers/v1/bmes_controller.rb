@@ -10,7 +10,8 @@ module V1
 
     def index
       @bmes = BmesIndex.new(self)
-      render json: @bmes.bmes, each_serializer: BmeSerializer, links: @bmes.links, meta: { total_items: @bmes.total_items }
+      render json: @bmes.bmes, each_serializer: BmeSerializer, include: [:categories, :enablings],
+             links: @bmes.links, meta: { total_items: @bmes.total_items }
     end
 
     def show
@@ -49,7 +50,7 @@ module V1
       end
 
       def bme_params
-        params.require(:bme).permit(:name, :description, { enabling_ids: [] }, { category_ids: [] })
+        params.require(:bme).permit(:name, :description, :is_featured, { enabling_ids: [] }, { category_ids: [] })
       end
   end
 end
