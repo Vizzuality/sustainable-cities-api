@@ -34,7 +34,7 @@ module V1
       let!(:users) {
         users = []
         users << FactoryGirl.create_list(:user, 4)
-        users << FactoryGirl.create(:user, name: 'ZZZ Next first one')
+        users << FactoryGirl.create(:user, name: 'ZZZ pepe Next first one')
       }
 
       it 'Show list of users for first page with per pege param' do
@@ -64,7 +64,15 @@ module V1
 
         expect(status).to                        eq(200)
         expect(json.size).to                     eq(10)
-        expect(json[0]['attributes']['name']).to eq('ZZZ Next first one')
+        expect(json[0]['attributes']['name']).to eq('ZZZ pepe Next first one')
+      end
+
+      it 'Search users by name or nickname and sort by name DESC' do
+        get '/users?search=pepe&sort=name', headers: @headers
+
+        expect(status).to                            eq(200)
+        expect(json.size).to                         eq(5)
+        expect(json[0]['attributes']['nickname']).to match('pepe')
       end
     end
 

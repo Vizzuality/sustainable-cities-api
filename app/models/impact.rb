@@ -30,9 +30,15 @@ class Impact < ApplicationRecord
 
   scope :by_name_asc, -> { order('impacts.name ASC') }
 
+  scope :filter_by_name_or_description, ->(search_term) { where('impacts.name ilike ? or impacts.description ilike ?', "%#{search_term}%", "%#{search_term}%") }
+
   class << self
     def fetch_all(options)
-      all.includes(:category, :study_case, :external_sources)
+      search_term = options['search'] if options.present? && options['search'].present?
+
+      impacts = includes(:category, :study_case, :external_sources)
+      impacts = impacts.filter_by_name_or_description(search_term) if search_term.present?
+      impacts
     end
   end
 end

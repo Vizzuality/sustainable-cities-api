@@ -26,9 +26,18 @@ class City < ApplicationRecord
 
   scope :by_name_asc, -> { order('cities.name ASC') }
 
+  scope :filter_by_name,    ->(search_term) { where('cities.name ilike ?', "%#{search_term}%") }
+  scope :filter_by_country, ->(country_id)  { where(country_id: country_id)             }
+
   class << self
     def fetch_all(options)
-      all.includes(:country)
+      search_term = options['search']  if options.present? && options['search'].present?
+      country_id  = options['country'] if options.present? && options['country'].present?
+
+      cities = includes(:country)
+      cities = cities.filter_by_name(search_term)   if search_term.present?
+      cities = cities.filter_by_country(country_id) if country_id.present?
+      cities
     end
   end
 end

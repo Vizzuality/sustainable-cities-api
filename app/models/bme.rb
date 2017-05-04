@@ -29,9 +29,15 @@ class Bme < ApplicationRecord
 
   scope :by_name_asc, -> { order('bmes.name ASC') }
 
+  scope :filter_by_name_or_description, ->(search_term) { where('bmes.name ilike ? or bmes.description ilike ?', "%#{search_term}%", "%#{search_term}%") }
+
   class << self
     def fetch_all(options)
-      all.includes(:categories, :enablings)
+      search_term = options['search'] if options.present? && options['search'].present?
+
+      bmes = includes(:categories, :enablings)
+      bmes = bmes.filter_by_name_or_description(search_term) if search_term.present?
+      bmes
     end
   end
 end
