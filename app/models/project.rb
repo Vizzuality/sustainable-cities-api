@@ -66,11 +66,14 @@ class Project < ApplicationRecord
              :external_sources, :comments)
   }
 
+  scope :filter_by_name_or_solution, ->(search_term) { where('projects.name ilike ? or projects.solution ilike ?', "%#{search_term}%", "%#{search_term}%") }
+
   class << self
     def fetch_all(options=nil)
       study_cases     = options['study_cases']     if options.present? && options['study_cases'].present?
       business_models = options['business_models'] if options.present? && options['business_models'].present?
       user            = options['current_user']    if options.present? && options['current_user'].present?
+      search_term     = options['search']          if options.present? && options['search'].present?
 
       projects = available.includes(:country, :category, :bmes,
                                     :impacts, :cities, { cities: :country },
@@ -86,6 +89,9 @@ class Project < ApplicationRecord
           projects = projects.by_business_model
         end
       end
+
+      projects = projects.filter_by_name_or_solution(search_term) if search_term.present?
+
       projects
     end
   end

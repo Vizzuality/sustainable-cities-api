@@ -17,7 +17,7 @@ module V1
     let!(:editor)    { FactoryGirl.create(:editor)    }
     let!(:publisher) { FactoryGirl.create(:publisher) }
 
-    let!(:impact)    { FactoryGirl.create(:impact, name: '00 Impact one') }
+    let!(:impact)    { FactoryGirl.create(:impact, name: '00 first one') }
 
     context 'Show impacts' do
       it 'Get impacts list' do
@@ -35,7 +35,7 @@ module V1
       let!(:impacts) {
         impacts = []
         impacts << FactoryGirl.create_list(:impact, 4)
-        impacts << FactoryGirl.create(:impact, name: 'ZZZ Next first one')
+        impacts << FactoryGirl.create(:impact, name: 'ZZZ Next first one', description: 'lorem ipsum Impact')
       }
 
       it 'Show list of impacts for first page with per pege param' do
@@ -57,7 +57,7 @@ module V1
 
         expect(status).to                        eq(200)
         expect(json.size).to                     eq(6)
-        expect(json[0]['attributes']['name']).to eq('00 Impact one')
+        expect(json[0]['attributes']['name']).to eq('00 first one')
       end
 
       it 'Show list of impacts for sort by name DESC' do
@@ -66,6 +66,14 @@ module V1
         expect(status).to                        eq(200)
         expect(json.size).to                     eq(6)
         expect(json[0]['attributes']['name']).to eq('ZZZ Next first one')
+      end
+
+      it 'Search impacts by name or description and sort by name DESC' do
+        get '/impacts?search=impact&sort=name', headers: @headers
+
+        expect(status).to                        eq(200)
+        expect(json.size).to                     eq(5)
+        expect(json[0]['attributes']['name']).to match('Impact')
       end
     end
 

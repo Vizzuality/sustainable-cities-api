@@ -34,10 +34,13 @@ class Category < ApplicationRecord
   scope :top_level,     ->              { where(parent_id: nil)               }
   scope :with_children, ->              { joins(:children).distinct           }
 
+  scope :filter_by_name_or_description, ->(search_term) { where('categories.name ilike ? or categories.description ilike ?', "%#{search_term}%", "%#{search_term}%") }
+
   class << self
-    def fetch_all(options=nil)
+    def fetch_all(options)
       cat_type_name = options['category_type'] if options.present? && options['category_type'].present?
       type_name     = options['type']          if options.present? && options['type'].present?
+      search_term   = options['search']        if options.present? && options['search'].present?
 
       categories = all.includes(:parent, :children)
       categories = categories.by_type(cat_type_name) if cat_type_name.present? && !cat_type_name.match?(/All|Tree/)
@@ -46,6 +49,8 @@ class Category < ApplicationRecord
         categories = categories.top_level
         categories = categories.by_type(type_name) if type_name.present?
       end
+
+      categories = categories.filter_by_name_or_description(search_term) if search_term.present?
 
       categories
     end

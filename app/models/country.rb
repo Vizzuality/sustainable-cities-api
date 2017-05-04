@@ -25,11 +25,17 @@ class Country < ApplicationRecord
   include Activable
 
   scope :by_name_asc,  -> { order('countries.name ASC') }
-  scope :by_activated, -> { where(is_active: true)      }
+
+  scope :by_activated,   ->              { where(is_active: true)                    }
+  scope :filter_by_name, ->(search_term) { where('countries.name ilike ?', "%#{search_term}%") }
 
   class << self
     def fetch_all(options)
-      all.includes(:cities)
+      search_term = options['search']  if options.present? && options['search'].present?
+
+      countries = includes(:cities)
+      countries = countries.filter_by_name(search_term) if search_term.present?
+      countries
     end
   end
 end

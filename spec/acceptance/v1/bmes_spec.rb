@@ -19,7 +19,7 @@ module V1
     let!(:category)  { FactoryGirl.create(:category)  }
     let!(:enabling)  { FactoryGirl.create(:enabling)  }
 
-    let!(:bme)      { FactoryGirl.create(:bme, name: '00 Business model element one') }
+    let!(:bme)      { FactoryGirl.create(:bme, name: '00 first one') }
 
     context 'Show bmes' do
       it 'Get bmes list' do
@@ -37,7 +37,7 @@ module V1
       let!(:bmes) {
         bmes = []
         bmes << FactoryGirl.create_list(:bme, 4)
-        bmes << FactoryGirl.create(:bme, name: 'ZZZ Next first one')
+        bmes << FactoryGirl.create(:bme, name: 'ZZZ Next first one', description: 'Business model element BME one')
       }
 
       it 'Show list of bmes for first page with per pege param' do
@@ -59,7 +59,7 @@ module V1
 
         expect(status).to                        eq(200)
         expect(json.size).to                     eq(6)
-        expect(json[0]['attributes']['name']).to eq('00 Business model element one')
+        expect(json[0]['attributes']['name']).to eq('00 first one')
       end
 
       it 'Show list of bmes for sort by name DESC' do
@@ -68,6 +68,14 @@ module V1
         expect(status).to                        eq(200)
         expect(json.size).to                     eq(6)
         expect(json[0]['attributes']['name']).to eq('ZZZ Next first one')
+      end
+
+      it 'Search business-model-elements by name or description and sort by name ASC' do
+        get '/business-model-elements?search=bme&sort=name', headers: @headers
+
+        expect(status).to                        eq(200)
+        expect(json.size).to                     eq(5)
+        expect(json[0]['attributes']['name']).to match('BME')
       end
     end
 

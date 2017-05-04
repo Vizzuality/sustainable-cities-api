@@ -17,7 +17,7 @@ module V1
     let!(:editor)    { FactoryGirl.create(:editor)    }
     let!(:publisher) { FactoryGirl.create(:publisher) }
 
-    let!(:enabling)  { FactoryGirl.create(:enabling, name: '00 Enabling one') }
+    let!(:enabling)  { FactoryGirl.create(:enabling, name: '00 first one') }
 
     context 'Show enablings' do
       it 'Get enablings list' do
@@ -35,7 +35,7 @@ module V1
       let!(:enablings) {
         enablings = []
         enablings << FactoryGirl.create_list(:enabling, 4)
-        enablings << FactoryGirl.create(:enabling, name: 'ZZZ Next first one')
+        enablings << FactoryGirl.create(:enabling, name: 'ZZZ Next first one', description: 'lorem ipsum Enabling')
       }
 
       it 'Show list of enablings for first page with per pege param' do
@@ -57,7 +57,7 @@ module V1
 
         expect(status).to                        eq(200)
         expect(json.size).to                     eq(6)
-        expect(json[0]['attributes']['name']).to eq('00 Enabling one')
+        expect(json[0]['attributes']['name']).to eq('00 first one')
       end
 
       it 'Show list of enablings for sort by name DESC' do
@@ -66,6 +66,14 @@ module V1
         expect(status).to                        eq(200)
         expect(json.size).to                     eq(6)
         expect(json[0]['attributes']['name']).to eq('ZZZ Next first one')
+      end
+
+      it 'Search enablings by name or description and sort by name DESC' do
+        get '/enablings?search=enabling&sort=name', headers: @headers
+
+        expect(status).to                        eq(200)
+        expect(json.size).to                     eq(5)
+        expect(json[0]['attributes']['name']).to match('Enabling')
       end
     end
 

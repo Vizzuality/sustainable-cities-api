@@ -73,9 +73,15 @@ class User < ApplicationRecord
   scope :recent,          -> { order('users.updated_at DESC') }
   scope :by_nickname_asc, -> { order('users.nickname ASC')    }
 
+  scope :filter_by_name_or_nickname, ->(search_term) { where('users.name ilike ? or users.nickname ilike ?', "%#{search_term}%", "%#{search_term}%") }
+
   class << self
     def fetch_all(options)
-      all
+      search_term = options['search'] if options.present? && options['search'].present?
+
+      users = all
+      users = users.filter_by_name_or_nickname(search_term) if search_term.present?
+      users
     end
   end
 

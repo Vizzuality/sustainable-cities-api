@@ -35,7 +35,7 @@ class BmesIndex
   private
 
     def options_filter
-      params.permit('id', 'name', 'sort', 'bme', 'bme' => {}).tap do |filter_params|
+      params.permit('id', 'name', 'search', 'sort', 'bme', 'bme' => {}).tap do |filter_params|
         filter_params[:page]= {}
         filter_params[:page][:number] = params[:page][:number] if params[:page].present? && params[:page][:number].present?
         filter_params[:page][:size]   = params[:page][:size]   if params[:page].present? && params[:page][:size].present?

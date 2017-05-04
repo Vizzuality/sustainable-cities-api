@@ -17,7 +17,7 @@ module V1
     let!(:editor)    { FactoryGirl.create(:editor)    }
     let!(:publisher) { FactoryGirl.create(:publisher) }
 
-    let!(:city)      { FactoryGirl.create(:city, name: '00 City one') }
+    let!(:city) { FactoryGirl.create(:city, name: '00 City one') }
 
     context 'Show cities' do
       it 'Get cities list' do
@@ -32,9 +32,11 @@ module V1
     end
 
     context 'Pagination and sort for cities' do
+      let!(:country) { FactoryGirl.create(:country) }
+
       let!(:cities) {
         cities = []
-        cities << FactoryGirl.create_list(:city, 4)
+        cities << FactoryGirl.create_list(:city, 4, country_id: country.id)
         cities << FactoryGirl.create(:city, name: 'ZZZ Next first one')
       }
 
@@ -66,6 +68,22 @@ module V1
         expect(status).to                        eq(200)
         expect(json.size).to                     eq(6)
         expect(json[0]['attributes']['name']).to eq('ZZZ Next first one')
+      end
+
+      it 'Search cities by name and sort by name DESC' do
+        get '/cities?search=madrid&sort=-name', headers: @headers
+
+        expect(status).to                        eq(200)
+        expect(json.size).to                     eq(4)
+        expect(json[0]['attributes']['name']).to match('Madrid')
+      end
+
+      it 'Search cities by country and sort by name DESC' do
+        get "/cities?country=#{country.id}&sort=-name", headers: @headers
+
+        expect(status).to                        eq(200)
+        expect(json.size).to                     eq(4)
+        expect(json[0]['attributes']['name']).to match('Madrid')
       end
     end
 
