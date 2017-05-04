@@ -17,7 +17,7 @@ module V1
     let!(:editor)    { FactoryGirl.create(:editor)    }
     let!(:publisher) { FactoryGirl.create(:publisher) }
 
-    let!(:country)   { FactoryGirl.create(:country, name: '00 Country one') }
+    let!(:country)   { FactoryGirl.create(:country, name: '00 fantasialand') }
 
     context 'Show countries' do
       it 'Get countries list' do
@@ -57,7 +57,7 @@ module V1
 
         expect(status).to                        eq(200)
         expect(json.size).to                     eq(6)
-        expect(json[0]['attributes']['name']).to eq('00 Country one')
+        expect(json[0]['attributes']['name']).to eq('00 fantasialand')
       end
 
       it 'Show list of countries for sort by name DESC' do
@@ -66,6 +66,14 @@ module V1
         expect(status).to                        eq(200)
         expect(json.size).to                     eq(6)
         expect(json[0]['attributes']['name']).to eq('ZZZ Next first one')
+      end
+
+      it 'Search countries by name and sort by name DESC' do
+        get '/countries?search=Fantasia&sort=-name', headers: @headers
+
+        expect(status).to                        eq(200)
+        expect(json.size).to                     eq(1)
+        expect(json[0]['attributes']['name']).to eq('00 fantasialand')
       end
     end
 

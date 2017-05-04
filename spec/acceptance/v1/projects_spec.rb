@@ -56,8 +56,8 @@ module V1
 
       let!(:projects) {
         projects = []
-        projects << FactoryGirl.create_list(:project, 4)
-        projects << FactoryGirl.create(:project, name: 'ZZZ Next first one')
+        projects << FactoryGirl.create_list(:study_case, 4)
+        projects << FactoryGirl.create(:project, name: 'ZZZ Next first one', solution: 'lorem ipsum Study case')
       }
 
       it 'Show list of projects for first page with per pege param' do
@@ -88,6 +88,14 @@ module V1
         expect(status).to                        eq(200)
         expect(json.size).to                     eq(6)
         expect(json[0]['attributes']['name']).to eq('ZZZ Next first one')
+      end
+
+      it 'Search projects by name or solution and sort by name DESC' do
+        get '/projects?search=case&sort=name', headers: @headers
+
+        expect(status).to                        eq(200)
+        expect(json.size).to                     eq(5)
+        expect(json[0]['attributes']['name']).to match('case')
       end
     end
 

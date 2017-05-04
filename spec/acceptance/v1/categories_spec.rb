@@ -17,7 +17,7 @@ module V1
     let!(:editor)    { FactoryGirl.create(:editor)    }
     let!(:publisher) { FactoryGirl.create(:publisher) }
 
-    let!(:category)  { FactoryGirl.create(:category, name: '00 Category one') }
+    let!(:category)  { FactoryGirl.create(:category, name: '00 Category one special') }
 
     context 'Show categories' do
       it 'Get categories list' do
@@ -35,7 +35,7 @@ module V1
       let!(:categories) {
         categories = []
         categories << FactoryGirl.create_list(:category, 4)
-        categories << FactoryGirl.create(:category, name: 'ZZZ Next first one')
+        categories << FactoryGirl.create(:category, name: 'ZZZ Next first one', description: 'lorem ipsum special')
       }
 
       it 'Show list of categories for first page with per pege param' do
@@ -57,7 +57,7 @@ module V1
 
         expect(status).to                        eq(200)
         expect(json.size).to                     eq(6)
-        expect(json[0]['attributes']['name']).to eq('00 Category one')
+        expect(json[0]['attributes']['name']).to eq('00 Category one special')
       end
 
       it 'Show list of categories for sort by name DESC' do
@@ -66,6 +66,14 @@ module V1
         expect(status).to                        eq(200)
         expect(json.size).to                     eq(6)
         expect(json[0]['attributes']['name']).to eq('ZZZ Next first one')
+      end
+
+      it 'Search categories by name or description and sort by name DESC' do
+        get '/categories?search=special&sort=name', headers: @headers
+
+        expect(status).to                        eq(200)
+        expect(json.size).to                     eq(2)
+        expect(json[0]['attributes']['name']).to match('special')
       end
     end
 

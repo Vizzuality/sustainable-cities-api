@@ -27,9 +27,15 @@ class Enabling < ApplicationRecord
 
   scope :by_name_asc, -> { order('enablings.name ASC') }
 
+  scope :filter_by_name_or_description, ->(search_term) { where('enablings.name ilike ? or enablings.description ilike ?', "%#{search_term}%", "%#{search_term}%") }
+
   class << self
     def fetch_all(options)
-      all.includes(:category, :bmes)
+      search_term = options['search'] if options.present? && options['search'].present?
+
+      enablings = includes(:category, :bmes)
+      enablings = enablings.filter_by_name_or_description(search_term) if search_term.present?
+      enablings
     end
   end
 end
