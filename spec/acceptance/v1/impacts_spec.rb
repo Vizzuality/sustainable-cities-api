@@ -17,7 +17,7 @@ module V1
     let!(:editor)    { FactoryGirl.create(:editor)    }
     let!(:publisher) { FactoryGirl.create(:publisher) }
 
-    let!(:impact)    { FactoryGirl.create(:impact, name: '00 first one', impact_value: 'ZZZ value') }
+    let!(:impact) { FactoryGirl.create(:impact, name: '00 first one', impact_value: 'ZZZ value') }
 
     context 'Show impacts' do
       it 'Get impacts list' do
@@ -32,10 +32,13 @@ module V1
     end
 
     context 'Pagination and sort for impacts' do
+      let!(:category) { FactoryGirl.create(:category, name: 'ZZZ last category') }
+
       let!(:impacts) {
         impacts = []
         impacts << FactoryGirl.create_list(:impact, 4)
-        impacts << FactoryGirl.create(:impact, name: 'ZZZ Next first one', description: 'lorem ipsum Impact', impact_value: 'AAA value', impact_unit: 'ZZZ unit')
+        impacts << FactoryGirl.create(:impact, name: 'ZZZ Next first one', description: 'lorem ipsum Impact',
+                                               impact_value: 'AAA value', impact_unit: 'ZZZ unit', category: category)
       }
 
       it 'Show list of impacts for first page with per pege param' do
@@ -90,6 +93,14 @@ module V1
         expect(status).to                                eq(200)
         expect(json.size).to                             eq(6)
         expect(json[0]['attributes']['impact_value']).to eq('ZZZ value')
+      end
+
+      it 'Show list of impacts for sort by category name DESC' do
+        get '/impacts?sort=-category', headers: @headers
+
+        expect(status).to                        eq(200)
+        expect(json.size).to                     eq(6)
+        expect(json[0]['attributes']['name']).to eq('ZZZ Next first one')
       end
     end
 
