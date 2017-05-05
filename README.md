@@ -93,6 +93,8 @@ cd sustainable_cities
 
 ## DEPLOYMENT ##
 
+**To deploy the API to staging environment, just execute: cap staging deploy**
+
 ## CONTRIBUTING ##
 
 ### BEFORE CREATING A PULL REQUEST ###
