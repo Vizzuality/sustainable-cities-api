@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 class ImpactsIndex
   DEFAULT_SORTING = { updated_at: :desc }
-  SORTABLE_FIELDS = [:name, :impact_value, :impact_unit, :updated_at, :created_at]
+  SORTABLE_FIELDS = [:name, :impact_value, :category, :impact_unit, :updated_at, :created_at]
   PER_PAGE = 10
 
   delegate :params,      to: :controller
@@ -72,7 +72,18 @@ class ImpactsIndex
     end
 
     def sort_params
-      SortParams.sorted_fields(params[:sort], SORTABLE_FIELDS, DEFAULT_SORTING)
+      for_sort = SortParams.sorted_fields(params[:sort], SORTABLE_FIELDS, DEFAULT_SORTING)
+      if params[:sort].present? && params[:sort].include?('category')
+        new_for_sort  = "categories.name #{for_sort['category']}"
+        new_for_sort += ", impact.updated_at #{for_sort['updated_at']}"     if params[:sort].include?('updated_at')
+        new_for_sort += ", impact.created_at #{for_sort['created_at']}"     if params[:sort].include?('created_at')
+        new_for_sort += ", impact.name #{for_sort['name']}"                 if params[:sort].include?('name')
+        new_for_sort += ", impact.impact_value #{for_sort['impact_value']}" if params[:sort].include?('impact_value')
+        new_for_sort += ", impact.impact_unit #{for_sort['impact_unit']}"   if params[:sort].include?('impact_unit')
+
+        for_sort = new_for_sort
+      end
+      for_sort
     end
 
     def rebuild_params

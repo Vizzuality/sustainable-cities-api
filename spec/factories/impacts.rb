@@ -19,5 +19,6 @@ FactoryGirl.define do
     name 'A Impact'
     impact_value 'Value 1'
     impact_unit  'Unit 1'
+    association :category, factory: :category
   end
 end

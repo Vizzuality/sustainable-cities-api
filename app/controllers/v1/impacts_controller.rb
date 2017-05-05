@@ -10,12 +10,12 @@ module V1
 
     def index
       @impacts = ImpactsIndex.new(self)
-      render json: @impacts.impacts, each_serializer: ImpactSerializer, links: @impacts.links, meta: { total_items: @impacts.total_items }
+      render json: @impacts.impacts, each_serializer: ImpactSerializer, include: [:category], links: @impacts.links, meta: { total_items: @impacts.total_items }
     end
 
     def show
-      render json: @impact, serializer: ImpactSerializer, include: [:external_sources], meta: { updated_at: @impact.updated_at,
-                                                                                                created_at: @impact.created_at }
+      render json: @impact, serializer: ImpactSerializer, include: [:external_sources, :category], meta: { updated_at: @impact.updated_at,
+                                                                                                           created_at: @impact.created_at }
     end
 
     def update
