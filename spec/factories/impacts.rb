@@ -18,5 +18,6 @@ FactoryGirl.define do
   factory :impact do
     name 'A Impact'
     impact_value 'Value 1'
+    impact_unit  'Unit 1'
   end
 end
