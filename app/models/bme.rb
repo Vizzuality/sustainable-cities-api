@@ -29,18 +29,19 @@ class Bme < ApplicationRecord
 
   scope :by_name_asc, -> { order('bmes.name ASC') }
 
-  scope :by_category, ->(order) {
-    order = 'ASC' unless %w[asc desc].include?(order.downcase)
-    joins(:categories).where(categories: { category_type: 'Bme' } ).order("categories.name #{order}") }
+  scope :by_category, -> {
+    includes(:categories).where(categories: { category_type: 'Bme' } ) }
 
   scope :filter_by_name_or_description, ->(search_term) { where('bmes.name ilike ? or bmes.description ilike ?', "%#{search_term}%", "%#{search_term}%") }
 
   class << self
     def fetch_all(options)
       search_term = options['search'] if options.present? && options['search'].present?
+      has_category = options.present? && (options['sort'] == 'category' || options['sort'] == '-category')
 
       bmes = includes(:categories, :enablings)
       bmes = bmes.filter_by_name_or_description(search_term) if search_term.present?
+      bmes = bmes.by_category if has_category
       bmes
     end
   end

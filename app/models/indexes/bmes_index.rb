@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 class BmesIndex
   DEFAULT_SORTING = { updated_at: :desc }
-  SORTABLE_FIELDS = [:name, :updated_at, :created_at, :own_category]
+  SORTABLE_FIELDS = [:name, :updated_at, :created_at, :category]
   PER_PAGE = 10
 
   delegate :params,   to: :controller
@@ -35,7 +35,7 @@ class BmesIndex
   private
 
     def options_filter
-      params.permit('id', 'name', 'search', 'sort', 'bme', 'bme' => {}).tap do |filter_params|
+      params.permit('id', 'name', 'search', 'sort', 'bme', 'bme', 'category' => {}).tap do |filter_params|
         filter_params[:page]= {}
         filter_params[:page][:number] = params[:page][:number] if params[:page].present? && params[:page][:number].present?
         filter_params[:page][:size]   = params[:page][:size]   if params[:page].present? && params[:page][:size].present?
@@ -72,7 +72,11 @@ class BmesIndex
     end
 
     def sort_params
-      SortParams.sorted_fields(params[:sort], SORTABLE_FIELDS, DEFAULT_SORTING)
+      for_sort = SortParams.sorted_fields(params[:sort], SORTABLE_FIELDS, DEFAULT_SORTING)
+      if params[:sort].present? && params[:sort].include?('category')
+        for_sort  = "\"categories\".\"name\" #{for_sort['category']}"
+      end
+      for_sort
     end
 
     def rebuild_params
