@@ -10,10 +10,11 @@
 #  category_type :string
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  label         :string
 #
 
 class CategorySerializer < ActiveModel::Serializer
-  attributes :id, :name, :description, :category_type
+  attributes :id, :name, :description, :category_type, :label
 
   belongs_to :parent,   serializer: CategorySerializer
   has_many   :children, serializer: CategorySerializer
