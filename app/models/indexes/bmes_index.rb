@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 class BmesIndex
   DEFAULT_SORTING = { updated_at: :desc }
-  SORTABLE_FIELDS = [:name, :updated_at, :created_at]
+  SORTABLE_FIELDS = [:name, :updated_at, :created_at, :own_category]
   PER_PAGE = 10
 
   delegate :params,   to: :controller

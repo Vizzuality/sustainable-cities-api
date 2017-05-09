@@ -29,6 +29,10 @@ class Bme < ApplicationRecord
 
   scope :by_name_asc, -> { order('bmes.name ASC') }
 
+  scope :by_category, ->(order) {
+    order = 'ASC' unless %w[asc desc].include?(order.downcase)
+    joins(:categories).where(categories: { category_type: 'Bme' } ).order("categories.name #{order}") }
+
   scope :filter_by_name_or_description, ->(search_term) { where('bmes.name ilike ? or bmes.description ilike ?', "%#{search_term}%", "%#{search_term}%") }
 
   class << self
@@ -40,4 +44,5 @@ class Bme < ApplicationRecord
       bmes
     end
   end
+
 end
