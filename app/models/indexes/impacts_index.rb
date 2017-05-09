@@ -75,11 +75,11 @@ class ImpactsIndex
       for_sort = SortParams.sorted_fields(params[:sort], SORTABLE_FIELDS, DEFAULT_SORTING)
       if params[:sort].present? && params[:sort].include?('category')
         new_for_sort  = "categories.name #{for_sort['category']}"
-        new_for_sort += ", impact.updated_at #{for_sort['updated_at']}"     if params[:sort].include?('updated_at')
-        new_for_sort += ", impact.created_at #{for_sort['created_at']}"     if params[:sort].include?('created_at')
-        new_for_sort += ", impact.name #{for_sort['name']}"                 if params[:sort].include?('name')
-        new_for_sort += ", impact.impact_value #{for_sort['impact_value']}" if params[:sort].include?('impact_value')
-        new_for_sort += ", impact.impact_unit #{for_sort['impact_unit']}"   if params[:sort].include?('impact_unit')
+        new_for_sort += ", impacts.updated_at #{for_sort['updated_at']}"     if params[:sort].include?('updated_at')
+        new_for_sort += ", impacts.created_at #{for_sort['created_at']}"     if params[:sort].include?('created_at')
+        new_for_sort += ", impacts.name #{for_sort['name']}"                 if params[:sort].include?('name')
+        new_for_sort += ", impacts.impact_value #{for_sort['impact_value']}" if params[:sort].include?('impact_value')
+        new_for_sort += ", impacts.impact_unit #{for_sort['impact_unit']}"   if params[:sort].include?('impact_unit')
 
         for_sort = new_for_sort
       end
