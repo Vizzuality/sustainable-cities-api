@@ -97,15 +97,15 @@ module V1
         return_params[:user_ids] = params[:project][:user_ids] if @current_user.is_active_admin?
         return_params[:user_ids] = [@current_user.id]          if :create && return_params[:user_ids].blank?
         if @current_user.is_active_admin? || @current_user.is_active_publisher?
-          return_params[:is_active]   = params[:project][:is_active]
-          return_params[:is_featured] = params[:project][:is_featured]
+          return_params[:is_active]   = params[:project][:is_active] if params[:project][:is_active]
+          return_params[:is_featured] = params[:project][:is_featured] if params[:project][:is_featured]
         else
           return_params[:is_active]   = false
           return_params[:is_featured] = false
         end
 
         if @current_user.is_active_admin?
-          return_params[:project_type] = params[:project][:project_type]
+          return_params[:project_type] = params[:project][:project_type] if params[:project][:project_type]
         elsif :create && (@current_user.is_active_editor? || @current_user.is_active_publisher?)
           if params[:project][:project_type].include?('BusinessModel')
             return_params[:project_type] = params[:project][:project_type]
