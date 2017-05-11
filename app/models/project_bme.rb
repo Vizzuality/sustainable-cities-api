@@ -14,4 +14,8 @@
 class ProjectBme < ApplicationRecord
   belongs_to :project
   belongs_to :bme
+
+  has_one :comment,         as: :commentable,        dependent: :destroy
+
+  accepts_nested_attributes_for :comment
 end
