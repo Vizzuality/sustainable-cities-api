@@ -88,7 +88,9 @@ module V1
         return_params = params.require(:project).permit(:name, :situation, :solution, :category_id, :project_type,
                                                         :country_id, :operational_year, { user_ids: [] }, { city_ids: [] },
                                                         { bme_ids: [] }, { external_source_ids: [] }, { photo_ids: [] },
-                                                        { document_ids: [] }, { impact_ids: [] },
+                                                        { document_ids: [] },
+                                                        { impacts_attributes: [:name, :description, :impact_value,
+                                                                               :impact_unit, :categoy_id, :is_active, :_destroy] },
                                                         { photos_attributes: [:id, :name, :attachment, :is_active, :_destroy] },
                                                         { documents_attributes: [:id, :name, :attachment, :is_active, :_destroy] },
                                                         { external_sources_attributes: [:id, :name, :description, :web_url, :source_type,
@@ -97,15 +99,15 @@ module V1
         return_params[:user_ids] = params[:project][:user_ids] if @current_user.is_active_admin?
         return_params[:user_ids] = [@current_user.id]          if :create && return_params[:user_ids].blank?
         if @current_user.is_active_admin? || @current_user.is_active_publisher?
-          return_params[:is_active]   = params[:project][:is_active]
-          return_params[:is_featured] = params[:project][:is_featured]
+          return_params[:is_active]   = params[:project][:is_active] if params[:project][:is_active]
+          return_params[:is_featured] = params[:project][:is_featured] if params[:project][:is_featured]
         else
           return_params[:is_active]   = false
           return_params[:is_featured] = false
         end
 
         if @current_user.is_active_admin?
-          return_params[:project_type] = params[:project][:project_type]
+          return_params[:project_type] = params[:project][:project_type] if params[:project][:project_type]
         elsif :create && (@current_user.is_active_editor? || @current_user.is_active_publisher?)
           if params[:project][:project_type].include?('BusinessModel')
             return_params[:project_type] = params[:project][:project_type]

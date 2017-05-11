@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 class CategoriesIndex
   DEFAULT_SORTING = { updated_at: :desc }
-  SORTABLE_FIELDS = [:name, :updated_at, :created_at]
+  SORTABLE_FIELDS = [:category_type, :name, :updated_at, :created_at]
   PER_PAGE = 10
 
   delegate :params,         to: :controller
