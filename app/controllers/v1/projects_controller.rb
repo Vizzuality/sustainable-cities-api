@@ -61,7 +61,7 @@ module V1
       def render_project
         render json: @project, serializer: ProjectSerializer, include: [:country,
                                                                         :category,
-                                                                        :bmes,
+                                                                        [project_bmes: :bme],
                                                                         :impacts,
                                                                         :cities,
                                                                         :external_sources,
@@ -87,7 +87,7 @@ module V1
       def project_params
         return_params = params.require(:project).permit(:name, :situation, :solution, :category_id, :project_type,
                                                         { comments_attributes: [:body, :is_active, :user_id] },
-                                                        { project_bmes_attributes: [:bme_id, comment_attributes: [:body, :is_active] ] },
+                                                        { project_bmes_attributes: [:bme_id, :description] },
                                                         :country_id, :operational_year, { user_ids: [] }, { city_ids: [] },
                                                         { external_source_ids: [] }, { photo_ids: [] },
                                                         { document_ids: [] },
@@ -127,12 +127,6 @@ module V1
         if return_params[:documents_attributes].present?
           return_params[:documents_attributes].each do |document_attributes|
             document_attributes[:attachment] = process_file_base64(document_attributes[:attachment].to_s) if document_attributes[:attachment].present?
-          end
-        end
-
-        if project_bmes = return_params['project_bmes_attributes']
-          project_bmes.each do |pbme|
-            pbme['comment_attributes']['user_id'] = @current_user.id if pbme['comment_attributes'].present?
           end
         end
 
