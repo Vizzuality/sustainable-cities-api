@@ -29,7 +29,9 @@ class ProjectSerializer < ActiveModel::Serializer
   belongs_to :country,  serializer: CountrySerializer
   belongs_to :category, serializer: CategorySerializer
 
-  has_many :bmes,             serializer: BmeSerializer
+#  has_many :bmes,             serializer: BmeSerializer
+  has_many :project_bmes,             serializer: ProjectBmeSerializer
+
   has_many :impacts,          serializer: ImpactSerializer
   has_many :cities,           serializer: CitySerializer
   has_many :users,            serializer: UserSerializer

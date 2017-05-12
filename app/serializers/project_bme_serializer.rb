@@ -1,4 +1,3 @@
-# frozen_string_literal: true
 # == Schema Information
 #
 # Table name: project_bmes
@@ -11,7 +10,9 @@
 #  updated_at  :datetime         not null
 #
 
-class ProjectBme < ApplicationRecord
-  belongs_to :project
-  belongs_to :bme
+class ProjectBmeSerializer < ActiveModel::Serializer
+  attributes :description
+
+  belongs_to :bme, serializer: BmeSerializer
+  belongs_to :project, serializer: ProjectSerializer
 end
