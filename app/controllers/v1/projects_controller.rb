@@ -86,12 +86,12 @@ module V1
 
       def project_params
         return_params = params.require(:project).permit(:name, :situation, :solution, :category_id, :project_type,
-                                                        { comments_attributes: [:body, :is_active, :user_id] },
+                                                        { comments_attributes: [:id, :body, :is_active, :user_id, :_destroy] },
                                                         { project_bmes_attributes: [:bme_id, :description] },
                                                         :country_id, :operational_year, { user_ids: [] }, { city_ids: [] },
                                                         { external_source_ids: [] }, { photo_ids: [] },
                                                         { document_ids: [] },
-                                                        { impacts_attributes: [:name, :description, :impact_value,
+                                                        { impacts_attributes: [:id, :name, :description, :impact_value,
                                                                                :impact_unit, :categoy_id, :is_active, :_destroy] },
                                                         { photos_attributes: [:id, :name, :attachment, :is_active, :_destroy] },
                                                         { documents_attributes: [:id, :name, :attachment, :is_active, :_destroy] },
