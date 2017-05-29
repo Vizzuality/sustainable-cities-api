@@ -60,9 +60,8 @@ module V1
 
       def render_project
         render json: @project, serializer: ProjectSerializer, include: [:country,
-                                                                        :category,
-                                                                        :bmes,
-                                                                        :impacts,
+                                                                        [impacts: :category],
+                                                                        [project_bmes: :bme],
                                                                         :cities,
                                                                         :external_sources,
                                                                         :photos,
@@ -86,9 +85,13 @@ module V1
 
       def project_params
         return_params = params.require(:project).permit(:name, :situation, :solution, :category_id, :project_type,
+                                                        { comments_attributes: [:id, :body, :is_active, :user_id, :_destroy] },
+                                                        { project_bmes_attributes: [:id, :bme_id, :description, :_destroy] },
                                                         :country_id, :operational_year, { user_ids: [] }, { city_ids: [] },
-                                                        { bme_ids: [] }, { external_source_ids: [] }, { photo_ids: [] },
-                                                        { document_ids: [] }, { impact_ids: [] },
+                                                        { external_source_ids: [] }, { photo_ids: [] },
+                                                        { document_ids: [] },
+                                                        { impacts_attributes: [:id, :name, :description, :impact_value,
+                                                                               :impact_unit, :categoy_id, :is_active, :_destroy] },
                                                         { photos_attributes: [:id, :name, :attachment, :is_active, :_destroy] },
                                                         { documents_attributes: [:id, :name, :attachment, :is_active, :_destroy] },
                                                         { external_sources_attributes: [:id, :name, :description, :web_url, :source_type,
@@ -97,15 +100,15 @@ module V1
         return_params[:user_ids] = params[:project][:user_ids] if @current_user.is_active_admin?
         return_params[:user_ids] = [@current_user.id]          if :create && return_params[:user_ids].blank?
         if @current_user.is_active_admin? || @current_user.is_active_publisher?
-          return_params[:is_active]   = params[:project][:is_active]
-          return_params[:is_featured] = params[:project][:is_featured]
+          return_params[:is_active]   = params[:project][:is_active] if params[:project][:is_active]
+          return_params[:is_featured] = params[:project][:is_featured] if params[:project][:is_featured]
         else
           return_params[:is_active]   = false
           return_params[:is_featured] = false
         end
 
         if @current_user.is_active_admin?
-          return_params[:project_type] = params[:project][:project_type]
+          return_params[:project_type] = params[:project][:project_type] if params[:project][:project_type]
         elsif :create && (@current_user.is_active_editor? || @current_user.is_active_publisher?)
           if params[:project][:project_type].include?('BusinessModel')
             return_params[:project_type] = params[:project][:project_type]
@@ -125,6 +128,7 @@ module V1
             document_attributes[:attachment] = process_file_base64(document_attributes[:attachment].to_s) if document_attributes[:attachment].present?
           end
         end
+
         return_params
       end
   end

@@ -9,9 +9,9 @@ module V1
     before_action :set_bme, only: [:show, :update, :destroy]
 
     def index
-      @bmes = BmesIndex.new(self)
-      render json: @bmes.bmes, each_serializer: BmeSerializer, include: [:categories, :enablings],
-             links: @bmes.links, meta: { total_items: @bmes.total_items }
+      bmes = BmesIndex.new(self)
+      render json: bmes.bmes, each_serializer: BmeSerializer, include: [:categories, :enablings],
+             links: bmes.links, meta: { total_items: bmes.total_items }
     end
 
     def show

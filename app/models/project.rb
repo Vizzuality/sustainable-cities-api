@@ -46,7 +46,9 @@ class Project < ApplicationRecord
   accepts_nested_attributes_for :external_sources, allow_destroy: true
   accepts_nested_attributes_for :documents,        allow_destroy: true
   accepts_nested_attributes_for :photos,           allow_destroy: true
-  accepts_nested_attributes_for :impacts
+  accepts_nested_attributes_for :impacts,          allow_destroy: true
+  accepts_nested_attributes_for :comments,         allow_destroy: true
+  accepts_nested_attributes_for :project_bmes,     allow_destroy: true
 
   validates :name, presence: true
   validates :project_type, presence: true, inclusion: { in: %w(BusinessModel StudyCase) }, on: :create
