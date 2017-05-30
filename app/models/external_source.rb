@@ -23,4 +23,15 @@ class ExternalSource < ApplicationRecord
 
   include Activable
   include Sanitizable
+
+  class << self
+    def fetch_all(options)
+
+      # Apply scopes for filtering here
+      #search_term = options['search']  if options.present? && options['search'].present?
+
+      # countries = countries.filter_by_name(search_term) if search_term.present?
+      all
+    end
+  end
 end

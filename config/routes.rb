@@ -41,5 +41,6 @@ Rails.application.routes.draw do
     resources :impacts
     resources :enablings
     resources :comments, except: :show
+    resources :external_sources
   end
 end
