@@ -15,7 +15,7 @@ module V1
     end
 
     def show
-      render json: @bme, serializer: BmeSerializer, include: [:categories, :enablings], meta: { updated_at: @bme.updated_at, created_at: @bme.created_at }
+      render json: @bme, serializer: BmeSerializer, include: [:categories, :enablings, :external_sources], meta: { updated_at: @bme.updated_at, created_at: @bme.created_at }
     end
 
     def update
@@ -50,7 +50,9 @@ module V1
       end
 
       def bme_params
-        params.require(:bme).permit(:name, :description, :is_featured, { enabling_ids: [] }, { category_ids: [] })
+        params.require(:bme).permit(:name, :description, :is_featured, { enabling_ids: [] }, { category_ids: [] },
+                                    { external_sources_attributes: [:id, :name, :description, :web_url, :source_type,
+                                                                    :author, :publication_year, :institution, :is_active, :_destroy] })
       end
   end
 end
