@@ -17,5 +17,6 @@ class BmeSerializer < ActiveModel::Serializer
 
   has_many :enablings,  serializer: EnablingSerializer
   has_many :categories, serializer: CategorySerializer
+  has_many :external_sources, serializer: ExternalSourceSerializer
 
 end

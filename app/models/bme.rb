@@ -21,9 +21,11 @@ class Bme < ApplicationRecord
 
   has_many :project_bmes
   has_many :projects, through: :project_bmes
+  has_many :external_sources, as: :attacheable, dependent: :destroy
 
   accepts_nested_attributes_for :categories
   accepts_nested_attributes_for :projects
+  accepts_nested_attributes_for :external_sources, allow_destroy: true
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
 
