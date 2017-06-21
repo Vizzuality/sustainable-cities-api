@@ -132,13 +132,13 @@ ActiveRecord::Schema.define(version: 20170621161858) do
     t.string "web_url"
     t.string "source_type"
     t.string "author"
-    t.datetime "publication_year"
     t.string "institution"
     t.string "attacheable_type"
     t.bigint "attacheable_id"
     t.boolean "is_active", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "publication_year"
     t.index ["attacheable_id", "attacheable_type"], name: "external_sources_attacheable_index"
     t.index ["attacheable_type", "attacheable_id"], name: "index_external_sources_on_attacheable_type_and_attacheable_id"
   end
