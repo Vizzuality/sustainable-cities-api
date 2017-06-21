@@ -9,3 +9,8 @@
 
 # Find and create new seed files in db/fixtures
 Rake::Task['db:seed_fu'].invoke
+
+# Generate slugs for categories
+if Category.where.not(slug: nil).size == 0
+	Category.all.each(&:save)
+end
