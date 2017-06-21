@@ -13,7 +13,7 @@
 #
 
 class CategoryTreeSerializer < ActiveModel::Serializer
-  attributes :id, :name, :description, :category_type, :parent_id, :children
+  attributes :id, :name, :slug, :description, :category_type, :parent_id, :children
 
   def id
     object.id.to_s

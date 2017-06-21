@@ -19,6 +19,7 @@ gem 'oj_mimic_json'
 # Data
 gem 'cancancan'
 gem 'seed-fu'
+gem 'friendly_id'
 
 # Auth and Omniauth
 gem 'bcrypt'

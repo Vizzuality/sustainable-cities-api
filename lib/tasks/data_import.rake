@@ -227,7 +227,7 @@ namespace :import_external_sources_csv do
         data_external_sources = {}
         data_external_sources[:source_type]      = data_row['source_type']
         data_external_sources[:author]           = data_row['author']
-        data_external_sources[:publication_year] = data_row['publication_year'] if data_row['publication_year'].present?
+        data_external_sources[:publication_year] = '01/01/' << data_row['publication_year'] if data_row['publication_year'].present?
         data_external_sources[:name]             = data_row['name']
         data_external_sources[:institution]      = data_row['institution']
 
