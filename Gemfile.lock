@@ -121,6 +121,8 @@ GEM
     faker (1.7.3)
       i18n (~> 0.5)
     ffi (1.9.18)
+    friendly_id (5.2.1)
+      activerecord (>= 4.0.0)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
     hashdiff (0.3.2)
@@ -352,6 +354,7 @@ DEPENDENCIES
   email_spec
   factory_girl_rails
   faker
+  friendly_id
   jwt
   listen (~> 3.0.5)
   mini_magick
@@ -385,4 +388,4 @@ RUBY VERSION
    ruby 2.4.0p0
 
 BUNDLED WITH
-   1.14.6
+   1.15.1

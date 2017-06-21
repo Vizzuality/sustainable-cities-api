@@ -14,6 +14,9 @@
 #
 
 class Category < ApplicationRecord
+	extend FriendlyId
+  friendly_id :name, use: :slugged
+  
   enum project_type: { Category: 0, Solution: 1, Bme: 2, Impact: 3, Enabling: 4, Timing: 5 }.freeze
 
   # Parent-Children-Relations
