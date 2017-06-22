@@ -3,7 +3,7 @@ module V1
   class CategoriesController < ApplicationController
     include ErrorSerializer
 
-    skip_before_action :authenticate, only: [:index, :show]
+    skip_before_action :authenticate, only: [:index, :show, :by_type]
     load_and_authorize_resource class: 'Category'
 
     before_action :set_category, only: [:show, :update, :destroy]
