@@ -50,6 +50,7 @@ group :development do
   gem 'capistrano-rails',          '~> 1.2'
   gem 'capistrano-resque',         require: false
   gem 'capistrano-rvm'
+  gem 'capistrano-rails-tail-log'
   gem 'listen',                    '~> 3.0.5'
   gem 'pry-rails'
   gem 'rails-erd'
