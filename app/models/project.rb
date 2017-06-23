@@ -101,7 +101,6 @@ class Project < ApplicationRecord
 	def attributes
 		super.merge(
 				{
-					'category' => {},
 					'cities' => {}
 				}
 			)

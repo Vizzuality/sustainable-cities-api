@@ -14,10 +14,16 @@ module V1
 			filters = params[:filters][:solution] rescue ''
 
 			if filters.present?
-				projects = Category.find(filters).children.map { |s| s.projects.select(:id, :name, :category_id) }.map { |s| s.group_by(&:category_id) }
+				categories = Category.find(filters).children
+
+				projects = categories.map { |s| s.projects.select(:id, :name, :category_id) }.map { |s| s.group_by(&:category_id) }
 
 				projects.each do |group|
-					group[Category.find(group.keys.first).slug] = group.delete(group.keys.first)
+					category = Category.find(group.keys.first)
+					group['category_id'] = category.id
+					group['name'] = category.name
+					group['slug'] = category.slug
+					group['projects'] = group.delete(group.keys.first)
 				end
 
 				if projects.present?
