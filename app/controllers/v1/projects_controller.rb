@@ -4,14 +4,30 @@ module V1
     include ErrorSerializer
     include ApiUploads
 
-    skip_before_action :authenticate, only: [:index, :show, :by_solution]
+    skip_before_action :authenticate, only: [:index, :show]
     load_and_authorize_resource class: 'Project'
 
     before_action :set_full_project, only: [:show, :show_project_and_bm]
     before_action :set_project,      only: [:update, :destroy]
 
     def index
-      render_projects
+			filters = params[:filters][:solution]
+
+			if filters.present?
+				projects = Category.find(filters).children.map { |s| s.projects.select(:id, :name, :category_id) }.map { |s| s.group_by(&:category_id) }
+
+				projects.each do |group|
+					group[Category.find(group.keys.first).slug] = group.delete(group.keys.first)
+				end
+
+				if projects.present?
+					render json: { data: projects }
+				else
+					render json: { errors: [{ status: '404', title: 'Record not found' }] }, status: 404
+				end
+			else
+				render_projects
+			end
     end
 
     def index_all
@@ -54,22 +70,6 @@ module V1
       else
         render json: ErrorSerializer.serialize(@project.errors, 422), status: 422
       end
-    end
-
-    def by_solution
-			third_level_id = params[:category_id]
-
-			projects = Category.find(third_level_id).children.map { |s| s.projects.select(:id, :name, :category_id) }.map { |s| s.group_by(&:category_id) }
-
-			projects.each do |group|
-				group[Category.find(group.keys.first).slug] = group.delete(group.keys.first)
-			end
-
-			if projects.present?
-				render json: { data: projects }
-			else
-				render json: { errors: [{ status: '404', title: 'Record not found' }] }, status: 404
-			end
     end
 
     private
