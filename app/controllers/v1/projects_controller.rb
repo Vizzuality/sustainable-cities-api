@@ -11,7 +11,7 @@ module V1
     before_action :set_project,      only: [:update, :destroy]
 
     def index
-			filters = params[:filters][:solution]
+			filters = params[:filters][:solution] rescue ''
 
 			if filters.present?
 				projects = Category.find(filters).children.map { |s| s.projects.select(:id, :name, :category_id) }.map { |s| s.group_by(&:category_id) }
