@@ -3,7 +3,7 @@ module V1
   class CategoriesController < ApplicationController
     include ErrorSerializer
 
-    skip_before_action :authenticate, only: [:index, :show]
+    skip_before_action :authenticate, only: [:index, :show, :by_type]
     load_and_authorize_resource class: 'Category'
 
     before_action :set_category, only: [:show, :update, :destroy]
@@ -41,6 +41,20 @@ module V1
       else
         render json: ErrorSerializer.serialize(@category.errors, 422), status: 422
       end
+    end
+
+    def by_type
+			filters = params[:filters][:type].split(',') rescue ''
+
+			if filters.present?
+				@categories = {
+												data: Category.where(category_type: filters).select(:id, :name, :slug, :description, :category_type, :parent_id).group_by(&:category_type)
+											}
+			else
+				@categories = Category.all
+			end
+
+			render json: @categories
     end
 
     private

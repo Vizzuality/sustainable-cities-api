@@ -4,7 +4,7 @@ module V1
     include ErrorSerializer
     include ApiUploads
 
-    skip_before_action :authenticate, only: [:index, :show]
+    skip_before_action :authenticate, only: [:index, :show, :by_solution]
     load_and_authorize_resource class: 'Project'
 
     before_action :set_full_project, only: [:show, :show_project_and_bm]
@@ -54,6 +54,11 @@ module V1
       else
         render json: ErrorSerializer.serialize(@project.errors, 422), status: 422
       end
+    end
+
+    def by_solution
+    	@projects = Project.where(category_id: params[:category_id])
+    	render json: @projects, each_serializer: ProjectBySolutionSerializer
     end
 
     private

@@ -31,6 +31,10 @@ Rails.application.routes.draw do
     get '/categories',                            to: 'categories#index', category_type: 'All'
     get '/categories-tree',                       to: 'categories#index', category_type: 'Tree'
 
+    # Custom endpoints
+    get '/projects-by-solution/:category_id', to: 'projects#by_solution'
+    get '/categories_types', to: 'categories#by_type'
+
     # Resources
     resources :users
     resources :cities

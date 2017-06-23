@@ -60,6 +60,14 @@ class Category < ApplicationRecord
     end
   end
 
+	def parent_slug
+		self.parent.slug rescue nil
+	end
+
+	def attributes
+		super.merge({'parent_slug' => parent_slug})
+	end
+
   def with_children
     children.includes(children: :parent).distinct
   end
