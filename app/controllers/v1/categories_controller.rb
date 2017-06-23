@@ -12,7 +12,7 @@ module V1
 			filters = params[:filters][:type].split(',') rescue ''
 
 			if filters.present?
-				@categories = { data: Category.where(category_type: filters).select(:id, :name, :slug, :description, :category_type, :parent_id).group_by(&:category_type) }
+				@categories = { data: Category.where(category_type: filters).select(:id, :name, :slug, :description, :category_type, :parent_id).second_level.group_by(&:category_type) }
 				render json: @categories
 			else
 				@categories = CategoriesIndex.new(self)

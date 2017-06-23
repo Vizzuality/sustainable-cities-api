@@ -37,6 +37,7 @@ class Category < ApplicationRecord
   scope :by_type,       ->cat_type_name { where(category_type: cat_type_name) }
   scope :top_level,     ->              { where(parent_id: nil)               }
   scope :with_children, ->              { joins(:children).distinct           }
+  scope :second_level,		->							{ where(parent_id: nil).map {|c| c.children}.flatten }
 
   scope :filter_by_name_or_description, ->(search_term) { where('categories.name ilike ? or categories.description ilike ?', "%#{search_term}%", "%#{search_term}%") }
 
