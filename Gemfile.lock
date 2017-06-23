@@ -76,6 +76,9 @@ GEM
     capistrano-rails (1.2.3)
       capistrano (~> 3.1)
       capistrano-bundler (~> 1.1)
+    capistrano-rails-tail-log (0.1.0)
+      capistrano (>= 3.0)
+      capistrano-rails
     capistrano-resque (0.2.3)
       capistrano
       resque
@@ -345,6 +348,7 @@ DEPENDENCIES
   capistrano-env-config
   capistrano-passenger
   capistrano-rails (~> 1.2)
+  capistrano-rails-tail-log
   capistrano-resque
   capistrano-rvm
   carrierwave-base64
