@@ -3,15 +3,22 @@ module V1
   class CategoriesController < ApplicationController
     include ErrorSerializer
 
-    skip_before_action :authenticate, only: [:index, :show, :by_type]
+    skip_before_action :authenticate, only: [:index, :show]
     load_and_authorize_resource class: 'Category'
 
     before_action :set_category, only: [:show, :update, :destroy]
 
     def index
-      @categories = CategoriesIndex.new(self)
-      render json: @categories.categories, each_serializer: params['category_type'].match?('Tree') ? CategoryTreeSerializer : CategorySerializer,
-             links: @categories.links, meta: { total_items: @categories.total_items }
+			filters = params[:filters][:type].split(',') rescue ''
+
+			if filters.present?
+				@categories = { data: Category.where(category_type: filters).select(:id, :name, :slug, :description, :category_type, :parent_id).group_by(&:category_type) }
+				render json: @categories
+			else
+				@categories = CategoriesIndex.new(self)
+				render json: @categories.categories, each_serializer: params['category_type'].match?('Tree') ? CategoryTreeSerializer : CategorySerializer,
+					links: @categories.links, meta: { total_items: @categories.total_items }
+			end
     end
 
     def show
@@ -41,20 +48,6 @@ module V1
       else
         render json: ErrorSerializer.serialize(@category.errors, 422), status: 422
       end
-    end
-
-    def by_type
-			filters = params[:filters][:type].split(',') rescue ''
-
-			if filters.present?
-				@categories = {
-												data: Category.where(category_type: filters).select(:id, :name, :slug, :description, :category_type, :parent_id).group_by(&:category_type)
-											}
-			else
-				@categories = Category.all
-			end
-
-			render json: @categories
     end
 
     private
