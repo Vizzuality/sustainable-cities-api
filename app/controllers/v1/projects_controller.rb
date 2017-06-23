@@ -57,8 +57,19 @@ module V1
     end
 
     def by_solution
-    	@projects = Project.where(category_id: params[:category_id])
-    	render json: @projects, each_serializer: ProjectBySolutionSerializer
+			third_level_id = params[:category_id]
+
+			projects = Category.find(third_level_id).children.map { |s| s.projects.select(:id, :name, :category_id) }.map { |s| s.group_by(&:category_id) }
+
+			projects.each do |group|
+				group[Category.find(group.keys.first).slug] = group.delete(group.keys.first)
+			end
+
+			if projects.present?
+				render json: { data: projects }
+			else
+				render json: { errors: [{ status: '404', title: 'Record not found' }] }, status: 404
+			end
     end
 
     private
