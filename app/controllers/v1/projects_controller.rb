@@ -14,22 +14,43 @@ module V1
 			filters = params[:filters][:solution] rescue ''
 
 			if filters.present?
-				categories = Category.find(filters).children
+				if filters == 'all'
+					categories = Category.by_type('Solution').second_level
 
-				projects = categories.map { |s| s.projects.select(:id, :name, :category_id) }.map { |s| s.group_by(&:category_id) }
+					projects = categories.map do |category|
+						{ "#{category.id}": category.children.map { |child| child.projects.select(:id, :name, :category_id) }.flatten }.stringify_keys
+					end
 
-				projects.each do |group|
-					category = Category.find(group.keys.first)
-					group['category_id'] = category.id
-					group['name'] = category.name
-					group['slug'] = category.slug
-					group['projects'] = group.delete(group.keys.first)
-				end
+					projects.each do |group|
+						category = Category.find(group.keys.first)
+						group['category_id'] = category.id
+						group['name'] = category.name
+						group['slug'] = category.slug
+						group['projects'] = group.delete(group.keys.first)
+					end
 
-				if projects.present?
-					render json: { data: projects }
+					if projects.present?
+						render json: { data: projects }
+					else
+						render json: { errors: [{ status: '404', title: 'Record not found' }] }, status: 404
+					end
 				else
-					render json: { errors: [{ status: '404', title: 'Record not found' }] }, status: 404
+					categories = Category.find(filters).children
+					projects = categories.map { |s| s.projects.select(:id, :name, :category_id) }.map { |s| s.group_by(&:category_id) }
+
+					projects.each do |group|
+						category = Category.find(group.keys.first)
+						group['category_id'] = category.id
+						group['name'] = category.name
+						group['slug'] = category.slug
+						group['projects'] = group.delete(group.keys.first)
+					end
+
+					if projects.present?
+						render json: { data: projects }
+					else
+						render json: { errors: [{ status: '404', title: 'Record not found' }] }, status: 404
+					end
 				end
 			else
 				render_projects
