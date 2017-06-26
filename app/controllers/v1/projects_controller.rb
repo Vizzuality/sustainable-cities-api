@@ -15,7 +15,6 @@ module V1
 
       if filters.present?
         projects = filters == 'all' ? assemble_all_projects : assemble_filtered_projects(filters)
-        sanitize_projects(projects)
 
         if projects.present?
           render json: { data: projects }
@@ -72,17 +71,17 @@ module V1
     private
 
     def assemble_all_projects
-      Category.by_type('Solution').second_level.map do |category|
+      projects = Category.by_type('Solution').second_level.map do |category|
         { "#{category.id}": category.children.map { |child| child.projects.select(:id, :name, :category_id) }.flatten }.stringify_keys
       end
+
+      sanitize_projects(projects)
     end
 
     def assemble_filtered_projects(filters)
       Category.find(filters).children.map do
         |category| category.projects.select(:id, :name, :category_id)
-      end.map do |projects|
-        projects.group_by(&:category_id)
-      end
+      end.flatten
     end
 
     def sanitize_projects(projects)
