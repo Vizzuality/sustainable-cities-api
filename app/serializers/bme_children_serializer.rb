@@ -21,9 +21,9 @@ class BmeChildrenSerializer < ActiveModel::Serializer
   end
 
   def bmes
-  	@bmes = object.bmes
-  	@bmes.map do |bme|
-  		SimpleBmeSerializer.new(bme).serializable_hash
-  	end
+    @bmes = object.bmes
+    @bmes.map do |bme|
+      SimpleBmeSerializer.new(bme).serializable_hash
+    end
   end
 end

@@ -79,8 +79,8 @@ module V1
     end
 
     def assemble_filtered_projects(filters)
-      Category.find(filters).children.map do
-        |category| category.projects.select(:id, :name, :category_id)
+      Category.find(filters).children.map do |category|
+        category.projects.select(:id, :name, :category_id)
       end.flatten
     end
 

@@ -32,7 +32,8 @@ class Bme < ApplicationRecord
   scope :by_name_asc, -> { order('bmes.name ASC') }
 
   scope :by_category, -> {
-    where(categories: { category_type: 'Bme' } ) }
+    where(categories: { category_type: 'Bme' } ) 
+  }
 
   scope :filter_by_name_or_description, ->(search_term) { where('bmes.name ilike ? or bmes.description ilike ?', "%#{search_term}%", "%#{search_term}%") }
 

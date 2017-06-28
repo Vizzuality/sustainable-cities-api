@@ -98,12 +98,12 @@ class Project < ApplicationRecord
     end
   end
 
-	def attributes
-		super.merge(
-				{
-					'cities' => {}
-				}
-			)
-	end
+  def attributes
+    super.merge(
+      {
+         'cities' => {}
+       }
+    )
+  end
 
 end

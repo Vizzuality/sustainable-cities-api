@@ -30,7 +30,7 @@ module V1
       else
         @categories = CategoriesIndex.new(self)
         render json: @categories.categories, each_serializer: params['category_type'].match?('Tree') ? CategoryTreeSerializer : CategorySerializer,
-          links: @categories.links, meta: { total_items: @categories.total_items }
+               links: @categories.links, meta: { total_items: @categories.total_items }
       end
     end
 

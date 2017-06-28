@@ -14,8 +14,8 @@
 #
 
 class Category < ApplicationRecord
-	extend FriendlyId
-	friendly_id :name, use: :slugged
+  extend FriendlyId
+  friendly_id :name, use: :slugged
   
   enum project_type: { Category: 0, Solution: 1, Bme: 2, Impact: 3, Enabling: 4, Timing: 5 }.freeze
 
@@ -61,13 +61,13 @@ class Category < ApplicationRecord
     end
   end
 
-	def parent_slug
-		self.parent.slug rescue nil
-	end
+  def parent_slug
+    self.parent.slug rescue nil
+  end
 
-	def attributes
-		super.merge({'parent_slug' => parent_slug})
-	end
+  def attributes
+    super.merge({ 'parent_slug' => parent_slug })
+  end
 
   def with_children
     children.includes(children: :parent).distinct
