@@ -41,10 +41,10 @@ class ProjectSerializer < ActiveModel::Serializer
   has_many :comments,         serializer: CommentSerializer
 
   def category_slug
-    object.category.slug
+    object.category.slug rescue nil
   end
 
   def category_name
-    object.category.name
+    object.category.name rescue nil
   end
 end
