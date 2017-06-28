@@ -9,16 +9,27 @@ module V1
     before_action :set_category, only: [:show, :update, :destroy]
 
     def index
-			filters = params[:filters][:type].split(',') rescue ''
+      filters = params[:filters]
 
-			if filters.present?
-				@categories = { data: Category.where(category_type: filters).select(:id, :name, :slug, :description, :category_type, :parent_id).second_level.group_by(&:category_type) }
-				render json: @categories
-			else
-				@categories = CategoriesIndex.new(self)
-				render json: @categories.categories, each_serializer: params['category_type'].match?('Tree') ? CategoryTreeSerializer : CategorySerializer,
-					links: @categories.links, meta: { total_items: @categories.total_items }
-			end
+      if filters[:type].present?
+        filters = filters[:type].split(',') rescue ''
+        @categories = Category.where(category_type: filters).select(:id, :name, :slug, :description, :category_type, :parent_id).second_level.group_by(&:category_type)
+
+        if @categories.empty?
+          raise ActiveRecord::RecordNotFound
+        else
+          render json: { data: @categories }
+        end
+      elsif filters[:bme].present?
+        @bme = Category.where(category_type: 'Bme').find(filters[:bme])
+
+        raise ActiveRecord::RecordNotFound unless @bme
+        render json: @bme, serializer: BmeCategorySerializer
+      else
+        @categories = CategoriesIndex.new(self)
+        render json: @categories.categories, each_serializer: params['category_type'].match?('Tree') ? CategoryTreeSerializer : CategorySerializer,
+          links: @categories.links, meta: { total_items: @categories.total_items }
+      end
     end
 
     def show
