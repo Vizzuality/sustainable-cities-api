@@ -76,6 +76,9 @@ GEM
     capistrano-rails (1.2.3)
       capistrano (~> 3.1)
       capistrano-bundler (~> 1.1)
+    capistrano-rails-tail-log (0.1.0)
+      capistrano (>= 3.0)
+      capistrano-rails
     capistrano-resque (0.2.3)
       capistrano
       resque
@@ -121,6 +124,8 @@ GEM
     faker (1.7.3)
       i18n (~> 0.5)
     ffi (1.9.18)
+    friendly_id (5.2.1)
+      activerecord (>= 4.0.0)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
     hashdiff (0.3.2)
@@ -343,6 +348,7 @@ DEPENDENCIES
   capistrano-env-config
   capistrano-passenger
   capistrano-rails (~> 1.2)
+  capistrano-rails-tail-log
   capistrano-resque
   capistrano-rvm
   carrierwave-base64
@@ -352,6 +358,7 @@ DEPENDENCIES
   email_spec
   factory_girl_rails
   faker
+  friendly_id
   jwt
   listen (~> 3.0.5)
   mini_magick
@@ -385,4 +392,4 @@ RUBY VERSION
    ruby 2.4.0p0
 
 BUNDLED WITH
-   1.14.6
+   1.15.1

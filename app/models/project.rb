@@ -97,4 +97,13 @@ class Project < ApplicationRecord
       projects
     end
   end
+
+  def attributes
+    super.merge(
+      {
+         'cities' => {}
+       }
+    )
+  end
+
 end

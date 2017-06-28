@@ -18,6 +18,7 @@ gem 'oj_mimic_json'
 
 # Data
 gem 'cancancan'
+gem 'friendly_id'
 gem 'seed-fu'
 
 # Auth and Omniauth
@@ -47,6 +48,7 @@ group :development do
   gem 'capistrano-env-config'
   gem 'capistrano-passenger'
   gem 'capistrano-rails',          '~> 1.2'
+  gem 'capistrano-rails-tail-log'
   gem 'capistrano-resque',         require: false
   gem 'capistrano-rvm'
   gem 'listen',                    '~> 3.0.5'
