@@ -22,7 +22,7 @@
 #
 
 class ProjectSerializer < ActiveModel::Serializer
-  attributes :id, :name, :situation, :solution, :category_id, :country_id,
+  attributes :id, :name, :situation, :solution, :category_id, :category_slug, :category_name, :country_id,
              :operational_year, :project_type, :is_active, :is_featured,
              :deactivated_at, :publish_request, :published_at
 
@@ -39,4 +39,12 @@ class ProjectSerializer < ActiveModel::Serializer
   has_many :documents,        serializer: DocumentSerializer
   has_many :external_sources, serializer: ExternalSourceSerializer
   has_many :comments,         serializer: CommentSerializer
+
+  def category_slug
+    object.category.slug
+  end
+
+  def category_name
+    object.category.name
+  end
 end
