@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 namespace :db do
   desc 'run rake db:seed'
   task :seed do
