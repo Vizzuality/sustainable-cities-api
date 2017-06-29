@@ -24,6 +24,8 @@ class Impact < ApplicationRecord
 
   has_many :external_sources, as: :attacheable, dependent: :destroy
 
+  accepts_nested_attributes_for :external_sources, allow_destroy: true
+
   validates :impact_value, presence: true
 
   include Activable
