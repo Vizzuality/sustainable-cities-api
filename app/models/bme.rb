@@ -21,7 +21,8 @@ class Bme < ApplicationRecord
 
   has_many :project_bmes
   has_many :projects, through: :project_bmes
-  has_many :external_sources, as: :attacheable, dependent: :destroy
+
+  has_and_belongs_to_many :external_sources, join_table: 'attacheable_external_sources', foreign_key: :attached_id
 
   accepts_nested_attributes_for :categories
   accepts_nested_attributes_for :projects

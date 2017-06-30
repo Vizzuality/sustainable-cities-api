@@ -38,9 +38,10 @@ class Project < ApplicationRecord
 
   has_many :photos,           as: :attacheable,        dependent: :destroy
   has_many :documents,        as: :attacheable,        dependent: :destroy
-  has_many :external_sources, as: :attacheable,        dependent: :destroy
   has_many :comments,         as: :commentable,        dependent: :destroy
   has_many :impacts,          inverse_of: :study_case, dependent: :destroy
+
+  has_and_belongs_to_many :external_sources, join_table: 'attacheable_external_sources', foreign_key: :attached_id
 
   accepts_nested_attributes_for :bmes
   accepts_nested_attributes_for :external_sources, allow_destroy: true
