@@ -11,8 +11,6 @@
 #  author           :string
 #  publication_year :datetime
 #  institution      :string
-#  attacheable_type :string
-#  attacheable_id   :integer
 #  is_active        :boolean          default(FALSE)
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null

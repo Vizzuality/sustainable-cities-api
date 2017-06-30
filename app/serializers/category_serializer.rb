@@ -11,6 +11,7 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  label         :string
+#  slug          :string
 #
 
 class CategorySerializer < ActiveModel::Serializer
