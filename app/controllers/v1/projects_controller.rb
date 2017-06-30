@@ -97,7 +97,8 @@ module V1
     def render_project
       render json: @project, serializer: ProjectSerializer, include: [:country,
                                                                       [impacts: :category],
-                                                                      [project_bmes: :bme],
+                                                                      [impacts: :external_sources],
+                                                                      [project_bmes: { bme: :categories }],
                                                                       :cities,
                                                                       :external_sources,
                                                                       :photos,
