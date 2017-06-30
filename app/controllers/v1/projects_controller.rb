@@ -10,22 +10,6 @@ module V1
     before_action :set_full_project, only: [:show, :show_project_and_bm]
     before_action :set_project,      only: [:update, :destroy]
 
-    # def index
-    #   filters = params[:filters][:solution] rescue ''
-
-    #   if filters.present?
-    #     projects = filters == 'all' ? assemble_all_projects : assemble_filtered_projects(filters)
-
-    #     if projects.present?
-    #       render json: { data: projects }
-    #     else
-    #       render json: { errors: [{ status: '404', title: 'Record not found' }] }, status: 404
-    #     end
-    #   else
-    #     render_projects
-    #   end
-    # end
-
     def index
       filters = params[:filters]
 
@@ -34,13 +18,13 @@ module V1
           filters = filters[:solution]
           @projects = filters == 'all' ? assemble_all_solution_projects : assemble_solution_filtered_projects(filters)
 
-          raise ActiveRecord::RecordNotFound unless @projects
+          raise ActiveRecord::RecordNotFound unless @projects.present?
           render json: { data: @projects }
         elsif filters[:bme].present?
           filters = filters[:bme]
           @projects = filters == 'all' ? assemble_all_bme_projects : assemble_bme_filtered_projects(filters)
 
-          raise ActiveRecord::RecordNotFound unless @projects
+          raise ActiveRecord::RecordNotFound unless @projects.present?
           render json: { data: @projects }
         end
       else
@@ -101,19 +85,24 @@ module V1
     end
 
     def assemble_all_bme_projects
+      projects = Category.by_type('Bme').second_level.map do |category|
+        { "#{category.id}": category.children.map { |child| child.bmes.map { |bme| bme.projects.select(:id, :name, :category_id) } }.flatten }.stringify_keys
+      end
 
+      sanitize_projects(projects)
     end
       
     def assemble_solution_filtered_projects(filters)
-      Category.find(filters).children.map do
-        |category| category.projects.select(:id, :name, :category_id)
+      Category.find(filters).children.map do |category|
+        category.projects.select(:id, :name, :category_id)
       end.flatten
     end
 
     def assemble_bme_filtered_projects(filters)
-      debugger
-      Category.find(filters).children.map do
-        |category| category.projects.select(:id, :name, :category_id)
+      Category.find(filters).children.map do |category|
+        category.bmes.map do |bme|
+          bme.projects.select(:id, :name, :category_id)
+        end
       end.flatten
     end
 
