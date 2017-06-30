@@ -22,7 +22,7 @@ class Impact < ApplicationRecord
                               foreign_key: 'project_id',
                               inverse_of: :impacts, touch: true
 
-  has_and_belongs_to_many :external_sources, join_table: 'attacheable_external_sources', foreign_key: :attached_id
+  has_and_belongs_to_many :external_sources, join_table: 'attacheable_external_sources', foreign_key: :attached_id, dependent: :destroy
 
   accepts_nested_attributes_for :external_sources, allow_destroy: true
 
