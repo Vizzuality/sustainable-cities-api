@@ -44,7 +44,8 @@ class Project < ApplicationRecord
   has_many :comments,         as: :commentable,        dependent: :destroy
   has_many :impacts,          inverse_of: :study_case, dependent: :destroy
 
-  has_and_belongs_to_many :external_sources, join_table: 'attacheable_external_sources', foreign_key: :attached_id, dependent: :destroy
+  has_many :attacheable_external_sources, as: :attacheable
+  has_many :external_sources, through: :attacheable_external_sources
 
   accepts_nested_attributes_for :bmes
   accepts_nested_attributes_for :external_sources, allow_destroy: true
@@ -114,7 +115,7 @@ class Project < ApplicationRecord
     impacts.each do |impact|
       if impact.remove_external_sources.present? && impact.external_sources.present?
         impact.remove_external_sources.each do |id|
-          AttacheableExternalSource.find_by(attached_id: impact.id, external_source_id: id)
+          impact.external_sources.delete(id)
         end
       end
     end

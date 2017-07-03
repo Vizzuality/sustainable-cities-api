@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170630135930) do
+ActiveRecord::Schema.define(version: 20170703141201) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,8 +29,8 @@ ActiveRecord::Schema.define(version: 20170630135930) do
 
   create_table "attacheable_external_sources", force: :cascade do |t|
     t.integer "external_source_id"
-    t.integer "attached_id"
-    t.string "attached_type"
+    t.integer "attacheable_id"
+    t.string "attacheable_type"
   end
 
   create_table "bme_categories", force: :cascade do |t|

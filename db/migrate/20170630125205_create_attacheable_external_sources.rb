@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class CreateAttacheableExternalSources < ActiveRecord::Migration[5.1]
   def change
     create_table :attacheable_external_sources do |t|
