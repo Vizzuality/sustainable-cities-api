@@ -18,9 +18,9 @@
 
 class ExternalSource < ApplicationRecord
   has_many :attacheable_external_sources
-  has_many :impacts,  through: :attacheable_external_sources, source: :attached, source_type: "Impact"
-  has_many :projects, through: :attacheable_external_sources, source: :attached, source_type: "Project"
-  has_many :bmes,     through: :attacheable_external_sources, source: :attached, source_type: "Bme"
+  has_many :impacts,  through: :attacheable_external_sources, source: :attacheable, source_type: "Impact"
+  has_many :projects, through: :attacheable_external_sources, source: :attacheable, source_type: "Project"
+  has_many :bmes,     through: :attacheable_external_sources, source: :attacheable, source_type: "Bme"
 
   include Activable
   include Sanitizable
