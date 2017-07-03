@@ -24,6 +24,9 @@
 class Project < ApplicationRecord
   enum project_type: { BusinessModel: 0, StudyCase: 1 }.freeze
 
+  before_save :link_impact_sources
+  before_save :unlink_impact_sources
+
   belongs_to :category, inverse_of: :projects, touch: true
   belongs_to :country,  inverse_of: :projects, optional: true, touch: true
 
@@ -96,6 +99,24 @@ class Project < ApplicationRecord
       projects = projects.filter_by_name_or_solution(search_term) if search_term.present?
 
       projects
+    end
+  end
+
+  def link_impact_sources
+    impacts.each do |impact|
+      if impact.external_sources_index.present? && external_sources.present?
+        impact.external_sources = impact.external_sources_index.map { |index| external_sources[index] }
+      end
+    end
+  end
+
+  def unlink_impact_sources
+    impacts.each do |impact|
+      if impact.remove_external_sources.present? && impact.external_sources.present?
+        impact.remove_external_sources.each do |id|
+          AttacheableExternalSource.find_by(attached_id: impact.id, external_source_id: id)
+        end
+      end
     end
   end
 

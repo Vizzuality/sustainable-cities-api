@@ -28,6 +28,8 @@ class Impact < ApplicationRecord
 
   validates :impact_value, presence: true
 
+  attr_accessor :external_sources_index, :remove_external_sources
+
   include Activable
 
   scope :by_name_asc, -> { order('impacts.name ASC') }
