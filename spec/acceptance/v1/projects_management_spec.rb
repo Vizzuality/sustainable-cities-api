@@ -332,7 +332,7 @@ module V1
       let!(:country)  { FactoryGirl.create(:country)                             }
       let!(:city)     { FactoryGirl.create(:city)                                }
       let!(:bme)      { FactoryGirl.create(:bme)                                 }
-      let!(:source)   { FactoryGirl.create(:external_source)                     }
+      let!(:source)   { FactoryGirl.create(:external_source_with_projects)                     }
       let!(:impact)   { FactoryGirl.create(:impact)                              }
 
       let!(:error)    { { errors: [{ status: 422, title: "name can't be blank" }]}}

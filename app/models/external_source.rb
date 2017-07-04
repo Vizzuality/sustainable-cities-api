@@ -11,15 +11,16 @@
 #  author           :string
 #  publication_year :datetime
 #  institution      :string
-#  attacheable_type :string
-#  attacheable_id   :integer
 #  is_active        :boolean          default(FALSE)
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
 
 class ExternalSource < ApplicationRecord
-  belongs_to :attacheable, polymorphic: true, touch: true
+  has_many :attacheable_external_sources
+  has_many :impacts,  through: :attacheable_external_sources, source: :attacheable, source_type: "Impact"
+  has_many :projects, through: :attacheable_external_sources, source: :attacheable, source_type: "Project"
+  has_many :bmes,     through: :attacheable_external_sources, source: :attacheable, source_type: "Bme"
 
   include Activable
   include Sanitizable
