@@ -20,6 +20,10 @@ FactoryGirl.define do
     name 'External source'
     web_url 'test-web.org'
     is_active true
-    association :attacheable, factory: :study_case
+    association :projects, factory: :study_case
+  end
+
+  factory :external_source_with_projects, parent: :external_source do
+    projects { [FactoryGirl.create(:study_case)] }
   end
 end

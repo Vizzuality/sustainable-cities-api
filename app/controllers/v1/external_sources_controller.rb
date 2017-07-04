@@ -52,8 +52,7 @@ module V1
 
     def external_source_params
       params.require(:external_source).permit(:name, :description, :web_url, :source_type, :author,
-                                              :publication_year, :institution, :attacheable_type,
-                                              :attacheable_id, :is_active)
+                                              :publication_year, :institution, :is_active)
     end
   end
 end
