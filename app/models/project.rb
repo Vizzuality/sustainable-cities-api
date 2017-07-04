@@ -24,6 +24,9 @@
 class Project < ApplicationRecord
   enum project_type: { BusinessModel: 0, StudyCase: 1 }.freeze
 
+  before_save :link_impact_sources
+  before_save :unlink_impact_sources
+
   belongs_to :category, inverse_of: :projects, touch: true
   belongs_to :country,  inverse_of: :projects, optional: true, touch: true
 
@@ -38,9 +41,11 @@ class Project < ApplicationRecord
 
   has_many :photos,           as: :attacheable,        dependent: :destroy
   has_many :documents,        as: :attacheable,        dependent: :destroy
-  has_many :external_sources, as: :attacheable,        dependent: :destroy
   has_many :comments,         as: :commentable,        dependent: :destroy
   has_many :impacts,          inverse_of: :study_case, dependent: :destroy
+
+  has_many :attacheable_external_sources, as: :attacheable
+  has_many :external_sources, through: :attacheable_external_sources
 
   accepts_nested_attributes_for :bmes
   accepts_nested_attributes_for :external_sources, allow_destroy: true
@@ -95,6 +100,24 @@ class Project < ApplicationRecord
       projects = projects.filter_by_name_or_solution(search_term) if search_term.present?
 
       projects
+    end
+  end
+
+  def link_impact_sources
+    impacts.each do |impact|
+      if impact.external_sources_index.present? && external_sources.present?
+        impact.external_sources = impact.external_sources_index.map { |index| external_sources[index] }
+      end
+    end
+  end
+
+  def unlink_impact_sources
+    impacts.each do |impact|
+      if impact.remove_external_sources.present? && impact.external_sources.present?
+        impact.remove_external_sources.each do |id|
+          impact.external_sources.delete(id)
+        end
+      end
     end
   end
 

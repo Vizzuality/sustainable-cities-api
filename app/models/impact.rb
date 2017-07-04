@@ -22,11 +22,14 @@ class Impact < ApplicationRecord
                               foreign_key: 'project_id',
                               inverse_of: :impacts, touch: true
 
-  has_many :external_sources, as: :attacheable, dependent: :destroy
+  has_many :attacheable_external_sources, as: :attacheable
+  has_many :external_sources, through: :attacheable_external_sources
 
   accepts_nested_attributes_for :external_sources, allow_destroy: true
 
   validates :impact_value, presence: true
+
+  attr_accessor :external_sources_index, :remove_external_sources
 
   include Activable
 

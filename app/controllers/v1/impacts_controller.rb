@@ -50,9 +50,7 @@ module V1
       end
 
       def impact_params
-        set_impact_params = [:name, :description, :impact_value, :impact_unit, :project_id, :category_id,
-                             external_sources_attributes: [:id, :name, :description, :web_url, :source_type,
-                                                           :author, :publication_year, :institution, :is_active, :_destroy]]
+        set_impact_params = [:name, :description, :impact_value, :impact_unit, :project_id, :category_id]
 
         if @current_user.is_active_admin? || @current_user.is_active_publisher?
           set_impact_params << [:is_active]
