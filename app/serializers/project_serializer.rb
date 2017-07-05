@@ -40,6 +40,10 @@ class ProjectSerializer < ActiveModel::Serializer
   has_many :external_sources, serializer: ExternalSourceSerializer
   has_many :comments,         serializer: CommentSerializer
 
+  def operational_year
+    object.operational_year.year
+  end
+
   def solution_id
     object.category.parent.id rescue nil
   end
