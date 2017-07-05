@@ -128,8 +128,8 @@ class Project < ApplicationRecord
       third_level: bmes.map(&:categories).flatten.uniq.compact
     }
 
-    levels[:second_level] = levels[:third_level].map(&:parent).uniq.compact
-    levels[:first_level] = levels[:second_level].map(&:parent).uniq.compact
+    levels[:second_level] = levels[:third_level].map(&:parent).uniq.compact rescue []
+    levels[:first_level] = levels[:second_level].map(&:parent).uniq.compact rescue []
 
     levels[:first_level].each do |category|
       tree << {
