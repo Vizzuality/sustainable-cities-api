@@ -18,7 +18,7 @@ class AttacheableExternalSource < ApplicationRecord
   def remove_dependent
     if attacheable_type == 'Project'
       impacts_ids = attacheable.impacts.pluck(:id)
-      AttacheableExternalSource.where(attacheable: impacts_ids, external_source_id: 325, attacheable_type: 'Impact').each(&:destroy)
+      AttacheableExternalSource.where(attacheable: impacts_ids, external_source_id: external_source_id, attacheable_type: 'Impact').each(&:destroy)
     end
   end
 end
