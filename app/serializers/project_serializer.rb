@@ -41,7 +41,7 @@ class ProjectSerializer < ActiveModel::Serializer
   has_many :comments,         serializer: CommentSerializer
 
   def operational_year
-    object.operational_year.year
+    object.operational_year.year rescue nil
   end
 
   def solution_id
