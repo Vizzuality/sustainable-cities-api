@@ -10,8 +10,6 @@
 #  author           :string
 #  publication_year :datetime
 #  institution      :string
-#  attacheable_type :string
-#  attacheable_id   :integer
 #  is_active        :boolean          default(FALSE)
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
@@ -21,12 +19,12 @@ require 'rails_helper'
 
 RSpec.describe ExternalSource, type: :model do
   before :each do
-    @external_source = create(:external_source)
+    @external_source = create(:external_source_with_projects)
   end
 
   it 'Count on external source' do
     expect(ExternalSource.count).to eq(1)
-    expect(@external_source.attacheable.name).to eq('A Study case')
+    expect(@external_source.projects.first.name).to eq('A Study case')
   end
 
   it 'Sanitize web url' do

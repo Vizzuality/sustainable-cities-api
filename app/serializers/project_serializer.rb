@@ -22,14 +22,14 @@
 #
 
 class ProjectSerializer < ActiveModel::Serializer
-  attributes :id, :name, :situation, :solution, :category_id, :country_id,
+  attributes :id, :name, :situation, :solution, :category_id, :solution_id, :solution_slug, :solution_name, :country_id,
              :operational_year, :project_type, :is_active, :is_featured,
-             :deactivated_at, :publish_request, :published_at
+             :deactivated_at, :publish_request, :published_at, :bme_tree
 
   belongs_to :country,  serializer: CountrySerializer
   belongs_to :category, serializer: CategorySerializer
 
-#  has_many :bmes,             serializer: BmeSerializer
+  #  has_many :bmes,             serializer: BmeSerializer
   has_many :project_bmes,             serializer: ProjectBmeSerializer
 
   has_many :impacts,          serializer: ImpactSerializer
@@ -39,4 +39,16 @@ class ProjectSerializer < ActiveModel::Serializer
   has_many :documents,        serializer: DocumentSerializer
   has_many :external_sources, serializer: ExternalSourceSerializer
   has_many :comments,         serializer: CommentSerializer
+
+  def solution_id
+    object.category.parent.id rescue nil
+  end
+
+  def solution_slug
+    object.category.parent.slug rescue nil
+  end
+
+  def solution_name
+    object.category.parent.name rescue nil
+  end
 end

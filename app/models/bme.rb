@@ -22,15 +22,20 @@ class Bme < ApplicationRecord
   has_many :project_bmes
   has_many :projects, through: :project_bmes
 
+  has_many :attacheable_external_sources, as: :attacheable
+  has_many :external_sources, through: :attacheable_external_sources
+
   accepts_nested_attributes_for :categories
   accepts_nested_attributes_for :projects
+  accepts_nested_attributes_for :external_sources, allow_destroy: true
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
 
   scope :by_name_asc, -> { order('bmes.name ASC') }
 
   scope :by_category, -> {
-    where(categories: { category_type: 'Bme' } ) }
+    where(categories: { category_type: 'Bme' } ) 
+  }
 
   scope :filter_by_name_or_description, ->(search_term) { where('bmes.name ilike ? or bmes.description ilike ?', "%#{search_term}%", "%#{search_term}%") }
 

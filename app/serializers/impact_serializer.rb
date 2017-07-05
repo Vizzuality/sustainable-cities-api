@@ -20,4 +20,5 @@ class ImpactSerializer < ActiveModel::Serializer
 
   belongs_to :study_case, serializer: ProjectSerializer
   belongs_to :category,   serializer: CategorySerializer
+  has_many :external_sources, serializer: ExternalSourceSerializer
 end

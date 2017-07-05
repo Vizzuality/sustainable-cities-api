@@ -12,11 +12,6 @@
 #  is_featured :boolean          default(FALSE)
 #
 
-class BmeSerializer < ActiveModel::Serializer
-  attributes :id, :name, :description, :is_featured
-
-  has_many :enablings,  serializer: EnablingSerializer
-  has_many :categories, serializer: CategorySerializer
-  has_many :external_sources, serializer: ExternalSourceSerializer
-
+class SimpleBmeSerializer < ActiveModel::Serializer
+  attributes :id, :name
 end
