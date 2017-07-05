@@ -27,7 +27,6 @@ default: &default
 development:
   <<: *default
   database: sustainable_cities_development
-  username: ivan
   password: <%= ENV.fetch("POSTGRES_PASSWORD") { } %>
 
   # The specified database role being used to connect to postgres.
@@ -63,7 +62,6 @@ development:
 test:
   <<: *default
   database: sustainable_cities_test
-  username: ivan
   password: <%= ENV.fetch("POSTGRES_PASSWORD") { } %>
 
 # As with config/secrets.yml, you never want to store sensitive information,
