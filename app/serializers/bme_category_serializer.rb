@@ -10,7 +10,7 @@
 #  updated_at  :datetime         not null
 #
 
-
+=begin
 class BmeCategorySerializer < ActiveModel::Serializer
   attributes :children, :bmes
 
@@ -30,3 +30,4 @@ class BmeCategorySerializer < ActiveModel::Serializer
     end
   end
 end
+=end

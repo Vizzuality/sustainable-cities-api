@@ -7,16 +7,8 @@ module V1
     skip_before_action :authenticate, only: [:index, :show]
     load_and_authorize_resource class: 'User'
 
-    before_action :set_user, only: [:show, :update, :destroy]
+    before_action :set_user, only: [:update, :destroy]
 
-    def index
-      @users = UsersIndex.new(self)
-      render json: @users.users, each_serializer: UserSerializer, links: @users.links, meta: { total_items: @users.total_items }
-    end
-
-    def show
-      render json: @user, serializer: UserSerializer, include: :comments, meta: { updated_at: @user.updated_at, created_at: @user.created_at }
-    end
 
     def update
       if @user.update(user_params)
