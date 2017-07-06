@@ -8,15 +8,6 @@ module V1
 
     before_action :set_country, only: [:show, :update, :destroy]
 
-    def index
-      @countries = CountriesIndex.new(self)
-      render json: @countries.countries, each_serializer: CountrySerializer, links: @countries.links, meta: { total_items: @countries.total_items }
-    end
-
-    def show
-      render json: @country, serializer: CountrySerializer, meta: { updated_at: @country.updated_at, created_at: @country.created_at }
-    end
-
     def update
       if @country.update(country_params)
         render json: { messages: [{ status: 200, title: "Country successfully updated!" }] }, status: 200

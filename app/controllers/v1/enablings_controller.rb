@@ -6,17 +6,7 @@ module V1
     skip_before_action :authenticate, only: [:index, :show]
     load_and_authorize_resource class: 'Enabling'
 
-    before_action :set_enabling, only: [:show, :update, :destroy]
-
-    def index
-      @enablings = EnablingsIndex.new(self)
-      render json: @enablings.enablings, each_serializer: EnablingSerializer, include: [:category, :bmes],
-             links: @enablings.links, meta: { total_items: @enablings.total_items }
-    end
-
-    def show
-      render json: @enabling, serializer: EnablingSerializer, include: [:category, :bmes], meta: { updated_at: @enabling.updated_at, created_at: @enabling.created_at }
-    end
+    before_action :set_enabling, only: [:update, :destroy]
 
     def update
       if @enabling.update(enabling_params)
