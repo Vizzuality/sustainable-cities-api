@@ -6,6 +6,7 @@ module V1
 
     has_one :parent
     has_many   :children
+    has_many :bmes
     filters :id, :name, :slug, :category_type, :label
 
     def custom_links(_)

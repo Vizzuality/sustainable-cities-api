@@ -7,11 +7,11 @@ module V1
     attributes :name, :slug, :description, :category_type, :parent_id, :children
 
     def id
-      object.id.to_s
+      @model.id.to_s
     end
 
     def parent_id
-      object.parent_id.to_s if object.parent_id.present?
+      @model.parent_id.to_s if @model.parent_id.present?
     end
 
     filters :id, :name, :slug

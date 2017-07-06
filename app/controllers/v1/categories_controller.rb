@@ -6,7 +6,7 @@ module V1
     skip_before_action :authenticate, only: [:index, :show]
     load_and_authorize_resource class: 'Category'
 
-    before_action :set_category, only: [:show, :update, :destroy]
+    before_action :set_category, only: [:update, :destroy]
 
 =begin
     def index
