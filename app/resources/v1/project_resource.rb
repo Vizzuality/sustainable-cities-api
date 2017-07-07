@@ -23,6 +23,10 @@ module V1
     has_many :external_sources
     has_many :comments
 
+    def operational_year
+      object.operational_year.year rescue nil
+    end
+
     def custom_links(_)
       { self: nil }
     end
