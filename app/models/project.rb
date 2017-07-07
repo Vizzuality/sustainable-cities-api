@@ -57,6 +57,7 @@ class Project < ApplicationRecord
 
   validates :name, presence: true
   validates :project_type, presence: true, inclusion: { in: %w(BusinessModel StudyCase) }, on: :create
+  validates_length_of :tagline, maximum: 165
 
   include Activable
 
