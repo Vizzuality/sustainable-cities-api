@@ -192,6 +192,7 @@ ActiveRecord::Schema.define(version: 20170707135720) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_featured"
     t.index ["bme_id"], name: "index_project_bmes_on_bme_id"
     t.index ["project_id"], name: "index_project_bmes_on_project_id"
   end
