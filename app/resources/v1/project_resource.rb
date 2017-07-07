@@ -2,7 +2,7 @@ module V1
   class ProjectResource < JSONAPI::Resource
     caching
 
-    attributes :name, :situation, :solution, :category_id, :country_id,
+    attributes :name, :situation, :solution, :category_id, :country_id, :tagline,
                :operational_year, :project_type, :is_active, :is_featured,
                :deactivated_at, :publish_request, :published_at, :bme_tree
 
