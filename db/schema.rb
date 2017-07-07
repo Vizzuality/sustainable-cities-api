@@ -231,7 +231,7 @@ ActiveRecord::Schema.define(version: 20170707135720) do
     t.datetime "updated_at", null: false
     t.integer "tmp_study_case_id"
     t.boolean "is_featured", default: false
-    t.text "tagline"
+    t.string "tagline"
     t.index ["category_id"], name: "index_projects_on_category_id"
   end
 
