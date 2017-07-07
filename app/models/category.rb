@@ -34,7 +34,8 @@ class Category < ApplicationRecord
   validates :name,          presence: true, uniqueness: { case_sensitive: false, scope: :category_type         }
   validates :category_type, presence: true, inclusion:  { in: %w(Category Solution Bme Impact Enabling Timing) }, on: :create
 
-  after_save :update_level
+  attr_accessor :skip_validation
+  after_save :update_level unless :skip_validation
 
   scope :by_name_asc,   ->              { order('categories.name ASC')        }
   scope :by_type,       ->cat_type_name { where(category_type: cat_type_name) }
