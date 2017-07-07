@@ -12,7 +12,7 @@
 #
 
 class ProjectBmeSerializer < ActiveModel::Serializer
-  attributes :description
+  attributes :description, :is_featured
 
   belongs_to :bme, serializer: BmeSerializer
   belongs_to :project, serializer: ProjectSerializer
