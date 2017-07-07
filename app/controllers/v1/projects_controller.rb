@@ -41,7 +41,7 @@ module V1
     end
 
     def project_params
-      return_params = params.require(:project).permit(:name, :situation, :solution, :category_id, :project_type,
+      return_params = params.require(:project).permit(:name, :situation, :solution, :category_id, :project_type, :tagline,
                                                       { comments_attributes: [:id, :body, :is_active, :user_id, :_destroy] },
                                                       { project_bmes_attributes: [:id, :bme_id, :description, :_destroy] },
                                                       :country_id, :operational_year, { user_ids: [] }, { city_ids: [] },
