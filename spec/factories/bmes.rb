@@ -9,6 +9,7 @@
 #  updated_at  :datetime         not null
 #  tmp_bme_id  :integer
 #  is_featured :boolean          default(FALSE)
+#  slug        :string
 #
 
 FactoryGirl.define do
