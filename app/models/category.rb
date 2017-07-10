@@ -74,7 +74,7 @@ class Category < ApplicationRecord
         children.map(&:bmes).flatten.uniq
       else
         children.map { |child| child.children.map(&:bmes).flatten }.flatten.uniq
-      end
+      end rescue []
     else
       []
     end
