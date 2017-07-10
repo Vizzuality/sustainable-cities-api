@@ -2,7 +2,7 @@ module V1
   class BmeResource < JSONAPI::Resource
     caching
 
-    attributes :name, :description, :is_featured
+    attributes :name, :description, :is_featured, :slug
 
     has_many :enablings
     has_many :categories
