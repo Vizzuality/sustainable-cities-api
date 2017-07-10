@@ -12,6 +12,7 @@
 #  updated_at    :datetime         not null
 #  label         :string
 #  slug          :string
+#  level         :integer
 #
 
 class Category < ApplicationRecord

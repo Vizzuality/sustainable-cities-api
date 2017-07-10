@@ -18,6 +18,8 @@
 #  updated_at        :datetime         not null
 #  tmp_study_case_id :integer
 #  is_featured       :boolean          default(FALSE)
+#  tagline           :string
+#  slug              :string
 #
 
 FactoryGirl.define do
