@@ -8,6 +8,7 @@
 #  description :text
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  is_featured :boolean
 #
 
 require 'rails_helper'

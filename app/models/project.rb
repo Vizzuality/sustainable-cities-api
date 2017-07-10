@@ -19,9 +19,14 @@
 #  updated_at        :datetime         not null
 #  tmp_study_case_id :integer
 #  is_featured       :boolean          default(FALSE)
+#  tagline           :string
+#  slug              :string
 #
 
 class Project < ApplicationRecord
+  extend FriendlyId
+  friendly_id :name, use: :slugged
+
   enum project_type: { BusinessModel: 0, StudyCase: 1 }.freeze
 
   before_save :link_impact_sources
