@@ -66,6 +66,20 @@ class Category < ApplicationRecord
     end
   end
 
+  def children_bmes
+    if category_type == 'Bme'
+      if level == 3
+        bmes
+      elsif level == 2
+        children.map(&:bmes).flatten.uniq
+      else
+        children.map { |child| child.children.map(&:bmes).flatten }.flatten.uniq
+      end
+    else
+      []
+    end
+  end
+
   def update_level
     update_column :level, parent_id.nil? ? 1 : (parent.level + 1)
     children.each do |child|
