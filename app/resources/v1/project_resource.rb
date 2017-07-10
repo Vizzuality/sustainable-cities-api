@@ -10,6 +10,10 @@ module V1
     filters :id, :name, :situation, :solution_id, :category_id, :country_id,
             :operational_year, :project_type, :is_active, :is_featured, :published_at
 
+    filter :category_slug, apply: ->(records, value, _options) {
+      records.joins(:category).where(categories: { slug: value[0] })
+    }
+
     has_one :country
     has_one :category
 
