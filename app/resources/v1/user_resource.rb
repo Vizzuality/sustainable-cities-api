@@ -10,7 +10,7 @@ module V1
     filters :id, :name, :email, :role, :country_id, :city_id, :nickname, :position, :is_active
 
     def permissions
-      object.permissions
+      @model.permissions
     end
 
     def custom_links(_)
