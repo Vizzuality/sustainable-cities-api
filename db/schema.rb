@@ -140,11 +140,11 @@ ActiveRecord::Schema.define(version: 20170710134855) do
     t.string "web_url"
     t.string "source_type"
     t.string "author"
-    t.datetime "publication_year"
     t.string "institution"
     t.boolean "is_active", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "publication_year"
   end
 
   create_table "impacts", force: :cascade do |t|

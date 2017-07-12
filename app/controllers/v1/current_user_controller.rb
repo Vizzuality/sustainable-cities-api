@@ -4,7 +4,7 @@ module V1
     include ErrorSerializer
 
     def show
-      render json: current_user, serializer: UserSerializer
+      render json: JSONAPI::ResourceSerializer.new(UserResource).serialize_to_hash(UserResource.new(current_user, current_user))
     end
   end
 end
