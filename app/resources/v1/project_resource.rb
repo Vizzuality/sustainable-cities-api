@@ -11,7 +11,8 @@ module V1
             :operational_year, :project_type, :is_active, :is_featured, :published_at
 
     filter :category_slug, apply: ->(records, value, _options) {
-      records.joins(:category).where(categories: { slug: value[0] })
+      id = Category.find_by(slug: value[0]).id rescue nil
+      records.joins(:category).where("categories.parent_id": id) if id
     }
 
     has_one :country
