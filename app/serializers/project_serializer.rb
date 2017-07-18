@@ -24,7 +24,7 @@
 class ProjectSerializer < ActiveModel::Serializer
   attributes :id, :name, :situation, :solution, :category_id, :solution_id, :solution_slug, :solution_name, :country_id,
              :operational_year, :project_type, :is_active, :is_featured,
-             :deactivated_at, :publish_request, :published_at, :bme_tree
+             :deactivated_at, :publish_request, :published_at, :bme_tree, :tagline
 
   belongs_to :country,  serializer: CountrySerializer
   belongs_to :category, serializer: CategorySerializer
