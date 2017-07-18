@@ -13,7 +13,7 @@
 #
 
 class BmeSerializer < ActiveModel::Serializer
-  attributes :id, :name, :description, :is_featured
+  attributes :id, :name, :description, :is_featured, :slug
 
   has_many :enablings,  serializer: EnablingSerializer
   has_many :categories, serializer: CategorySerializer
