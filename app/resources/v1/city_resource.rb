@@ -6,6 +6,7 @@ module V1
     attributes :name, :iso, :lat, :lng, :province, :is_featured
 
     has_one :country
+    has_many :projects
 
     filters :id, :name, :iso, :is_featured
 
