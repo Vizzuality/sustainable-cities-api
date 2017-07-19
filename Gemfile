@@ -43,14 +43,6 @@ end
 group :development do
   gem 'annotate'
   gem 'brakeman',                  require: false
-  gem 'capistrano',                '~> 3.6'
-  gem 'capistrano-bundler'
-  gem 'capistrano-env-config'
-  gem 'capistrano-passenger'
-  gem 'capistrano-rails',          '~> 1.2'
-  gem 'capistrano-rails-tail-log'
-  gem 'capistrano-resque',         require: false
-  gem 'capistrano-rvm'
   gem 'listen',                    '~> 3.0.5'
   gem 'pry-rails'
   gem 'rails-erd'
@@ -60,7 +52,6 @@ end
 
 group :test do
   gem 'bullet'
-  gem 'codeclimate-test-reporter', '~> 1.0.0'
   gem 'database_cleaner'
   gem 'email_spec'
   gem 'factory_girl_rails'
