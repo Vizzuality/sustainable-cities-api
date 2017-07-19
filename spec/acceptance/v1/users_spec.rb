@@ -204,18 +204,15 @@ module V1
       let!(:error) { { errors: [{ status: '401', title: "Incorrect email or password" }]}}
 
       it 'Returns error object when the user cannot login' do
-        post '/login', params: {"data": {"type": "session", "attributes": {"email":"test@email.com","password":"wrong password"}}}, headers: @headers
-
-        expect(body).to   eq(error.to_json)
+        post '/login', params: {"auth": { "email": "test@gmail.com", "password": "wrong password" }}, headers: @headers
         expect(status).to eq(401)
+        expect(body).to   eq(error.to_json)
       end
 
       it 'Valid login' do
-        email = "test@email.com"
-        post '/login', params: {"data": {"type": "session", "attributes": {"email": email,"password":"password"}}}, headers: @headers
-        token = JWT.encode({ user: user.id }, ENV['AUTH_SECRET'], 'HS256')
-        expect(body).to   eq({data: {id: token, type: "sessions", attributes: {email: email, password: nil, token: token}}}.to_json)
+        post '/login', params: {"auth": { "email": "test@email.com", "password": "password" }}, headers: @headers
         expect(status).to eq(200)
+        expect(body).to   eq({ token: JWT.encode({ user: user.id }, ENV['AUTH_SECRET'], 'HS256') }.to_json)
       end
 
       describe 'For current user' do
