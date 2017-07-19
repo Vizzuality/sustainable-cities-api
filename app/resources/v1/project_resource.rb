@@ -20,6 +20,16 @@ module V1
       records.joins(:category).where('categories.id': id) if id
     }
 
+    filter :city_iso, apply: ->(records, value, _options) {
+      id = City.where(iso: value[0]).pluck(:id) rescue nil
+      records.joins(:cities).where('project_cities.city_id': id) if id
+    }
+
+    filter :city_id, apply: ->(records, value, _options) {
+      id = City.find_by(id: value[0]).id rescue nil
+      records.joins(:cities).where('project_cities.city_id': id) if id
+    }
+
     has_one :country
     has_one :category
 
