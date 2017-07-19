@@ -116,7 +116,7 @@ class Project < ApplicationRecord
       end
 
       if impact.external_sources_ids.present?
-        sources_to_add = (ExternalSource.where(id: impact.external_sources_ids) - impact.external_sources) rescue []
+        sources_to_add = external_sources & (ExternalSource.where(id: impact.external_sources_ids) - impact.external_sources) rescue []
         impact.external_sources << sources_to_add
       end
     end
