@@ -6,7 +6,7 @@ module V1
     load_and_authorize_resource class: 'User'
 
     def show
-      render json: JSONAPI::ResourceSerializer.new(UserResource).serialize_to_hash(UserResource.new(current_user, current_user))
+      render json: current_user, serializer: UserSerializer
     end
   end
 end
