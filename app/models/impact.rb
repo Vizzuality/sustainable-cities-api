@@ -29,6 +29,8 @@ class Impact < ApplicationRecord
 
   validates :impact_value, presence: true
 
+  before_destroy :destroy_attacheable
+
   attr_accessor :external_sources_index, :remove_external_sources
 
   include Activable
@@ -45,5 +47,9 @@ class Impact < ApplicationRecord
       impacts = impacts.filter_by_name_or_description(search_term) if search_term.present?
       impacts
     end
+  end
+
+  def destroy_attacheable
+    attacheable_external_sources.destroy_all
   end
 end
