@@ -5,12 +5,7 @@ module V1
 
     load_and_authorize_resource class: 'Comment'
 
-    before_action :set_comment, only: [:show, :update, :destroy]
-
-    def index
-      @comments = CommentsIndex.new(self)
-      render json: @comments.comments, each_serializer: CommentSerializer, links: @comments.links, meta: { total_items: @comments.total_items }
-    end
+    before_action :set_comment, only: [:update, :destroy]
 
     def update
       if @comment.update(comment_params)

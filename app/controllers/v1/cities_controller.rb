@@ -8,15 +8,6 @@ module V1
 
     before_action :set_city, only: [:show, :update, :destroy]
 
-    def index
-      @cities = CitiesIndex.new(self)
-      render json: @cities.cities, each_serializer: CitySerializer, links: @cities.links, meta: { total_items: @cities.total_items }
-    end
-
-    def show
-      render json: @city, serializer: CitySerializer, meta: { updated_at: @city.updated_at, created_at: @city.created_at }
-    end
-
     def update
       if @city.update(city_params)
         render json: { messages: [{ status: 200, title: "City successfully updated!" }] }, status: 200

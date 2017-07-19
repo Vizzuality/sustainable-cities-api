@@ -12,6 +12,7 @@
 #  updated_at    :datetime         not null
 #  label         :string
 #  slug          :string
+#  level         :integer
 #
 
 class Category < ApplicationRecord
@@ -33,6 +34,9 @@ class Category < ApplicationRecord
 
   validates :name,          presence: true, uniqueness: { case_sensitive: false, scope: :category_type         }
   validates :category_type, presence: true, inclusion:  { in: %w(Category Solution Bme Impact Enabling Timing) }, on: :create
+
+  attr_accessor :skip_validation
+  after_save :update_level unless :skip_validation
 
   scope :by_name_asc,   ->              { order('categories.name ASC')        }
   scope :by_type,       ->cat_type_name { where(category_type: cat_type_name) }
@@ -59,6 +63,27 @@ class Category < ApplicationRecord
       categories = categories.filter_by_name_or_description(search_term) if search_term.present?
 
       categories
+    end
+  end
+
+  def children_bmes
+    if category_type == 'Bme'
+      if level == 3
+        bmes
+      elsif level == 2
+        children.map(&:bmes).flatten.uniq
+      else
+        children.map { |child| child.children.map(&:bmes).flatten }.flatten.uniq
+      end rescue []
+    else
+      []
+    end
+  end
+
+  def update_level
+    update_column :level, parent_id.nil? ? 1 : (parent.level + 1)
+    children.each do |child|
+      child.update_level
     end
   end
 

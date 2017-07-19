@@ -11,6 +11,7 @@
 #  updated_at    :datetime         not null
 #  label         :string
 #  slug          :string
+#  level         :integer
 #
 
 require 'rails_helper'

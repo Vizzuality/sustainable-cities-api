@@ -6,17 +6,7 @@ module V1
     skip_before_action :authenticate, only: [:index, :show]
     load_and_authorize_resource class: 'Bme'
 
-    before_action :set_bme, only: [:show, :update, :destroy]
-
-    def index
-      bmes = BmesIndex.new(self)
-      render json: bmes.bmes, each_serializer: BmeSerializer, include: [:categories, :enablings],
-             links: bmes.links, meta: { total_items: bmes.total_items }
-    end
-
-    def show
-      render json: @bme, serializer: BmeSerializer, include: [:categories, :enablings, :external_sources], meta: { updated_at: @bme.updated_at, created_at: @bme.created_at }
-    end
+    before_action :set_bme, only: [:update, :destroy]
 
     def update
       if @bme.update(bme_params)

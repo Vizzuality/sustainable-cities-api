@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+=begin
 class BmeChildrenSerializer < ActiveModel::Serializer
   attributes :id, :name, :slug, :category_type, :parent_id, :bmes, :children
 
@@ -27,3 +28,4 @@ class BmeChildrenSerializer < ActiveModel::Serializer
     end
   end
 end
+=end
