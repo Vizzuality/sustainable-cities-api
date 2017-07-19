@@ -19,9 +19,14 @@
 #  updated_at        :datetime         not null
 #  tmp_study_case_id :integer
 #  is_featured       :boolean          default(FALSE)
+#  tagline           :string
+#  slug              :string
 #
 
 class Project < ApplicationRecord
+  extend FriendlyId
+  friendly_id :name, use: :slugged
+
   enum project_type: { BusinessModel: 0, StudyCase: 1 }.freeze
 
   before_save :link_impact_sources
@@ -57,6 +62,7 @@ class Project < ApplicationRecord
 
   validates :name, presence: true
   validates :project_type, presence: true, inclusion: { in: %w(BusinessModel StudyCase) }, on: :create
+  validates_length_of :tagline, maximum: 165
 
   include Activable
 
@@ -75,33 +81,6 @@ class Project < ApplicationRecord
 
   scope :filter_by_name_or_solution, ->(search_term) { where('projects.name ilike ? or projects.solution ilike ?', "%#{search_term}%", "%#{search_term}%") }
 
-  class << self
-    def fetch_all(options=nil)
-      study_cases     = options['study_cases']     if options.present? && options['study_cases'].present?
-      business_models = options['business_models'] if options.present? && options['business_models'].present?
-      user            = options['current_user']    if options.present? && options['current_user'].present?
-      search_term     = options['search']          if options.present? && options['search'].present?
-
-      projects = available.includes(:country, :category, :bmes,
-                                    :impacts, :cities, { cities: :country },
-                                    :users, :photos, :documents, :external_sources, :comments)
-      if study_cases.present?
-        projects = projects.by_study_case
-      end
-
-      if business_models.present? && user.present?
-        if user.is_active_user? || user.is_active_editor?
-          projects = projects.by_user_business_model(user.id)
-        elsif user.is_active_admin? || user.is_active_publisher?
-          projects = projects.by_business_model
-        end
-      end
-
-      projects = projects.filter_by_name_or_solution(search_term) if search_term.present?
-
-      projects
-    end
-  end
 
   def link_impact_sources
     impacts.each do |impact|

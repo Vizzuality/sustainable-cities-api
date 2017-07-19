@@ -6,18 +6,7 @@ module V1
     skip_before_action :authenticate, only: [:index, :show]
     load_and_authorize_resource class: 'ExternalSource'
 
-    before_action :set_external_source, only: [:show, :update, :destroy]
-
-    def index
-      external_sources = ExternalSourcesIndex.new(self)
-      render json: external_sources.external_sources, each_serializer: ExternalSourceSerializer,
-             links: external_sources.links, meta: { total_items: external_sources.total_items }
-    end
-
-    def show
-      render json: @external_source, serializer: ExternalSourceSerializer,
-             meta: { updated_at: @external_source.updated_at, created_at: @external_source.created_at }
-    end
+    before_action :set_external_source, only: [:update, :destroy]
 
     def update
       if @external_source.update(external_source_params)

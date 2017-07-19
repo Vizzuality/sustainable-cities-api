@@ -11,6 +11,8 @@
 Rake::Task['db:seed_fu'].invoke
 
 # Generate slugs for categories
-if Category.where.not(slug: nil).size == 0
-	Category.all.each(&:save)
+if Category.where.not(slug: nil).size.zero?
+  Category.all.each(&:save)
 end
+
+Rake::Task['update:category_levels'].invoke

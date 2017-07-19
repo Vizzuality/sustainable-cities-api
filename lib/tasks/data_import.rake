@@ -40,24 +40,24 @@ namespace :import_bmes_csv do
 
         category_bme_1 = data_row['category_bme_1']
         if category_bme_1.present?
-          category_1 = Category.where(name: category_bme_1, category_type: 'Bme').first_or_create
+          category_1 = Category.where(name: category_bme_1, category_type: 'Bme').first_or_create(skip_validation: true)
         end
 
         category_bme_2 = data_row['category_bme_2']
         if category_bme_2.present?
-          category_2 = Category.where(name: category_bme_2, category_type: 'Bme', parent_id: category_1.id).first_or_create
+          category_2 = Category.where(name: category_bme_2, category_type: 'Bme', parent_id: category_1.id).first_or_create(skip_validation: true)
         end
 
         category_bme_3 = data_row['category_bme_3']
         if category_bme_3.present?
-          category_3 = Category.where(name: category_bme_3, category_type: 'Bme', parent_id: category_2.id).first_or_create
+          category_3 = Category.where(name: category_bme_3, category_type: 'Bme', parent_id: category_2.id).first_or_create(skip_validation: true)
         end
 
         category_timing_1 = data_row['category_timing_1']
         if category_timing_1.present?
           timings = category_timing_1.split('||')
           timings.each do |timing|
-            categories << Category.where(name: timing, category_type: 'Timing').first_or_create
+            categories << Category.where(name: timing, category_type: 'Timing').first_or_create(skip_validation: true)
           end
         end
 

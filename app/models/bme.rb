@@ -10,9 +10,13 @@
 #  updated_at  :datetime         not null
 #  tmp_bme_id  :integer
 #  is_featured :boolean          default(FALSE)
+#  slug        :string
 #
 
 class Bme < ApplicationRecord
+  extend FriendlyId
+  friendly_id :name, use: :slugged
+
   has_many :bme_enablings
   has_many :enablings, through: :bme_enablings
 
