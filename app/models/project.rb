@@ -114,6 +114,11 @@ class Project < ApplicationRecord
       if impact.external_sources_index.present? && external_sources.present?
         impact.external_sources = impact.external_sources_index.map { |index| external_sources[index] }
       end
+
+      if impact.external_sources_ids.present?
+        sources_to_add = (ExternalSource.where(id: impact.external_sources_ids) - impact.external_sources) rescue []
+        impact.external_sources << sources_to_add
+      end
     end
   end
 
