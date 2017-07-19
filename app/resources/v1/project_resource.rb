@@ -12,7 +12,12 @@ module V1
 
     filter :category_slug, apply: ->(records, value, _options) {
       id = Category.find_by(slug: value[0]).id rescue nil
-      records.joins(:category).where("categories.parent_id": id) if id
+      records.joins(:category).where('categories.id': id) if id
+    }
+
+    filter :category_id, apply: ->(records, value, _options) {
+      id = Category.find(value[0]).id rescue nil
+      records.joins(:category).where('categories.id': id) if id
     }
 
     has_one :country
