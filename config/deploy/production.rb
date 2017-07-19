@@ -71,7 +71,7 @@ set :ssh_options, {
   password: fetch(:password)
 }
 set :branch, 'master'
-set :deploy_to, '~/sustainable-cities-api-production'
+set :deploy_to, '~/projects/sc-api'
 
 role :resque_worker, ENV['PRODUCTION_IP']
 role :resque_scheduler, ENV['PRODUCTION_IP']

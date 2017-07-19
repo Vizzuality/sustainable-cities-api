@@ -10,6 +10,16 @@ module V1
     has_many :external_sources
     filters :id, :name, :is_featured
 
+    filter :category_id, apply: ->(records, value, _options) {
+      id = Category.find_by(id: value[0]).id rescue nil
+      records.joins(:categories).where('bme_categories.category_id': id) if id
+    }
+
+    filter :category_slug, apply: ->(records, value, _options) {
+      id = Category.find_by(slug: value[0]).id rescue nil
+      records.joins(:categories).where('bme_categories.category_id': id) if id
+    }
+
     def custom_links(_)
       { self: nil }
     end
