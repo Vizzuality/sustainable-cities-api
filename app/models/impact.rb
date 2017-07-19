@@ -31,7 +31,7 @@ class Impact < ApplicationRecord
 
   before_destroy :destroy_attacheable
 
-  attr_accessor :external_sources_index, :remove_external_sources
+  attr_accessor :external_sources_index, :remove_external_sources, :external_sources_ids
 
   include Activable
 
