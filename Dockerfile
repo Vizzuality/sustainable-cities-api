@@ -13,6 +13,3 @@ ADD Gemfile /usr/src/app/Gemfile
 ADD Gemfile.lock /usr/src/app/Gemfile.lock
 RUN bundle install --jobs 20 --retry 5 --without development test
 ADD . /usr/src/app
-
-# Precompile Rails assets
-RUN bundle exec rake assets:precompile
