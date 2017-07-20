@@ -35,6 +35,8 @@ class Bme < ApplicationRecord
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
 
+  validate :has_one_bme_category
+
   scope :by_name_asc, -> { order('bmes.name ASC') }
 
   scope :by_category, -> {
@@ -52,6 +54,16 @@ class Bme < ApplicationRecord
       bmes = bmes.filter_by_name_or_description(search_term) if search_term.present?
       bmes = bmes.by_category if has_category
       bmes
+    end
+  end
+
+
+  def has_one_bme_category
+    error_message = 'must have one and only one of type BME'
+    begin
+      errors[:categories] << error_message unless categories.to_a.pluck(:category_type).count{|x| x.eql?('Bme')} == 1
+    rescue
+      errors[:categories] << error_message
     end
   end
 

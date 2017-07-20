@@ -33,7 +33,7 @@ class Category < ApplicationRecord
   has_many :bmes, through: :bme_categories
 
   validates :name,          presence: true, uniqueness: { case_sensitive: false, scope: :category_type         }
-  validates :category_type, presence: true, inclusion:  { in: %w(Category Solution Bme Impact Enabling Timing) }, on: :create
+  validates :category_type, presence: true, inclusion:  { in: %w(Category Solution Bme Impact Enabling Timing) }
 
   scope :by_name_asc,   ->              { order('categories.name ASC')        }
   scope :by_type,       ->cat_type_name { where(category_type: cat_type_name) }

@@ -32,7 +32,7 @@ class Project < ApplicationRecord
   before_save :link_impact_sources
   before_save :unlink_impact_sources
 
-  belongs_to :category, inverse_of: :projects, touch: true
+  belongs_to :category, inverse_of: :projects, touch: true, optional: false
   belongs_to :country,  inverse_of: :projects, optional: true, touch: true
 
   has_many :project_cities
@@ -113,6 +113,11 @@ class Project < ApplicationRecord
     impacts.each do |impact|
       if impact.external_sources_index.present? && external_sources.present?
         impact.external_sources = impact.external_sources_index.map { |index| external_sources[index] }
+      end
+
+      if impact.external_sources_ids.present?
+        sources_to_add = external_sources & (ExternalSource.where(id: impact.external_sources_ids) - impact.external_sources) rescue []
+        impact.external_sources << sources_to_add
       end
     end
   end
