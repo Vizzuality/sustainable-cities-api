@@ -9,5 +9,5 @@ services:
       RAILS_ENV: production
       RACK_ENV: production
     ports:
-      - "3000:3000"
+      - "3002:3000"
     container_name: sc_api
