@@ -1,0 +1,13 @@
+version: '3'
+services:
+  app:
+    build: .
+    command: bundle exec puma -C config/puma.rb
+    env_file: .env
+    environment:
+      PORT: 3000
+      RAILS_ENV: production
+      RACK_ENV: production
+    ports:
+      - "3000:3000"
+    container_name: sc_api
