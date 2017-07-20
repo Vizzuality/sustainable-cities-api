@@ -19,22 +19,17 @@
 .byebug_history
 
 # Ignore MacOSX files
-/.DS_Store
 .DS_Store
-spec/.DS_Store
 
 # Ignore generated files
 /vendor/bundle
 /public/assets
 /public/uploads
 /public/system
-/coverage
 /db/files/.~*
 
 # Ignore environment variables
 /.env
-/test.env
-/dev.env
 
 # Ignore the default SQLite database.
 /db/*.sqlite3

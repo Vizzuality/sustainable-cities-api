@@ -1,39 +1,15 @@
-FROM ruby:2.4-alpine
-MAINTAINER Sebastian Schkudlara "sebastian.schkudlara@vizzuality.com"
+FROM ruby:2.4.0
+RUN apt-get update -qq && apt-get install -y build-essential libpq-dev nodejs
 
-ENV BUILD_PACKAGES bash curl-dev \
-                        build-base \
-                        git \
-                        libxml2-dev \
-                        libxslt-dev \
-                        postgresql-dev \
-                        nodejs \
-                        imagemagick-dev \
-                        xvfb \
-                        qt5-qtwebkit-dev
+ENV RAILS_ENV=production
+ENV RACK_ENV=production
 
-# Update and install all of the required packages.
-# At the end, remove the apk cache
-RUN apk update && \
-    apk upgrade && \
-    apk add $BUILD_PACKAGES && \
-    rm -rf /var/cache/apk/*
+# Create app directory
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
 
-RUN gem install bundler --no-ri --no-rdoc
-RUN QMAKE=/usr/lib/qt5/bin/qmake gem install capybara-webkit --no-ri --no-rdoc
-
-# Use libxml2, libxslt a packages from alpine for building nokogiri
-RUN bundle config build.nokogiri
-
-RUN mkdir /sustainable_cities
-
-WORKDIR /sustainable_cities
-COPY Gemfile Gemfile
-COPY Gemfile.lock Gemfile.lock
-RUN bundle install --jobs 20 --retry 5
-
-ADD . /sustainable_cities
-
-EXPOSE 3000
-
-ENTRYPOINT ["./entrypoint.sh"]
+# Install app dependencies
+ADD Gemfile /usr/src/app/Gemfile
+ADD Gemfile.lock /usr/src/app/Gemfile.lock
+RUN bundle install --jobs 20 --retry 5 --without development test
+ADD . /usr/src/app
