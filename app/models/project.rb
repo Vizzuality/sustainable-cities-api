@@ -32,7 +32,7 @@ class Project < ApplicationRecord
   before_save :link_impact_sources
   before_save :unlink_impact_sources
 
-  belongs_to :category, inverse_of: :projects, touch: true
+  belongs_to :category, inverse_of: :projects, touch: true, optional: false
   belongs_to :country,  inverse_of: :projects, optional: true, touch: true
 
   has_many :project_cities
