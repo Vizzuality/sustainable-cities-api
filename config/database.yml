@@ -86,11 +86,11 @@ test:
 staging:
   <<: *default
   database: sustainable_cities_staging
-  username: <%= ENV['SC_DATABASE_USER'] %>
-  password: <%= ENV['SC_DATABASE_PASSWORD'] %>
+  username: <%= ENV['POSTGRES_USER'] %>
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
 
 production:
   <<: *default
   database: sustainable_cities_production
-  username: <%= ENV['SC_DATABASE_USER'] %>
-  password: <%= ENV['SC_DATABASE_PASSWORD'] %>
+  username: <%= ENV['POSTGRES_USER'] %>
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
