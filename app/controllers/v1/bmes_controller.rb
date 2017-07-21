@@ -2,6 +2,7 @@
 module V1
   class BmesController < ApplicationController
     include ErrorSerializer
+    include ApiUploads
 
     skip_before_action :authenticate, only: [:index, :show]
     load_and_authorize_resource class: 'Bme'
@@ -15,7 +16,7 @@ module V1
     end
 
     def show
-      render json: @bme, serializer: BmeSerializer, include: [:categories, :enablings, :external_sources], meta: { updated_at: @bme.updated_at, created_at: @bme.created_at }
+      render json: @bme, serializer: BmeSerializer, include: [:categories, :enablings, :external_sources, :photos], meta: { updated_at: @bme.updated_at, created_at: @bme.created_at }
     end
 
     def update
@@ -50,9 +51,19 @@ module V1
       end
 
       def bme_params
-        params.require(:bme).permit(:name, :description, :is_featured, { enabling_ids: [] }, { category_ids: [] },
+        return_params = params.require(:bme).permit(:name, :description, :is_featured, { enabling_ids: [] }, { category_ids: [] },
                                     { external_sources_attributes: [:id, :name, :description, :web_url, :source_type,
-                                                                    :author, :publication_year, :institution, :is_active, :_destroy] })
+                                                                    :author, :publication_year, :institution, :is_active, :_destroy] },
+                                    { photos_attributes: [:id, :name, :attachment, :is_active, :_destroy] },
+                                   )
+
+        if return_params[:photos_attributes].present?
+          return_params[:photos_attributes].each do |photo_attributes|
+            photo_attributes[:attachment] = process_file_base64(photo_attributes[:attachment].to_s) if photo_attributes[:attachment].present?
+          end
+        end
+
+        return_params
       end
   end
 end
