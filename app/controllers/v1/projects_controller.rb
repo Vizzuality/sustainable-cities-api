@@ -91,7 +91,7 @@ module V1
 
       sanitize_projects(projects)
     end
-      
+
     def assemble_solution_filtered_projects(filters)
       Category.find(filters).children.map do |category|
         category.projects.select(:id, :name, :category_id)
