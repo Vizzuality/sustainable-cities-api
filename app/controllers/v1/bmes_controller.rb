@@ -57,11 +57,7 @@ module V1
                                     { photos_attributes: [:id, :name, :attachment, :is_active, :_destroy] },
                                    )
 
-        if return_params[:photos_attributes].present?
-          return_params[:photos_attributes].each do |photo_attributes|
-            photo_attributes[:attachment] = process_file_base64(photo_attributes[:attachment].to_s) if photo_attributes[:attachment].present?
-          end
-        end
+        process_attachments_in(return_params, :photos_attributes)
 
         return_params
       end

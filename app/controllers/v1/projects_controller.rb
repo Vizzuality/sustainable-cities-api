@@ -179,17 +179,8 @@ module V1
         end
       end
 
-      if return_params[:photos_attributes].present?
-        return_params[:photos_attributes].each do |photo_attributes|
-          photo_attributes[:attachment] = process_file_base64(photo_attributes[:attachment].to_s) if photo_attributes[:attachment].present?
-        end
-      end
-
-      if return_params[:documents_attributes].present?
-        return_params[:documents_attributes].each do |document_attributes|
-          document_attributes[:attachment] = process_file_base64(document_attributes[:attachment].to_s) if document_attributes[:attachment].present?
-        end
-      end
+      process_attachments_in(return_params, :photos_attributes)
+      process_attachments_in(return_params, :documents_attributes)
 
       return_params
     end
