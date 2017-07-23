@@ -16,7 +16,12 @@ module V1
     end
 
     def show
-      render json: @bme, serializer: BmeSerializer, include: [:categories, :enablings, :external_sources, :photos], meta: { updated_at: @bme.updated_at, created_at: @bme.created_at }
+      render(
+        json: @bme,
+        serializer: BmeSerializer,
+        include: [:categories, :enablings, :external_sources, :photos, :documents],
+        meta: { updated_at: @bme.updated_at, created_at: @bme.created_at },
+      )
     end
 
     def update
@@ -55,9 +60,11 @@ module V1
                                     { external_sources_attributes: [:id, :name, :description, :web_url, :source_type,
                                                                     :author, :publication_year, :institution, :is_active, :_destroy] },
                                     { photos_attributes: [:id, :name, :attachment, :is_active, :_destroy] },
+                                    { documents_attributes: [:id, :name, :attachment, :is_active, :_destroy] },
                                    )
 
         process_attachments_in(return_params, :photos_attributes)
+        process_attachments_in(return_params, :documents_attributes)
 
         return_params
       end
