@@ -19,5 +19,6 @@ class BmeSerializer < ActiveModel::Serializer
   has_many :categories, serializer: CategorySerializer
   has_many :external_sources, serializer: ExternalSourceSerializer
   has_many :photos,           serializer: PhotoSerializer
+  has_many :documents,        serializer: DocumentSerializer
 
 end

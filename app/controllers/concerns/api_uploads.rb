@@ -36,6 +36,14 @@ module ApiUploads
           CarrierWave.clean_cached_files! 1
         end
       end
+
+      def process_attachments_in(return_params, field)
+        if return_params[field].present?
+          return_params[field].each do |attrs|
+            attrs[:attachment] = process_file_base64(attrs[:attachment].to_s) if attrs[:attachment].present?
+          end
+        end
+      end
   end
 
   class_methods do
