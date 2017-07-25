@@ -6,11 +6,11 @@ services:
     env_file: .env
     environment:
       PORT: 3000
-      RAILS_ENV: production
-      RACK_ENV: production
+      RAILS_ENV: staging
+      RACK_ENV: staging
     ports:
-      - "3002:3000"
-    container_name: sc_api
+      - "3003:3000"
+    container_name: sc_api_legacy
     volumes:
       - "./public/system:/usr/src/app/public/system"
       - "./public/uploads:/usr/src/app/public/uploads"
