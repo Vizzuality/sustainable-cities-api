@@ -6,8 +6,8 @@ services:
     env_file: .env
     environment:
       PORT: 3000
-      RAILS_ENV: staging
-      RACK_ENV: staging
+      RAILS_ENV: production
+      RACK_ENV: production
     ports:
       - "3003:3000"
     container_name: sc_api_legacy
