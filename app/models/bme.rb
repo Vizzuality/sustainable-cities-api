@@ -30,11 +30,13 @@ class Bme < ApplicationRecord
   has_many :external_sources, through: :attacheable_external_sources
 
   has_many :photos, as: :attacheable, dependent: :destroy
+  has_many :documents, as: :attacheable, dependent: :destroy
 
   accepts_nested_attributes_for :categories
   accepts_nested_attributes_for :projects
   accepts_nested_attributes_for :external_sources, allow_destroy: true
   accepts_nested_attributes_for :photos,           allow_destroy: true
+  accepts_nested_attributes_for :documents,        allow_destroy: true
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
 
