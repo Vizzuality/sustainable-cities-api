@@ -70,6 +70,7 @@ ActiveRecord::Schema.define(version: 20170710134855) do
     t.datetime "updated_at", null: false
     t.string "label"
     t.string "slug"
+    t.integer "level"
   end
 
   create_table "cities", force: :cascade do |t|

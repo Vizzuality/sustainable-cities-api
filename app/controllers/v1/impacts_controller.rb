@@ -6,17 +6,7 @@ module V1
     skip_before_action :authenticate, only: [:index, :show]
     load_and_authorize_resource class: 'Impact'
 
-    before_action :set_impact, only: [:show, :update, :destroy]
-
-    def index
-      @impacts = ImpactsIndex.new(self)
-      render json: @impacts.impacts, each_serializer: ImpactSerializer, include: [:category], links: @impacts.links, meta: { total_items: @impacts.total_items }
-    end
-
-    def show
-      render json: @impact, serializer: ImpactSerializer, include: [:external_sources, :category], meta: { updated_at: @impact.updated_at,
-                                                                                                           created_at: @impact.created_at }
-    end
+    before_action :set_impact, only: [:update, :destroy]
 
     def update
       if @impact.update(impact_params)

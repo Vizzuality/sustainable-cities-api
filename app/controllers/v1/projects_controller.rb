@@ -7,47 +7,7 @@ module V1
     skip_before_action :authenticate, only: [:index, :show]
     load_and_authorize_resource class: 'Project'
 
-    before_action :set_full_project, only: [:show, :show_project_and_bm]
     before_action :set_project,      only: [:update, :destroy]
-
-    def index
-      filters = params[:filters]
-
-      if filters.present?
-        if filters[:solution].present?
-          filters = filters[:solution]
-          @projects = filters == 'all' ? assemble_all_solution_projects : assemble_solution_filtered_projects(filters)
-
-          raise ActiveRecord::RecordNotFound unless @projects.present?
-          render json: { data: @projects }
-        elsif filters[:bme].present?
-          filters = filters[:bme]
-          @projects = filters == 'all' ? assemble_all_bme_projects : assemble_bme_filtered_projects(filters)
-
-          raise ActiveRecord::RecordNotFound unless @projects.present?
-          render json: { data: @projects }
-        end
-      else
-        render_projects
-      end
-    end
-
-    def index_all
-      if (@current_user.is_active_admin? || @current_user.is_active_publisher?) ||
-         (params[:business_models].present? && (@current_user.is_active_editor? || @current_user.is_active_user?))
-        render_projects
-      else
-        render json: { errors: [{ status: '401', title: 'Unauthorized' }] }, status: 401
-      end
-    end
-
-    def show
-      render_project
-    end
-
-    def show_project_and_bm
-      render_project
-    end
 
     def update
       if @project.update(project_params)
@@ -76,70 +36,8 @@ module V1
 
     private
 
-    def assemble_all_solution_projects
-      projects = Category.by_type('Solution').second_level.map do |category|
-        { "#{category.id}": category.children.map { |child| child.projects.select(:id, :name, :category_id) }.flatten }.stringify_keys
-      end
-
-      sanitize_projects(projects)
-    end
-
-    def assemble_all_bme_projects
-      projects = Category.by_type('Bme').second_level.map do |category|
-        { "#{category.id}": category.children.map { |child| child.bmes.map { |bme| bme.projects.select(:id, :name, :category_id) } }.flatten }.stringify_keys
-      end
-
-      sanitize_projects(projects)
-    end
-
-    def assemble_solution_filtered_projects(filters)
-      Category.find(filters).children.map do |category|
-        category.projects.select(:id, :name, :category_id)
-      end.flatten
-    end
-
-    def assemble_bme_filtered_projects(filters)
-      Category.find(filters).children.map do |category|
-        category.bmes.map do |bme|
-          bme.projects.select(:id, :name, :category_id)
-        end
-      end.flatten
-    end
-
-    def sanitize_projects(projects)
-      projects.each do |group|
-        category = Category.find(group.keys.first)
-        group['category_id'] = category.id
-        group['name'] = category.name
-        group['slug'] = category.slug
-        group['projects'] = group.delete(group.keys.first)
-      end
-    end
-
-    def render_project
-      render json: @project, serializer: ProjectSerializer, include: [:country,
-                                                                      [impacts: :category],
-                                                                      [impacts: :external_sources],
-                                                                      [project_bmes: { bme: :categories }],
-                                                                      :cities,
-                                                                      :external_sources,
-                                                                      :photos,
-                                                                      :documents,
-                                                                      :comments],
-             meta: { updated_at: @project.updated_at, created_at: @project.created_at }
-    end
-
-    def render_projects
-      @projects = ProjectsIndex.new(self, @current_user)
-      render json: @projects.projects, each_serializer: ProjectSerializer, links: @projects.links, meta: { total_items: @projects.total_items }
-    end
-
     def set_project
       @project = Project.find(params[:id])
-    end
-
-    def set_full_project
-      @project = Project.include_relations.find(params[:id])
     end
 
     def project_params
@@ -152,8 +50,7 @@ module V1
                                                       { impacts_attributes: [:id, :name, :description, :impact_value,
                                                                              :impact_unit, :category_id, :is_active,
                                                                              :_destroy, { external_sources_index: [] },
-                                                                             { remove_external_sources: [] },
-                                                                             { external_sources_ids: [] }] },
+                                                                             { remove_external_sources: [] }] },
                                                       { photos_attributes: [:id, :name, :attachment, :is_active, :_destroy] },
                                                       { documents_attributes: [:id, :name, :attachment, :is_active, :_destroy] },
                                                       { external_sources_attributes: [:id, :name, :description, :web_url, :source_type,

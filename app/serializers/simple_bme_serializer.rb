@@ -11,7 +11,8 @@
 #  tmp_bme_id  :integer
 #  is_featured :boolean          default(FALSE)
 #
-
+=begin
 class SimpleBmeSerializer < ActiveModel::Serializer
   attributes :id, :name
 end
+=end

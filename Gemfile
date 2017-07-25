@@ -12,7 +12,7 @@ gem 'pg',    '~> 0.18'
 gem 'rails', '~> 5.1.0.rc1'
 
 # API
-gem 'active_model_serializers', '~> 0.10.4'
+gem 'jsonapi-resources'
 gem 'oj'
 gem 'oj_mimic_json'
 

@@ -24,11 +24,6 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.3)
-    active_model_serializers (0.10.5)
-      actionpack (>= 4.1, < 6)
-      activemodel (>= 4.1, < 6)
-      case_transform (>= 0.2)
-      jsonapi-renderer (>= 0.1.1.beta1, < 0.2)
     activejob (5.1.0.rc1)
       activesupport (= 5.1.0.rc1)
       globalid (>= 0.3.6)
@@ -65,8 +60,6 @@ GEM
     carrierwave-base64 (2.5.0)
       carrierwave (>= 0.8.0)
       mime-types (~> 3.0)
-    case_transform (0.2)
-      activesupport
     choice (0.2.0)
     coderay (1.1.1)
     concurrent-ruby (1.0.5)
@@ -102,7 +95,10 @@ GEM
     htmlentities (4.3.4)
     i18n (0.8.1)
     json (2.0.3)
-    jsonapi-renderer (0.1.2)
+    jsonapi-resources (0.9.0)
+      activerecord (>= 4.1)
+      concurrent-ruby
+      railties (>= 4.1)
     jwt (1.5.6)
     launchy (2.4.3)
       addressable (~> 2.3)
@@ -300,7 +296,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active_model_serializers (~> 0.10.4)
   annotate
   bcrypt
   brakeman
@@ -314,6 +309,7 @@ DEPENDENCIES
   factory_girl_rails
   faker
   friendly_id
+  jsonapi-resources
   jwt
   listen (~> 3.0.5)
   mini_magick
