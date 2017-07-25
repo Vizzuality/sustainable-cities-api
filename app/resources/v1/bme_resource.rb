@@ -8,6 +8,7 @@ module V1
     has_many :enablings
     has_many :categories
     has_many :external_sources
+    has_many :projects
     filters :id, :name, :is_featured
 
     filter :category_id, apply: ->(records, value, _options) {
