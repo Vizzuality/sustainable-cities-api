@@ -12,6 +12,6 @@ services:
       - "3003:3000"
     container_name: sc_api_legacy
     volumes:
-      - "./public/system:/usr/src/app/public/system"
-      - "./public/uploads:/usr/src/app/public/uploads"
+      - "../sc-api/public/system:/usr/src/app/public/system"
+      - "../sc-api/public/uploads:/usr/src/app/public/uploads"
       - "./log:/usr/src/app/log"
