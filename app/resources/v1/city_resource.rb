@@ -22,6 +22,10 @@ module V1
       records.joins(:projects).where('category_id = ?', value[0].to_i)
     }
 
+    filter :bme_id, apply: ->(records, value, _options) {
+      records.joins(projects: :bmes).where('bmes.id = ?', value[0].to_i)
+    }
+
     def custom_links(_)
       { self: nil }
     end
