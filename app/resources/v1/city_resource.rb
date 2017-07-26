@@ -49,6 +49,10 @@ module V1
       records.joins(projects: :bmes).where('bmes.id = ?', value[0].to_i)
     }
 
+    filter :bme_slug, apply: ->(records, value, _options) {
+      records.joins(projects: :bmes).where('bmes.slug = ?', value[0])
+    }
+
     def custom_links(_)
       { self: nil }
     end
