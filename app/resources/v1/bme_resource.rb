@@ -21,6 +21,14 @@ module V1
       records.joins(:categories).where('bme_categories.category_id': id) if id
     }
 
+    filter :contains_projects, apply: ->(records, value, _options) {
+      if value[0] == '0' || value[0] == 'false'
+        records
+      else
+        records.includes(:projects).where.not(projects: { id: nil })
+      end
+    }
+
     def custom_links(_)
       { self: nil }
     end
