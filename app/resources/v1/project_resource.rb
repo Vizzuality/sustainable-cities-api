@@ -5,7 +5,8 @@ module V1
 
     attributes :name, :slug, :situation, :solution, :category_id, :country_id, :tagline,
                :operational_year, :project_type, :is_active, :is_featured,
-               :deactivated_at, :publish_request, :published_at, :bme_tree
+               :deactivated_at, :publish_request, :published_at, :bme_tree,
+               :category_level_2
 
     filters :id, :name, :situation, :solution_id, :category_id, :country_id,
             :operational_year, :project_type, :is_active, :is_featured, :published_at
@@ -45,6 +46,10 @@ module V1
 
     def operational_year
       object.operational_year.year rescue nil
+    end
+
+    def category_level_2
+      @model.category.level == 2 ? @model.category_id : @model.category.parent_id rescue nil
     end
 
     def custom_links(_)
