@@ -7,7 +7,6 @@ module V1
       token = JWT.encode({ user: @webuser.id }, ENV['AUTH_SECRET'], 'HS256')
 
       @headers = {
-        "ACCEPT" => "application/json",
         "HTTP_SC_API_KEY" => "Bearer #{token}"
       }
     end
@@ -69,7 +68,7 @@ module V1
 
       it 'Search users by name or nickname and sort by name DESC' do
         get '/users?search=pepe&sort=name', headers: @headers
-
+debugger
         expect(status).to                            eq(200)
         expect(json.size).to                         eq(5)
         expect(json[0]['attributes']['nickname']).to match('pepe')

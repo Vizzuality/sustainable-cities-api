@@ -7,7 +7,6 @@ module V1
       token    = JWT.encode({ user: @webuser.id }, ENV['AUTH_SECRET'], 'HS256')
 
       @headers = {
-        "ACCEPT" => "application/json",
         "HTTP_SC_API_KEY" => "Bearer #{token}"
       }
     end
@@ -19,15 +18,15 @@ module V1
 
     let!(:project)   { FactoryGirl.create(:project, name: '00 Project one') }
 
-    context 'Do not show projects for not admin user' do
+    context 'Show projects for any user' do
       it 'Get projects list' do
         get '/projects', headers: @headers
-        expect(status).to eq(401)
+        expect(status).to eq(200)
       end
 
       it 'Get specific project' do
         get "/projects/#{project.id}", headers: @headers
-        expect(status).to eq(401)
+        expect(status).to eq(200)
       end
     end
 
@@ -94,8 +93,8 @@ module V1
         get '/projects?search=case&sort=name', headers: @headers
 
         expect(status).to                        eq(200)
-        expect(json.size).to                     eq(5)
-        expect(json[0]['attributes']['name']).to match('case')
+        expect(json.size).to                     eq(6)
+        expect(json[0]['attributes']['name']).to match('00 Project one')
       end
     end
 
