@@ -28,29 +28,48 @@ module V1
         else
           children = category.children
           if category.level == 1
-            if children.present?
-              projects = children.map { |category| category.children.map { |solution| solution.projects } }.flatten
-            end
+            projects = children.map { |category| category.children.map { |solution| solution.projects } }.flatten rescue []
           elsif category.level == 2
-            if children.present?
-              projects = children.map { |solution| solution.projects }.flatten
-            end
+            projects = children.map { |solution| solution.projects }.flatten rescue []
           end
         end
 
-        cities_ids = projects.map { |project| project.cities }.flatten.pluck(:id)
-        records.where(id: cities_ids)
+        if projects.present?
+          cities_ids = projects.map { |project| project.cities }.flatten.pluck(:id).uniq
+          records.where(id: cities_ids)
+        else
+          City.none
+        end
       else
         City.none
       end
     }
 
-    filter :bme_id, apply: ->(records, value, _options) {
-      records.joins(projects: :bmes).where('bmes.id = ?', value[0].to_i)
-    }
-
     filter :bme_slug, apply: ->(records, value, _options) {
-      records.joins(projects: :bmes).where('bmes.slug = ?', value[0])
+      slug = value[0]
+      category = Category.find_by(slug: slug)
+      
+      if category.present? && category.category_type == 'Bme'
+        if category.level == 1
+          projects = category.children.map { |second_child| second_child.children }.flatten
+                      .map { |third_child| third_child.bmes }.flatten
+                      .map { |bme| bme.projects }.flatten rescue []
+        elsif category.level == 2
+          projects = category.children.map { |child| child.bmes }.flatten
+                      .map { |bme| bme.projects }.flatten rescue []
+        elsif category.level == 3
+          projects = category.bmes.map { |bme| bme.projects }.flatten rescue []
+        end
+
+        if projects.present?
+          cities_ids = projects.map { |project| project.cities }.flatten.pluck(:id).uniq
+          records.where(id: cities_ids)
+        else
+          City.none
+        end
+      else
+        City.none
+      end    
     }
 
     def custom_links(_)
