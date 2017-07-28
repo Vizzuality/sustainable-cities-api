@@ -119,6 +119,7 @@ class Project < ApplicationRecord
       tree << {
         id: category.id,
         name: category.name,
+        slug: category.slug,
         children: first_children(category, levels)
       }
     end rescue []
