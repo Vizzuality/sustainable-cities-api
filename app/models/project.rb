@@ -147,6 +147,7 @@ class Project < ApplicationRecord
       {
         id: bme.id,
         name: bme.name,
+        slug: bme.slug,
         description: bme.description
       }
     end rescue []
