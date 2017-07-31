@@ -18,33 +18,6 @@ module V1
       end
     }
 
-    filter :projects_category, apply: ->(records, value, _options) {
-      slug = value[0]
-      category = Category.find_by(slug: slug)
-
-      if category.present? && category.category_type == 'Solution'
-        if category.projects.present?
-          projects = category.projects
-        else
-          children = category.children
-          if category.level == 1
-            if children.present?
-              projects = children.map { |category| category.children.map { |solution| solution.projects } }.flatten
-            end
-          elsif category.level == 2
-            if children.present?
-              projects = children.map { |solution| solution.projects }.flatten
-            end
-          end
-        end
-
-        cities_ids = projects.map { |project| project.cities }.flatten.pluck(:id)
-        records.where(id: cities_ids)
-      else
-        City.none
-      end
-    }
-
     filter :bme_id, apply: ->(records, value, _options) {
       records.joins(projects: :bmes).where('bmes.id = ?', value[0].to_i)
     }
