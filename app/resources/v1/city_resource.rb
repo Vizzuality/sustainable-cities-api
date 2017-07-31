@@ -3,7 +3,7 @@ module V1
   class CityResource < JSONAPI::Resource
     caching
 
-    attributes :name, :iso, :lat, :lng, :province, :is_featured
+    attributes :name, :iso, :lat, :lng, :province, :is_featured, :project_count
 
     has_one :country
     has_many :projects
@@ -20,6 +20,10 @@ module V1
 
     def custom_links(_)
       { self: nil }
+    end
+
+    def project_count
+      projects.count
     end
   end
 end
