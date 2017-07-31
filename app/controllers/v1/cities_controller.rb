@@ -8,6 +8,14 @@ module V1
 
     before_action :set_city, only: [:show, :update, :destroy]
 
+    def index
+      jsonapi_render json: City.with_projects
+    end
+
+    def show
+      jsonapi_render json: City.with_projects.find(params[:id])
+    end
+
     def update
       if @city.update(city_params)
         render json: { messages: [{ status: 200, title: "City successfully updated!" }] }, status: 200
