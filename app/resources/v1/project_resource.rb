@@ -89,7 +89,7 @@ module V1
     end
 
     def category_level_2
-      @model.category.level == 2 ? @model.category_id : @model.category.parent_id rescue nil
+      @model.category.level == 2 ? @model.category.slug : @model.category.parent.slug rescue nil
     end
 
     def custom_links(_)
