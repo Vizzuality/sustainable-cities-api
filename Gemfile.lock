@@ -99,6 +99,8 @@ GEM
       activerecord (>= 4.1)
       concurrent-ruby
       railties (>= 4.1)
+    jsonapi-utils (0.7.0)
+      jsonapi-resources (= 0.9.0)
     jwt (1.5.6)
     launchy (2.4.3)
       addressable (~> 2.3)
@@ -310,6 +312,7 @@ DEPENDENCIES
   faker
   friendly_id
   jsonapi-resources
+  jsonapi-utils (~> 0.7.0)
   jwt
   listen (~> 3.0.5)
   mini_magick

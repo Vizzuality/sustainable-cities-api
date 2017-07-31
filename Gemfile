@@ -15,6 +15,7 @@ gem 'rails', '~> 5.1.0.rc1'
 gem 'jsonapi-resources'
 gem 'oj'
 gem 'oj_mimic_json'
+gem 'jsonapi-utils', '~> 0.7.0'
 
 # Data
 gem 'cancancan'
