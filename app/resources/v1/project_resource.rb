@@ -66,8 +66,7 @@ module V1
         elsif category.level == 3
           projects = category.projects
         end
-        cities_ids = projects.map { |project| project.cities }.flatten.pluck(:id)
-        records.joins(:cities).where('project_cities.city_id': cities_ids) if cities_ids.present?
+        records.where(id: projects.pluck(:id))
 
       else
         Project.none
@@ -77,9 +76,12 @@ module V1
     filter :bme_slug, apply: ->(records, value, _options) {
       category = Category.find_by(slug: value[0])
       if category.category_type == 'Bme'
-        all_categories = category.children_bmes
-        all_bmes = Category.where(id: all_categories).joins(:bmes).pluck('bmes.id').uniq!
-        records.joins(:bmes).where('project_bmes.bme_id': all_bmes) if all_bmes.present?
+        all_bmes = category.children_bmes.pluck(:id).uniq
+        if all_bmes.present?
+          records.joins(:bmes).where('project_bmes.bme_id': all_bmes)
+        else
+          Project.none
+        end
       end
 
     }
