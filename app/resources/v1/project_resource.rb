@@ -55,12 +55,17 @@ module V1
 
         if category.level == 1
           if children.present?
-            projects = children.map { |category| category.children.map { |solution| solution.projects } }.flatten
+            children_ids = children.pluck(:id)
+            categories_ids = Category.where(parent_id: children_ids).pluck(:id)
+            ids = children_ids + categories_ids << category.id
+
+            projects = Project.where(category_id: ids)
           end
 
         elsif category.level == 2
           if children.present?
-            projects = children.map { |solution| solution.projects }.flatten
+            ids = children.pluck(:id) << category.id
+            projects = Project.where(category_id: ids)
           end
           
         elsif category.level == 3
