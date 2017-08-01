@@ -22,6 +22,10 @@ class ExternalSource < ApplicationRecord
   has_many :projects, through: :attacheable_external_sources, source: :attacheable, source_type: "Project"
   has_many :bmes,     through: :attacheable_external_sources, source: :attacheable, source_type: "Bme"
 
+  after_save { impacts.find_each(&:touch)  }
+  after_save { projects.find_each(&:touch) }
+  after_save { bmes.find_each(&:touch)     }
+
   include Activable
   include Sanitizable
 
