@@ -22,6 +22,8 @@ class City < ApplicationRecord
   has_many :project_cities
   has_many :projects, through: :project_cities
 
+  after_save { projects.find_each(&:touch) }
+
   validates :name, presence: true
 
   scope :by_name_asc, -> { order('cities.name ASC') }

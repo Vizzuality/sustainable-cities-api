@@ -52,6 +52,9 @@ class Project < ApplicationRecord
   has_many :attacheable_external_sources, as: :attacheable
   has_many :external_sources, through: :attacheable_external_sources
 
+  after_save { cities.find_each(&:touch) }
+  after_save { bmes.find_each(&:touch)   }
+
   accepts_nested_attributes_for :bmes
   accepts_nested_attributes_for :external_sources, allow_destroy: true
   accepts_nested_attributes_for :documents,        allow_destroy: true
