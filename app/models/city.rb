@@ -21,6 +21,9 @@ class City < ApplicationRecord
   has_many :users, inverse_of: :city
   has_many :project_cities
   has_many :projects, through: :project_cities
+  has_many :photos, as: :attacheable, dependent: :destroy
+
+  accepts_nested_attributes_for :photos, allow_destroy: true
 
   after_save { projects.find_each(&:touch) }
 

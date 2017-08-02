@@ -7,6 +7,7 @@ module V1
 
     has_one :country
     has_many :projects
+    has_many :photos
 
     filters :id, :name, :iso, :is_featured
 

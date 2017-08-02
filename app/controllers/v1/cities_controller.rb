@@ -2,6 +2,7 @@
 module V1
   class CitiesController < ApplicationController
     include ErrorSerializer
+    include ApiUploads
 
     skip_before_action :authenticate, only: [:index, :show]
     load_and_authorize_resource class: 'City'
@@ -40,7 +41,16 @@ module V1
       end
 
       def city_params
-        params.require(:city).permit(:name, :country_id, :is_featured, :iso, :lat, :lng, :province)
+        return_params = params.require(:city).permit(:name, :country_id, :is_featured, :iso, :lat, :lng, :province,
+                                     { photos_attributes: [:id, :name, :attachment, :is_active, :_destroy] })
+
+        if return_params[:photos_attributes].present?
+          return_params[:photos_attributes].each do |photo_attributes|
+            photo_attributes[:attachment] = process_file_base64(photo_attributes[:attachment].to_s) if photo_attributes[:attachment].present?
+          end
+        end
+
+        return_params
       end
   end
 end
