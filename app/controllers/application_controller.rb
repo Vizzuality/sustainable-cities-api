@@ -5,7 +5,6 @@ require 'auth'
 class ApplicationController < ActionController::API
   include CanCan::ControllerAdditions
   include JSONAPI::ActsAsResourceController
-  include JSONAPI::Utils
 
   before_action :check_access, :authenticate
 
