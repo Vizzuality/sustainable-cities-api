@@ -30,7 +30,6 @@ class City < ApplicationRecord
 
   scope :filter_by_name,    ->(search_term) { where('cities.name ilike ?', "%#{search_term}%") }
   scope :filter_by_country, ->(country_id)  { where(country_id: country_id)                    }
-  scope :with_projects,     ->              { joins(:projects).distinct                        }
 
   class << self
     def fetch_all(options)
