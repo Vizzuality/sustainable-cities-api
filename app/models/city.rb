@@ -47,25 +47,25 @@ class City < ApplicationRecord
   end
 
   def bmes_quantity
+    return_hash = {}
     city_bmes = Bme.joins(projects: :cities).where("city_id = #{id}")
+    categories = Category.includes({children: [{children: [:bmes]}]})
+                  .where(slug: ["funding-source", "investment-component", "delivery-mechanism", "financial-product"])
 
-    funding_source       = Category.find_by(slug: "funding-source")
-    investment_component = Category.find_by(slug: "investment-component")
-    delivery_mechanism   = Category.find_by(slug: "delivery-mechanism")
-    financial_product    = Category.find_by(slug: "financial-product")
+    categories.each do |category|
+      return_hash[category.name] = first_children(category, city_bmes)
+    end
 
-    {
-      "#{funding_source.name}":       first_children(funding_source, city_bmes),
-      "#{investment_component.name}": first_children(investment_component, city_bmes),
-      "#{delivery_mechanism.name}":   first_children(delivery_mechanism, city_bmes),
-      "#{financial_product.name}":    first_children(financial_product, city_bmes)
-    }
+    return_hash
   end
 
   def first_children(category_level_1, bmes)
     return_hash = {}
 
-    return_hash[:quantity] = category_level_1.children.map { |category_level_2| category_level_2.children.map { |category_level_3| (category_level_3.bmes & bmes).size } }.flatten.reduce(:+)
+    return_hash[:quantity] = category_level_1.children.map do |category_level_2|
+      category_level_2.children.map { |category_level_3| (category_level_3.bmes & bmes).size }
+    end.flatten.reduce(:+)
+
     category_level_1.children.each do |category_level_2|
       return_hash[category_level_2.name] = {
         quantity: category_level_2.children.map { |category| (category.bmes & bmes).size }.reduce(:+),
