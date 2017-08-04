@@ -60,7 +60,6 @@ class Bme < ApplicationRecord
     end
   end
 
-<<<<<<< HEAD
 
   def has_one_bme_category
     error_message = 'must have one and only one of type BME'
@@ -71,9 +70,4 @@ class Bme < ApplicationRecord
     end
   end
 
-=======
-  def touch_cities
-    projects.includes(:cities).map { |project| project.cities }.flatten.uniq.each(&:touch)
-  end
->>>>>>> develop
 end
