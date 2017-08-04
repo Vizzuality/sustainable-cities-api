@@ -31,6 +31,7 @@ class Bme < ApplicationRecord
 
   after_save { categories.find_each(&:touch) }
   after_save { projects.find_each(&:touch)   }
+  after_save { touch_cities                  }
 
   accepts_nested_attributes_for :categories
   accepts_nested_attributes_for :projects
@@ -58,4 +59,7 @@ class Bme < ApplicationRecord
     end
   end
 
+  def touch_cities
+    projects.includes(:cities).map { |project| project.cities }.flatten.uniq.each(&:touch)
+  end
 end

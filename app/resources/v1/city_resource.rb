@@ -3,7 +3,7 @@ module V1
   class CityResource < JSONAPI::Resource
     caching
 
-    attributes :name, :iso, :lat, :lng, :province, :is_featured, :project_count
+    attributes :name, :iso, :lat, :lng, :province, :is_featured, :project_count, :bmes_quantity
 
     has_one :country
     has_many :projects
