@@ -21,6 +21,11 @@ class City < ApplicationRecord
   has_many :users, inverse_of: :city
   has_many :project_cities
   has_many :projects, through: :project_cities
+  has_many :photos, as: :attacheable, dependent: :destroy
+
+  accepts_nested_attributes_for :photos, allow_destroy: true
+
+  after_save { projects.find_each(&:touch) }
 
   validates :name, presence: true
 
@@ -39,5 +44,39 @@ class City < ApplicationRecord
       cities = cities.filter_by_country(country_id) if country_id.present?
       cities
     end
+  end
+
+  def bmes_quantity
+    return_hash = {}
+    city_bmes = Bme.joins(projects: :cities).where("city_id = #{id}")
+    categories = Category.includes({ children: [{ children: [:bmes] }] })
+                  .where(slug: ["funding-source", "investment-component", "delivery-mechanism", "financial-product"])
+
+    categories.each do |category|
+      return_hash[category.name] = children(category, city_bmes)
+    end
+
+    return_hash
+  end
+
+  def children(category_level_1, bmes)
+    return_hash = {}
+    quantity_level_1 = 0
+
+    category_level_1.children.each do |category_level_2|
+      return_hash[category_level_2.name] = {}
+      quantity_level_2 = 0
+
+      category_level_2.children.each do |category_level_3|
+        quantity_level_2 += (category_level_3.bmes & bmes).size
+        return_hash[category_level_2.name][category_level_3.name] = { quantity: (category_level_3.bmes & bmes).count }
+      end
+
+      quantity_level_1 += quantity_level_2
+      return_hash[category_level_2.name][:quantity] = quantity_level_2
+    end
+
+    return_hash[:quantity] = quantity_level_1
+    return_hash
   end
 end

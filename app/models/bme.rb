@@ -29,6 +29,10 @@ class Bme < ApplicationRecord
   has_many :attacheable_external_sources, as: :attacheable
   has_many :external_sources, through: :attacheable_external_sources
 
+  after_save { categories.find_each(&:touch) }
+  after_save { projects.find_each(&:touch)   }
+  after_save { touch_cities                  }
+
   accepts_nested_attributes_for :categories
   accepts_nested_attributes_for :projects
   accepts_nested_attributes_for :external_sources, allow_destroy: true
@@ -55,4 +59,7 @@ class Bme < ApplicationRecord
     end
   end
 
+  def touch_cities
+    projects.includes(:cities).map { |project| project.cities }.flatten.uniq.each(&:touch)
+  end
 end

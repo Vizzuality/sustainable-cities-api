@@ -20,6 +20,9 @@ class Country < ApplicationRecord
   has_many :cities,   inverse_of: :country
   has_many :projects, inverse_of: :country
 
+  after_save { cities.find_each(&:touch)   }
+  after_save { projects.find_each(&:touch) }
+
   validates :name, :iso, presence: true, uniqueness: { case_sensitive: false }
 
   include Activable

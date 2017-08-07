@@ -52,6 +52,9 @@ class Project < ApplicationRecord
   has_many :attacheable_external_sources, as: :attacheable
   has_many :external_sources, through: :attacheable_external_sources
 
+  after_save { cities.find_each(&:touch) }
+  after_save { bmes.find_each(&:touch)   }
+
   accepts_nested_attributes_for :bmes
   accepts_nested_attributes_for :external_sources, allow_destroy: true
   accepts_nested_attributes_for :documents,        allow_destroy: true
@@ -104,16 +107,17 @@ class Project < ApplicationRecord
     tree = []
     levels = {
       fourth_level: bmes,
-      third_level: bmes.map(&:categories).flatten.uniq.compact
+      third_level: Category.joins(:bmes).where(bmes: {id: bmes.pluck(:id)}, category_type: "Bme").uniq
     }
 
-    levels[:second_level] = levels[:third_level].map(&:parent).uniq.compact rescue []
-    levels[:first_level] = levels[:second_level].map(&:parent).uniq.compact rescue []
+    levels[:second_level] = Category.where(id: levels[:third_level].pluck(:parent_id).compact.uniq) rescue []
+    levels[:first_level] = Category.where(id: levels[:second_level].pluck(:parent_id).compact.uniq).includes(:children) rescue []
 
     levels[:first_level].each do |category|
       tree << {
         id: category.id,
         name: category.name,
+        slug: category.slug,
         children: first_children(category, levels)
       }
     end rescue []
@@ -126,16 +130,18 @@ class Project < ApplicationRecord
       {
         id: category.id,
         name: category.name,
+        slug: category.slug,
         children: second_children(category, levels)
       }
     end rescue []
   end
 
   def second_children(category, levels)
-    (category.children & levels[:third_level]).map do |category|
+    (category.children.includes(:bmes) & levels[:third_level]).map do |category|
       {
         id: category.id,
         name: category.name,
+        slug: category.slug,
         children: third_children(category, levels)
       }
     end rescue []
@@ -146,6 +152,7 @@ class Project < ApplicationRecord
       {
         id: bme.id,
         name: bme.name,
+        slug: bme.slug,
         description: bme.description
       }
     end rescue []
