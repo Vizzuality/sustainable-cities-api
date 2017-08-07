@@ -107,7 +107,7 @@ class Project < ApplicationRecord
     tree = []
     levels = {
       fourth_level: bmes,
-      third_level: Category.joins(:bmes).where(bmes: {id: bmes.pluck(:id)}).uniq
+      third_level: Category.joins(:bmes).where(bmes: {id: bmes.pluck(:id)}, category_type: "Bme").uniq
     }
 
     levels[:second_level] = Category.where(id: levels[:third_level].pluck(:parent_id).compact.uniq) rescue []
