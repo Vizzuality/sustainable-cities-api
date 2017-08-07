@@ -7,7 +7,6 @@ module V1
       token    = JWT.encode({ user: @webuser.id }, ENV['AUTH_SECRET'], 'HS256')
 
       @headers = {
-        "ACCEPT" => "application/json",
         "HTTP_SC_API_KEY" => "Bearer #{token}"
       }
     end
@@ -70,16 +69,16 @@ module V1
         expect(json[0]['attributes']['name']).to eq('ZZZ Next first one')
       end
 
-      it 'Search cities by name and sort by name DESC' do
-        get '/cities?search=madrid&sort=-name', headers: @headers
+      it 'Search cities by name' do
+        get '/cities?filter[name]=00 City one', headers: @headers
 
         expect(status).to                        eq(200)
-        expect(json.size).to                     eq(4)
-        expect(json[0]['attributes']['name']).to match('Madrid')
+        expect(json.size).to                     eq(1)
+        expect(json[0]['attributes']['name']).to match('00 City one')
       end
 
       it 'Search cities by country and sort by name DESC' do
-        get "/cities?country=#{country.id}&sort=-name", headers: @headers
+        get "/cities?filter[country_id]=#{country.id}&sort=-name", headers: @headers
 
         expect(status).to                        eq(200)
         expect(json.size).to                     eq(4)
