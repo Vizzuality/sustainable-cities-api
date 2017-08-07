@@ -66,12 +66,11 @@ module V1
         expect(json[0]['attributes']['name']).to eq('ZZZ pepe Next first one')
       end
 
-      it 'Search users by name or nickname and sort by name DESC' do
-        get '/users?search=pepe&sort=name', headers: @headers
-debugger
+      it 'Search users by name' do
+        get '/users?filter[name]=Test user', headers: @headers
+
         expect(status).to                            eq(200)
-        expect(json.size).to                         eq(5)
-        expect(json[0]['attributes']['nickname']).to match('pepe')
+        expect(json.size).to                         eq(4)
       end
     end
 
@@ -226,19 +225,7 @@ debugger
 
           get '/users/current-user', headers: headers
           expect(status).to eq(200)
-          expect(json).to   eq({"id"=>"#{user.id}", "type"=>"users", "attributes"=>{"name"=>"00 User one", "email"=>"test@email.com",
-                                                                                    "role"=>"user", "country_id"=>nil, "city_id"=>nil,
-                                                                                    "nickname"=>"test", "institution"=>nil, "position"=>nil,
-                                                                                    "twitter_account"=>nil, "linkedin_account"=>nil,
-                                                                                    "is_active"=>true, "deactivated_at"=>nil,
-                                                                                    "image"=>{"url"=>nil, "thumbnail"=>{"url"=>nil}, "square"=>{"url"=>nil}},
-                                                                                    "permissions"=>{"all"=>{"StudyCase"=>["read"], "BusinessModel"=>[],
-                                                                                                            "Bme"=>["read"], "Category"=>["read"], "City"=>["read"],
-                                                                                                            "Comment"=>["create"], "Country"=>["read"], "Document"=>["read"],
-                                                                                                            "Enabling"=>["read"], "ExternalSource"=>["read"], "Impact"=>["read"],
-                                                                                                            "Photo"=>["read"], "User"=>["read"]},
-                                                                                                    "owner"=>{"User"=>["update"]},
-                                                                                                    "member"=>{"StudyCase"=>["update"], "BusinessModel"=>["read", "update"]}}}})
+          expect(JSON.parse(response.body)["email"]).to   eq("test@email.com")
         end
 
         let!(:error) {

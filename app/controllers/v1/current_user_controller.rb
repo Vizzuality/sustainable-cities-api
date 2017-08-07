@@ -6,7 +6,7 @@ module V1
     load_and_authorize_resource class: 'User'
 
     def show
-      render json: current_user, serializer: UserSerializer
+      render json: current_user
     end
   end
 end
