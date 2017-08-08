@@ -7,7 +7,7 @@ module V1
       token    = JWT.encode({ user: @webuser.id }, ENV['AUTH_SECRET'], 'HS256')
 
       @headers = {
-        "ACCEPT" => "application/json",
+        "ACCEPT" => "application/vnd.api+json",
         "HTTP_SC_API_KEY" => "Bearer #{token}"
       }
     end
@@ -68,12 +68,12 @@ module V1
         expect(json[0]['attributes']['name']).to eq('ZZZ Next first one')
       end
 
-      it 'Search enablings by name or description and sort by name DESC' do
-        get '/enablings?search=enabling&sort=name', headers: @headers
+      it 'Search enablings by name' do
+        get '/enablings?filter[name]=00 first one', headers: @headers
 
         expect(status).to                        eq(200)
-        expect(json.size).to                     eq(5)
-        expect(json[0]['attributes']['name']).to match('Enabling')
+        expect(json.size).to                     eq(1)
+        expect(json[0]['attributes']['name']).to match('00 first one')
       end
     end
 
