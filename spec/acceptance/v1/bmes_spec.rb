@@ -7,7 +7,6 @@ module V1
       token    = JWT.encode({ user: @webuser.id }, ENV['AUTH_SECRET'], 'HS256')
 
       @headers = {
-        "ACCEPT" => "application/json",
         "HTTP_SC_API_KEY" => "Bearer #{token}"
       }
     end
@@ -23,12 +22,12 @@ module V1
 
     context 'Show bmes' do
       it 'Get bmes list' do
-        get '/business-model-elements', headers: @headers
+        get '/bmes', headers: @headers
         expect(status).to eq(200)
       end
 
       it 'Get specific bme' do
-        get "/business-model-elements/#{bme.id}", headers: @headers
+        get "/bmes/#{bme.id}", headers: @headers
         expect(status).to eq(200)
       end
     end
@@ -41,21 +40,21 @@ module V1
       }
 
       it 'Show list of bmes for first page with per pege param' do
-        get '/business-model-elements?page[number]=1&page[size]=3', headers: @headers
+        get '/bmes?page[number]=1&page[size]=3', headers: @headers
 
         expect(status).to    eq(200)
         expect(json.size).to eq(3)
       end
 
       it 'Show list of bmes for second page with per pege param' do
-        get '/business-model-elements?page[number]=2&page[size]=3', headers: @headers
+        get '/bmes?page[number]=2&page[size]=3', headers: @headers
 
         expect(status).to    eq(200)
         expect(json.size).to eq(3)
       end
 
       it 'Show list of bmes for sort by name' do
-        get '/business-model-elements?sort=name', headers: @headers
+        get '/bmes?sort=name', headers: @headers
 
         expect(status).to                        eq(200)
         expect(json.size).to                     eq(6)
@@ -63,19 +62,19 @@ module V1
       end
 
       it 'Show list of bmes for sort by name DESC' do
-        get '/business-model-elements?sort=-name', headers: @headers
+        get '/bmes?sort=-name', headers: @headers
 
         expect(status).to                        eq(200)
         expect(json.size).to                     eq(6)
         expect(json[0]['attributes']['name']).to eq('ZZZ Next first one')
       end
 
-      it 'Search business-model-elements by name or description and sort by name ASC' do
-        get '/business-model-elements?search=bme&sort=name', headers: @headers
+      it 'Search bmes by name' do
+        get '/bmes?filter[name]=00 first one', headers: @headers
 
         expect(status).to                        eq(200)
-        expect(json.size).to                     eq(5)
-        expect(json[0]['attributes']['name']).to match('BME')
+        expect(json.size).to                     eq(1)
+        expect(json[0]['attributes']['name']).to match('00 first one')
       end
     end
 
@@ -89,13 +88,13 @@ module V1
         end
 
         it 'Returns error object when the bme cannot be created by admin' do
-          post '/business-model-elements', params: {"bme": { "name": "" }}, headers: @headers
+          post '/bmes', params: {"bme": { "name": "" }}, headers: @headers
           expect(status).to eq(422)
           expect(body).to   eq(error.to_json)
         end
 
         it 'Returns success object when the bme was seccessfully created by admin' do
-          post '/business-model-elements', params: {"bme": { "name": "Business model element one", "description": "Lorem ipsum..", "category_ids": [category.id], "enabling_ids": [enabling.id] }},
+          post '/bmes', params: {"bme": { "name": "Business model element one", "description": "Lorem ipsum..", "category_ids": [category.id], "enabling_ids": [enabling.id] }},
                         headers: @headers
           expect(status).to eq(201)
           expect(body).to   eq({ messages: [{ status: 201, title: 'Business model element successfully created!' }] }.to_json)
@@ -115,7 +114,7 @@ module V1
         }
 
         it 'Do not allows to create bme by not admin user' do
-          post '/business-model-elements', params: {"bme": { "name": "Business model element one", "description": "Lorem ipsum.." }},
+          post '/bmes', params: {"bme": { "name": "Business model element one", "description": "Lorem ipsum.." }},
                         headers: @headers_user
           expect(status).to eq(401)
           expect(body).to   eq(error_unauthorized.to_json)
@@ -133,13 +132,13 @@ module V1
         end
 
         it 'Returns error object when the bme cannot be updated by admin' do
-          patch "/business-model-elements/#{bme.id}", params: {"bme": { "name": "" }}, headers: @headers
+          patch "/bmes/#{bme.id}", params: {"bme": { "name": "" }}, headers: @headers
           expect(status).to eq(422)
           expect(body).to   eq(error.to_json)
         end
 
         it 'Returns success object when the bme was seccessfully updated by admin' do
-          patch "/business-model-elements/#{bme.id}", params: {"bme": { "name": "Business model element one", "description": "Lorem ipsum.." }},
+          patch "/bmes/#{bme.id}", params: {"bme": { "name": "Business model element one", "description": "Lorem ipsum.." }},
                                    headers: @headers
           expect(status).to eq(200)
           expect(body).to   eq({ messages: [{ status: 200, title: 'Business model element successfully updated!' }] }.to_json)
@@ -157,7 +156,7 @@ module V1
         }
 
         it 'Do not allows to update bme by not admin user' do
-          patch "/business-model-elements/#{bme.id}", params: {"bme": { "name": "Business model element one", "description": "Lorem ipsum.." }},
+          patch "/bmes/#{bme.id}", params: {"bme": { "name": "Business model element one", "description": "Lorem ipsum.." }},
                                    headers: @headers_user
           expect(status).to eq(401)
           expect(body).to   eq(error_unauthorized.to_json)
@@ -173,7 +172,7 @@ module V1
         end
 
         it 'Returns success object when the bme was seccessfully deleted by admin' do
-          delete "/business-model-elements/#{bme.id}", headers: @headers
+          delete "/bmes/#{bme.id}", headers: @headers
           expect(status).to eq(200)
           expect(body).to   eq({ messages: [{ status: 200, title: 'Business model element successfully deleted!' }] }.to_json)
         end
@@ -190,7 +189,7 @@ module V1
         }
 
         it 'Do not allows to delete bme by not admin user' do
-          delete "/business-model-elements/#{bme.id}", headers: @headers_user
+          delete "/bmes/#{bme.id}", headers: @headers_user
           expect(status).to eq(401)
           expect(body).to   eq(error_unauthorized.to_json)
         end
