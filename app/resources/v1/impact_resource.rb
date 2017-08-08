@@ -14,5 +14,9 @@ module V1
     def custom_links(_)
       { self: nil }
     end
+
+    def self.sortable_fields(context)
+      super(context) + [:"category.name"]
+    end
   end
 end
