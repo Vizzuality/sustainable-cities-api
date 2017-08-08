@@ -7,7 +7,6 @@ module V1
       token    = JWT.encode({ user: @webuser.id }, ENV['AUTH_SECRET'], 'HS256')
 
       @headers = {
-        "ACCEPT" => "application/json",
         "HTTP_SC_API_KEY" => "Bearer #{token}"
       }
     end
@@ -68,12 +67,12 @@ module V1
         expect(json[0]['attributes']['name']).to eq('ZZZ Next first one')
       end
 
-      it 'Search categories by name or description and sort by name DESC' do
-        get '/categories?search=special&sort=name', headers: @headers
+      it 'Search categories by name' do
+        get '/categories?filter[name]=00 Category one special', headers: @headers
 
         expect(status).to                        eq(200)
-        expect(json.size).to                     eq(2)
-        expect(json[0]['attributes']['name']).to match('special')
+        expect(json.size).to                     eq(1)
+        expect(json[0]['attributes']['name']).to match('00 Category one special')
       end
     end
 
