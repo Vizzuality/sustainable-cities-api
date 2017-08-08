@@ -54,8 +54,4 @@ RSpec.describe Project, type: :model do
     @study_case.valid?
     expect { @study_case.save! }.to raise_error(ActiveRecord::RecordInvalid, "Validation failed: Name can't be blank")
   end
-
-  it 'Fetch all study_cases' do
-    expect(Project.fetch_all(nil).count).to eq(3)
-  end
 end
