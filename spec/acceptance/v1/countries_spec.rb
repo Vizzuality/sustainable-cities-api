@@ -7,7 +7,6 @@ module V1
       token    = JWT.encode({ user: @webuser.id }, ENV['AUTH_SECRET'], 'HS256')
 
       @headers = {
-        "ACCEPT" => "application/json",
         "HTTP_SC_API_KEY" => "Bearer #{token}"
       }
     end
@@ -69,7 +68,7 @@ module V1
       end
 
       it 'Search countries by name and sort by name DESC' do
-        get '/countries?search=Fantasia&sort=-name', headers: @headers
+        get '/countries?filter[name]=00 fantasialand&sort=-name', headers: @headers
 
         expect(status).to                        eq(200)
         expect(json.size).to                     eq(1)
