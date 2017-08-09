@@ -29,7 +29,6 @@ Rails.application.routes.draw do
     #get '/enabling-categories',                   to: 'categories#index', category_type: 'Enabling'
     #get '/enabling-categories/:id',               to: 'categories#show'
     #get '/categories',                            to: 'categories#index', category_type: 'All'
-    #get '/categories-tree',                       to: 'categories#index', category_type: 'Tree'
 
     # Resources
     jsonapi_resources :users do; end
@@ -38,7 +37,6 @@ Rails.application.routes.draw do
     jsonapi_resources :projects do; end
     jsonapi_resources :bmes, path: 'business-model-elements' do; end
     jsonapi_resources :categories do; end
-    jsonapi_resources :category_trees, except: [:show] do; end
     jsonapi_resources :impacts do; end
     jsonapi_resources :enablings do; end
     jsonapi_resources :comments, except: :show do; end
