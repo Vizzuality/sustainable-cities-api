@@ -12,6 +12,7 @@ module V1
 
     def update
       if @business_model.update(business_model_params)
+        @business_model.users << current_user unless @business_model.users.include?(current_user)
         render json: { messages: [{ status: 200, title: "Business Model successfully updated!" }] }, status: 200
       else
         render json: ErrorSerializer.serialize(@business_model.errors, 422), status: 422

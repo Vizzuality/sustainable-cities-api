@@ -27,7 +27,6 @@ class BusinessModel < ApplicationRecord
   has_many :users, through: :business_model_users
 
   after_save :set_links
-  # after_update :add_user
 
   def set_links
     update_column(:link_share, link_hash("share", id))
