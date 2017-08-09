@@ -38,6 +38,7 @@ group :development, :test do
   gem 'faker'
   gem 'rubocop',                   require: false
   gem 'webmock'
+  gem 'bullet'
 end
 
 group :development do
@@ -58,6 +59,7 @@ group :test do
   gem 'rspec-activejob'
   gem 'rspec-rails'
   gem 'simplecov'
+  gem 'codeclimate-test-reporter'
   gem 'timecop'
 end
 
