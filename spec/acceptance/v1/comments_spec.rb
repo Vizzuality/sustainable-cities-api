@@ -7,7 +7,7 @@ module V1
       token    = JWT.encode({ user: @webuser.id }, ENV['AUTH_SECRET'], 'HS256')
 
       @headers = {
-        "ACCEPT" => "application/json",
+        "ACCEPT" => "application/vnd.api+json",
         "HTTP_SC_API_KEY" => "Bearer #{token}"
       }
     end
