@@ -37,5 +37,6 @@ Rails.application.routes.draw do
     jsonapi_resources :enablings do; end
     jsonapi_resources :comments, except: :show do; end
     jsonapi_resources :external_sources do; end
+    jsonapi_resources :business_models do; end
   end
 end
