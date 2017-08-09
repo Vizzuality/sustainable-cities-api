@@ -7,7 +7,7 @@ module V1
       token    = JWT.encode({ user: @webuser.id }, ENV['AUTH_SECRET'], 'HS256')
 
       @headers = {
-        "ACCEPT" => "application/json",
+        "ACCEPT" => "application/vnd.api+json",
         "HTTP_SC_API_KEY" => "Bearer #{token}"
       }
     end
@@ -71,12 +71,12 @@ module V1
         expect(json[0]['attributes']['name']).to eq('ZZZ Next first one')
       end
 
-      it 'Search impacts by name or description and sort by name DESC' do
-        get '/impacts?search=impact&sort=name', headers: @headers
+      it 'Search impacts by name' do
+        get '/impacts?filter[name]=00 first one', headers: @headers
 
         expect(status).to                        eq(200)
-        expect(json.size).to                     eq(5)
-        expect(json[0]['attributes']['name']).to match('Impact')
+        expect(json.size).to                     eq(1)
+        expect(json[0]['attributes']['name']).to match('00 first one')
       end
 
       it 'Show list of impacts for sort by impact_unit DESC' do
@@ -84,7 +84,7 @@ module V1
 
         expect(status).to                               eq(200)
         expect(json.size).to                            eq(6)
-        expect(json[0]['attributes']['impact_unit']).to eq('ZZZ unit')
+        expect(json[0]['attributes']['impact-unit']).to eq('ZZZ unit')
       end
 
       it 'Show list of impacts for sort by impact_value DESC' do
@@ -92,11 +92,11 @@ module V1
 
         expect(status).to                                eq(200)
         expect(json.size).to                             eq(6)
-        expect(json[0]['attributes']['impact_value']).to eq('ZZZ value')
+        expect(json[0]['attributes']['impact-value']).to eq('ZZZ value')
       end
 
       it 'Show list of impacts for sort by category name DESC' do
-        get '/impacts?sort=-category', headers: @headers
+        get '/impacts?sort=-category.name', headers: @headers
 
         expect(status).to                        eq(200)
         expect(json.size).to                     eq(6)
