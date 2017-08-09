@@ -21,6 +21,9 @@ class Enabling < ApplicationRecord
   has_many :bme_enablings
   has_many :bmes, through: :bme_enablings
 
+  has_many :business_model_enablings
+  has_many :business_models, through: :business_model_enablings
+
   accepts_nested_attributes_for :bmes
 
   validates :name, presence: true, uniqueness: { case_sensitive: false, scope: :assessment_value }

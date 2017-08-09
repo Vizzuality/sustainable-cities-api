@@ -26,6 +26,9 @@ class Bme < ApplicationRecord
   has_many :project_bmes
   has_many :projects, through: :project_bmes
 
+  has_many :business_model_bmes
+  has_many :business_models, through: :business_model_bmes
+
   has_many :attacheable_external_sources, as: :attacheable
   has_many :external_sources, through: :attacheable_external_sources
 
