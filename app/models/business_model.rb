@@ -32,6 +32,7 @@ class BusinessModel < ApplicationRecord
 
   has_many :comments, as: :commentable, dependent: :destroy
   accepts_nested_attributes_for :comments, allow_destroy: true
+  accepts_nested_attributes_for :business_model_bmes, allow_destroy: true
 
   after_create :set_links
 
