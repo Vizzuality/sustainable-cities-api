@@ -118,6 +118,8 @@ class Project < ApplicationRecord
         id: category.id,
         name: category.name,
         slug: category.slug,
+        slug: category.slug,
+        label: category.label,
         children: first_children(category, levels)
       }
     end rescue []
