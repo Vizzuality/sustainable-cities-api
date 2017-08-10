@@ -3,8 +3,8 @@ module V1
   class BusinessModelResource < JSONAPI::Resource
     caching
 
-    attributes :title, :description, :link_share, :link_edit
+    attributes :title, :description, :link_share, :link_edit, :solution_id
 
-    belongs_to :solution
+    has_one :solution
   end
 end

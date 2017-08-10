@@ -28,15 +28,6 @@ module V1
       end
     end
 
-    def create
-      @business_model = BusinessModel.new(business_model_params)
-      if @business_model.save
-        render json: { messages: [{ status: 201, title: 'Business Model successfully created!' }] }, status: 201
-      else
-        render json: ErrorSerializer.serialize(@business_model.errors, 422), status: 422
-      end
-    end
-
     def destroy
       if @business_model.destroy
         render json: { messages: [{ status: 200, title: 'Business Model successfully deleted!' }] }, status: 200
@@ -46,17 +37,7 @@ module V1
     end
 
     private
-
-      # def set_business_model
-      #   @business_model = BusinessModel.find(params[:id])
-      # end
-
-      # def set_business_model
-      #   @business_model = BusinessModel.find_by(link_share: params[:id])
-      # end
-
       def set_business_model_edit
-        debugger
         @business_model = BusinessModel.find_by(link_edit: params[:id])
       end
 
@@ -67,7 +48,7 @@ module V1
 
         return_params = params.require(:data)
                               .require(:attributes)
-                              .permit(:title, :description)
+                              .permit(:title, :description, :solution_id)
 
         return_params[:owner_id] = current_user.id
 
