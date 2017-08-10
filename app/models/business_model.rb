@@ -33,7 +33,7 @@ class BusinessModel < ApplicationRecord
   has_many :comments, as: :commentable, dependent: :destroy
   accepts_nested_attributes_for :comments, allow_destroy: true
 
-  after_save :set_links
+  after_create :set_links
 
   def set_links
     update_column(:link_share, link_hash("share", id))
