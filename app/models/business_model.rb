@@ -14,6 +14,10 @@
 #
 
 class BusinessModel < ApplicationRecord
+  extend FriendlyId
+  friendly_id :link_share, use: [:finders]
+  friendly_id :link_edit, use: [:finders]
+
   belongs_to :solution, :class_name => "Category"
   belongs_to :owner, :class_name => "User"
 
@@ -25,6 +29,9 @@ class BusinessModel < ApplicationRecord
 
   has_many :business_model_users
   has_many :users, through: :business_model_users
+
+  has_many :comments, as: :commentable, dependent: :destroy
+  accepts_nested_attributes_for :comments, allow_destroy: true
 
   after_save :set_links
 
