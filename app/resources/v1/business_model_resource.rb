@@ -7,6 +7,7 @@ module V1
 
     has_one :solution
     has_many :bmes
-
+    has_many :enablings
+    has_many :users
   end
 end
