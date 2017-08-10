@@ -42,15 +42,13 @@ module V1
       end
 
       def business_model_params
-        # return_params = params.require(:business_model).permit(:title, :description, :solution_id,
-        #                                                         { bme_ids: [] }, { enabling_ids: [] },
-        #                                                         { comments_attributes: [:id, :body, :is_active, :user_id, :_destroy] })
-
         return_params = params.require(:data)
                               .require(:attributes)
-                              .permit(:title, :description, :solution_id)
+                              .permit(:title, :description, :'solution-id')
 
         return_params[:owner_id] = current_user.id
+
+        return_params.keys.each {|k| return_params[k.gsub('-', '_')] = return_params[k]; return_params.delete(k) if k.include?('-')}
 
         return_params
       end
