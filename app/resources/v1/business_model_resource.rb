@@ -6,5 +6,8 @@ module V1
     attributes :title, :description, :link_share, :link_edit, :solution_id
 
     has_one :solution
+    has_many :bmes
+    has_many :enablings
+    has_many :users
   end
 end
