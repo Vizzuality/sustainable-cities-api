@@ -118,7 +118,7 @@ class Project < ApplicationRecord
         id: category.id,
         name: category.name,
         slug: category.slug,
-        slug: category.slug,
+        description: category.description,
         label: category.label,
         children: first_children(category, levels)
       }
@@ -133,6 +133,8 @@ class Project < ApplicationRecord
         id: category.id,
         name: category.name,
         slug: category.slug,
+        description: category.description,
+        label: category.label,
         children: second_children(category, levels)
       }
     end rescue []
@@ -144,6 +146,8 @@ class Project < ApplicationRecord
         id: category.id,
         name: category.name,
         slug: category.slug,
+        description: category.description,
+        label: category.label,
         children: third_children(category, levels)
       }
     end rescue []
