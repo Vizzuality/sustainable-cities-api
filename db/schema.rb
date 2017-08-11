@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170809163730) do
+ActiveRecord::Schema.define(version: 20170811074618) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,11 +64,13 @@ ActiveRecord::Schema.define(version: 20170809163730) do
   create_table "business_model_bmes", force: :cascade do |t|
     t.integer "business_model_id"
     t.integer "bme_id"
+    t.index ["bme_id", "business_model_id"], name: "index_business_model_bmes_on_bme_id_and_business_model_id", unique: true
   end
 
   create_table "business_model_enablings", force: :cascade do |t|
     t.integer "business_model_id"
     t.integer "enabling_id"
+    t.index ["enabling_id", "business_model_id"], name: "bm_enabling_index", unique: true
   end
 
   create_table "business_model_users", force: :cascade do |t|

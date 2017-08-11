@@ -26,6 +26,10 @@ Rails.application.routes.draw do
     #get '/enabling-categories/:id',               to: 'categories#show'
     #get '/categories',                            to: 'categories#index', category_type: 'All'
 
+    # Business Model
+    post '/business-models-edit', to: 'business_models_edit#create'
+    patch '/business-models-edit/:id', to: 'business_models_edit#update'
+
     # Resources
     jsonapi_resources :users do; end
     jsonapi_resources :cities do; end
