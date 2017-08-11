@@ -27,8 +27,8 @@ Rails.application.routes.draw do
     #get '/categories',                            to: 'categories#index', category_type: 'All'
 
     # Business Model
-    post '/business-models-edit', to: 'business_models_edit#create'
-    patch '/business-models-edit/:id', to: 'business_models_edit#update'
+    post '/business-models', to: 'business_models_edit#create'
+    patch '/business-models/:id', to: 'business_models_edit#update'
 
     # Resources
     jsonapi_resources :users do; end
@@ -41,6 +41,6 @@ Rails.application.routes.draw do
     jsonapi_resources :enablings do; end
     jsonapi_resources :comments, except: :show do; end
     jsonapi_resources :external_sources do; end
-    jsonapi_resources :business_models do; end
+    jsonapi_resources :business_models, except: [:create, :update] do; end
   end
 end

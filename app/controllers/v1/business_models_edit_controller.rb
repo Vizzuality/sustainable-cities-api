@@ -3,7 +3,7 @@ module V1
   class BusinessModelsEditController < ApplicationController
     include ErrorSerializer
 
-    load_and_authorize_resource class: 'BusinessModel'
+    load_and_authorize_resource class: 'BusinessModel', param_method: :business_model_params
     before_action :set_business_model, only: [:update, :destroy]
 
     def create
@@ -59,9 +59,8 @@ module V1
           end
         end
 
-        return_params = clean_params.permit(:title, :description, :owner_id, :solution_id,
-                                            enabling_ids: [], bme_ids: [],
-                                            business_model_bmes_attributes: [:id, :bme_id, comment_attributes: [:body, :user_id, :id, :_destroy]])
+        return_params = clean_params.permit(:title, :description, :owner_id, :solution_id, enabling_ids: [],
+                                            business_model_bmes_attributes: [:id, :bme_id, :_destroy, comment_attributes: [:body, :user_id, :id, :_destroy]])
 
         return_params
       end
