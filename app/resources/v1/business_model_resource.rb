@@ -5,6 +5,8 @@ module V1
 
     attributes :title, :description, :link_share, :link_edit, :solution_id
 
+    belongs_to :owner
+
     has_one :solution
     has_many :business_model_bmes
     has_many :bmes
