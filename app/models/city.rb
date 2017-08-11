@@ -47,36 +47,49 @@ class City < ApplicationRecord
   end
 
   def bmes_quantity
-    return_hash = {}
     city_bmes = Bme.joins(projects: :cities).where("city_id = #{id}")
     categories = Category.includes({ children: [{ children: [:bmes] }] })
-                  .where(slug: ["funding-source", "investment-component", "delivery-mechanism", "financial-product"])
+                    .where(slug: ["funding-source", "investment-component", "delivery-mechanism", "financial-product"])
 
-    categories.each do |category|
-      return_hash[category.name] = children(category, city_bmes)
-    end
+    quantity = categories.map do |category|
+      children = first_children(category, city_bmes)
+      quantity = children.map { |c| c[:quantity] }.reduce(:+)
 
-    return_hash
+      {
+        id: category.id,
+        name: "#{category.name}",
+        slug: "#{category.slug}",
+        quantity: quantity,
+        children: children
+      } unless quantity.zero?
+    end.compact
+
+    quantity == {} ? [] : quantity
   end
 
-  def children(category_level_1, bmes)
-    return_hash = {}
-    quantity_level_1 = 0
+  def first_children(category_level_1, bmes)
+    category_level_1.children.map do |category_level_2|
+      children = second_children(category_level_2, bmes)
+      quantity = children.map { |c| c[:quantity] }.reduce(:+)
 
-    category_level_1.children.each do |category_level_2|
-      return_hash[category_level_2.name] = {}
-      quantity_level_2 = 0
-
-      category_level_2.children.each do |category_level_3|
-        quantity_level_2 += (category_level_3.bmes & bmes).size
-        return_hash[category_level_2.name][category_level_3.name] = { quantity: (category_level_3.bmes & bmes).count }
-      end
-
-      quantity_level_1 += quantity_level_2
-      return_hash[category_level_2.name][:quantity] = quantity_level_2
+      {
+        id: category_level_2.id,
+        name: "#{category_level_2.name}",
+        slug: "#{category_level_2.slug}",
+        quantity: quantity,
+        children: children
+      }
     end
+  end
 
-    return_hash[:quantity] = quantity_level_1
-    return_hash
+  def second_children(category_level_2, bmes)
+    category_level_2.children.map do |category_level_3|
+      {
+        id: category_level_3.id,
+        name: "#{category_level_3.name}",
+        slug: "#{category_level_3.slug}",
+        quantity: (category_level_3.bmes & bmes).size
+      }
+    end
   end
 end

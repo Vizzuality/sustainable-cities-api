@@ -9,7 +9,7 @@ module V1
     has_many :projects
     has_many :photos
 
-    filters :id, :name, :iso, :is_featured
+    filters :id, :name, :iso, :is_featured, :country_id
 
     filter :contains_projects, apply: ->(records, value, _options) {
       if value[0] == '0' || value[0] == 'false'
