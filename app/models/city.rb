@@ -51,7 +51,7 @@ class City < ApplicationRecord
     categories = Category.includes({ children: [{ children: [:bmes] }] })
                     .where(slug: ["funding-source", "investment-component", "delivery-mechanism", "financial-product"])
 
-    categories.map do |category|
+    quantity = categories.map do |category|
       children = first_children(category, city_bmes)
       quantity = children.map { |c| c[:quantity] }.reduce(:+)
 
@@ -63,6 +63,8 @@ class City < ApplicationRecord
         children: children
       } unless quantity.zero?
     end.compact
+
+    quantity == {} ? [] : quantity
   end
 
   def first_children(category_level_1, bmes)
