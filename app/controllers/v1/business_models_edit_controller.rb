@@ -3,10 +3,11 @@ module V1
   class BusinessModelsEditController < ApplicationController
     include ErrorSerializer
 
-    load_and_authorize_resource class: 'BusinessModel', param_method: :business_model_params
     before_action :set_business_model, only: [:update, :destroy]
 
     def create
+      authorize! :create, BusinessModel.new
+
       if @business_model = BusinessModel.create(business_model_params)
         render json: { messages: [{
                                     status: 201, title: "Business Model successfully created!",
@@ -19,9 +20,21 @@ module V1
     end
 
     def update
+      authorize! :update, @business_model
+
       if @business_model.update(business_model_params)
         @business_model.users << current_user unless @business_model.users.include?(current_user)
         render json: { messages: [{ status: 200, title: "Business Model successfully updated!" }] }, status: 200
+      else
+        render json: ErrorSerializer.serialize(@business_model.errors, 422), status: 422
+      end
+    end
+
+    def destroy
+      authorize! :delete, @business_model
+
+      if @business_model.destroy
+        render json: { messages: [{ status: 200, title: 'Business Model successfully deleted!' }] }, status: 200
       else
         render json: ErrorSerializer.serialize(@business_model.errors, 422), status: 422
       end

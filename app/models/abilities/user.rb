@@ -15,6 +15,7 @@ module Abilities
 
       can :create, ::BusinessModel
       can :update, ::BusinessModel
+      can :delete, ::BusinessModel, owner_id: user.id
 
       cannot :read, ::Comment
     end

@@ -7,10 +7,6 @@ module V1
     skip_before_action :authenticate, only: [:index, :show]
     load_and_authorize_resource class: 'BusinessModel'
 
-    # before_action :set_business_model, only: [:update, :destroy]
-    # before_action :set_business_model, only: [:show]
-    before_action :set_business_model_edit, only: [:update, :destroy]
-
     def index
       # Only for current user
     end
@@ -18,68 +14,5 @@ module V1
     def show
       jsonapi_render json: (BusinessModel.find_by(link_share: params[:id]) || BusinessModel.find_by(link_edit: params[:id]))
     end
-
-    def update
-      if @business_model.update(business_model_params)
-        @business_model.users << current_user unless @business_model.users.include?(current_user)
-        render json: { messages: [{ status: 200, title: "Business Model successfully updated!" }] }, status: 200
-      else
-        render json: ErrorSerializer.serialize(@business_model.errors, 422), status: 422
-      end
-    end
-
-    def destroy
-      if @business_model.destroy
-        render json: { messages: [{ status: 200, title: 'Business Model successfully deleted!' }] }, status: 200
-      else
-        render json: ErrorSerializer.serialize(@business_model.errors, 422), status: 422
-      end
-    end
-
-    private
-      def set_business_model_edit
-        @business_model = BusinessModel.find_by(link_edit: params[:id])
-      end
-
-      def business_model_params
-        # return_params = params.require(:data)
-        #                       .require(:attributes)
-        #                       .permit(:title, :description, :'solution-id')
-        # return_params[:owner_id] = current_user.id
-        # return_params.keys.each {|k| return_params[k.gsub('-', '_')] = return_params[k]; return_params.delete(k) if k.include?('-')}
-        # return_params
-
-        # {:title=>"x", :business_model_bmes_attributes=>[{:bme_id=>1, :comment_attributes=>{:body=>"x", :user_id=>1}}], :enabling_ids=>[1]}
-
-        clean_params = params[:data][:attributes]
-        clean_params[:owner_id] = current_user.id
-
-        params[:relationships][:data].each { |k, v| clean_params.merge!({ "#{k}": v[:data] }) } if params[:relationships]
-
-        clean_params.keys.each do |k|
-          if k.include?('-')
-            undescore_key = k.gsub('-', '_')
-            clean_params[undescore_key] = clean_params[k]
-            clean_params.delete(k)
-
-            if k.split('-').last == "ids" || k == "bmes" || k == "enablings"
-              clean_params[undescore_key] = clean_params[undescore_key].pluck(:id)
-            end
-          end
-        end
-
-        if clean_params[:business_model_bmes_attributes].present?
-          if clean_params[:business_model_bmes_attributes].first[:comment_attributes].present?
-            clean_params[:business_model_bmes_attributes].first[:comment_attributes][:user_id] = current_user.id
-          end
-        end
-
-        return_params = clean_params.permit(:title, :description, :owner_id, :solution_id,
-                                            enabling_ids: [], bme_ids: [],
-                                            business_model_bmes_attributes: [:id, :bme_id, comment_attributes: [:body, :user_id, :id, :_destroy]])
-
-        return_params
-      end
-
   end
 end
