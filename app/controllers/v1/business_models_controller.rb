@@ -8,7 +8,7 @@ module V1
     load_and_authorize_resource class: 'BusinessModel'
 
     def index
-      # Only for current user
+      jsonapi_render json: BusinessModel.where(owner_id: current_user.id)
     end
 
     def show
