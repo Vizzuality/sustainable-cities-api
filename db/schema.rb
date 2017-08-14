@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170811074618) do
+ActiveRecord::Schema.define(version: 20170814071854) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(version: 20170811074618) do
     t.integer "tmp_bme_id"
     t.boolean "is_featured", default: false
     t.string "slug"
+    t.boolean "private", default: false
   end
 
   create_table "business_model_bmes", force: :cascade do |t|
