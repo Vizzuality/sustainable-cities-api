@@ -11,6 +11,7 @@
 #  tmp_bme_id  :integer
 #  is_featured :boolean          default(FALSE)
 #  slug        :string
+#  private     :boolean          default(FALSE)
 #
 
 class Bme < ApplicationRecord
@@ -47,6 +48,8 @@ class Bme < ApplicationRecord
   scope :by_category, -> {
     where(categories: { category_type: 'Bme' } ) 
   }
+
+  scope :is_private, -> { where(private: true) }
 
   scope :filter_by_name_or_description, ->(search_term) { where('bmes.name ilike ? or bmes.description ilike ?', "%#{search_term}%", "%#{search_term}%") }
 

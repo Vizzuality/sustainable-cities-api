@@ -72,8 +72,11 @@ module V1
           end
         end
 
+        clean_params["bmes_attributes"].each { |bme| bme["private"] = true } if clean_params["bmes_attributes"].present?
+
         return_params = clean_params.permit(:title, :description, :owner_id, :solution_id, enabling_ids: [],
-                                            business_model_bmes_attributes: [:id, :bme_id, :_destroy, comment_attributes: [:body, :user_id, :id, :_destroy]])
+                                            business_model_bmes_attributes: [:id, :bme_id, :_destroy, comment_attributes: [:body, :user_id, :id, :_destroy]],
+                                            bmes_attributes: [:id, :name, :private, :_destroy])
 
         return_params
       end
