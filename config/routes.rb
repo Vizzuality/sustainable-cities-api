@@ -26,6 +26,11 @@ Rails.application.routes.draw do
     #get '/enabling-categories/:id',               to: 'categories#show'
     #get '/categories',                            to: 'categories#index', category_type: 'All'
 
+    # Business Model
+    post '/business-models', to: 'business_models_edit#create'
+    patch '/business-models/:id', to: 'business_models_edit#update'
+    delete '/business-models/:id', to: 'business_models_edit#destroy'
+
     # Resources
     jsonapi_resources :users do; end
     jsonapi_resources :cities do; end
@@ -37,6 +42,8 @@ Rails.application.routes.draw do
     jsonapi_resources :enablings do; end
     jsonapi_resources :comments, except: :show do; end
     jsonapi_resources :external_sources do; end
+    jsonapi_resources :business_models, except: [:create, :update] do; end
+    
     get '/csvs/projects', to: 'csvs#projects', defaults: { format: 'csv' }
     get '/csvs/bmes', to: 'csvs#bmes', defaults: { format: 'csv' }
   end

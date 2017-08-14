@@ -13,6 +13,10 @@ module Abilities
       can :update, ::Project, project_users: { user_id: user.id }
       can :create, ::Comment
 
+      can :create, ::BusinessModel
+      can :update, ::BusinessModel
+      can :delete, ::BusinessModel, owner_id: user.id
+
       cannot :read, ::Comment
     end
   end
