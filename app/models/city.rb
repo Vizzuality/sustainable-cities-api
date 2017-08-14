@@ -49,7 +49,7 @@ class City < ApplicationRecord
   def bmes_quantity
     city_bmes = Bme.joins(projects: :cities).where("city_id = #{id}")
     categories = Category.includes({ children: [{ children: [:bmes] }] })
-                    .where(slug: ["funding-source", "investment-component", "delivery-mechanism", "financial-product"])
+                    .where(level: 1, category_type: 'Bme')
 
     quantity = categories.map do |category|
       children = first_children(category, city_bmes)
