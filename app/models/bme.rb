@@ -55,6 +55,11 @@ class Bme < ApplicationRecord
 
   scope :filter_by_name_or_description, ->(search_term) { where('bmes.name ilike ? or bmes.description ilike ?', "%#{search_term}%", "%#{search_term}%") }
 
+  scope :by_cities,      ( ->(cities)     { where('cities.id': cities)})
+  scope :by_bmes,        ( ->(bmes)       { where('categories.id': bmes)})
+  scope :by_solutions,   ( ->(solutions)  { where('projects.category_id': solutions)})
+
+
   class << self
     def fetch_all(options)
       search_term = options['search'] if options.present? && options['search'].present?
@@ -63,6 +68,14 @@ class Bme < ApplicationRecord
       bmes = eager_load([:categories, :enablings])
       bmes = bmes.filter_by_name_or_description(search_term) if search_term.present?
       bmes = bmes.by_category if has_category
+      bmes
+    end
+
+    def fetch_csv(options={})
+      bmes = Bme.eager_load([projects: :cities], :categories)
+      bmes = bmes.by_cities(options[:city_ids].split(',')) if options[:city_ids].present?
+      bmes = bmes.by_bmes(options[:bme_ids].split(',')) if options[:bme_ids].present?
+      bmes = bmes.by_solutions(options[:solution_ids].split(',')) if options[:solution_ids].present?
       bmes
     end
   end

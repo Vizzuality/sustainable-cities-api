@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170814071854) do
+ActiveRecord::Schema.define(version: 20170814104935) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,6 +66,35 @@ ActiveRecord::Schema.define(version: 20170814071854) do
     t.integer "business_model_id"
     t.integer "bme_id"
     t.index ["bme_id", "business_model_id"], name: "index_business_model_bmes_on_bme_id_and_business_model_id", unique: true
+  end
+
+  create_table "business_model_enablings", force: :cascade do |t|
+    t.integer "business_model_id"
+    t.integer "enabling_id"
+    t.index ["enabling_id", "business_model_id"], name: "bm_enabling_index", unique: true
+  end
+
+  create_table "business_model_users", force: :cascade do |t|
+    t.integer "business_model_id"
+    t.integer "user_id"
+    t.boolean "is_owner", default: false
+  end
+
+  create_table "business_models", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.integer "solution_id"
+    t.string "link_share"
+    t.string "link_edit"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "owner_id"
+  end
+
+  create_table "business_model_bmes", force: :cascade do |t|
+    t.integer "business_model_id"
+    t.integer "bme_id"
+    t.index ["bme_id", "business_model_id"], name: "bme_bme_index", unique: true
   end
 
   create_table "business_model_enablings", force: :cascade do |t|
@@ -276,6 +305,7 @@ ActiveRecord::Schema.define(version: 20170814071854) do
     t.string "tagline"
     t.string "slug"
     t.index ["category_id"], name: "index_projects_on_category_id"
+    t.index ["country_id"], name: "index_projects_on_country_id"
   end
 
   create_table "users", force: :cascade do |t|

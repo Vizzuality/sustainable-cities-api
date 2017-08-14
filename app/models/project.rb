@@ -84,6 +84,17 @@ class Project < ApplicationRecord
 
   scope :filter_by_name_or_solution, ->(search_term) { where('projects.name ilike ? or projects.solution ilike ?', "%#{search_term}%", "%#{search_term}%") }
 
+  scope :by_cities,      ( ->(cities)     { where('cities.id': cities)})
+  scope :by_bmes,        ( ->(bmes)       { where('categories.id': bmes)})
+  scope :by_solutions,   ( ->(solutions)  { where(category_id: solutions)})
+
+  def self.fetch_csv(options={})
+    projects = Project.includes(:cities, [bmes: :categories])
+    projects = projects.by_cities(options[:city_ids].split(',')) if options[:city_ids].present?
+    projects = projects.by_bmes(options[:bme_ids].split(',')) if options[:bme_ids].present?
+    projects = projects.by_solutions(options[:solution_ids].split(',')) if options[:solution_ids].present?
+    projects.distinct
+  end
 
   def link_impact_sources
     impacts.each do |impact|
@@ -118,6 +129,8 @@ class Project < ApplicationRecord
         id: category.id,
         name: category.name,
         slug: category.slug,
+        description: category.description,
+        label: category.label,
         children: first_children(category, levels)
       }
     end rescue []
@@ -131,6 +144,8 @@ class Project < ApplicationRecord
         id: category.id,
         name: category.name,
         slug: category.slug,
+        description: category.description,
+        label: category.label,
         children: second_children(category, levels)
       }
     end rescue []
@@ -142,6 +157,8 @@ class Project < ApplicationRecord
         id: category.id,
         name: category.name,
         slug: category.slug,
+        description: category.description,
+        label: category.label,
         children: third_children(category, levels)
       }
     end rescue []

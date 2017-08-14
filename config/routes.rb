@@ -43,5 +43,8 @@ Rails.application.routes.draw do
     jsonapi_resources :comments, except: :show do; end
     jsonapi_resources :external_sources do; end
     jsonapi_resources :business_models, except: [:create, :update] do; end
+    
+    get '/csvs/projects', to: 'csvs#projects', defaults: { format: 'csv' }
+    get '/csvs/bmes', to: 'csvs#bmes', defaults: { format: 'csv' }
   end
 end
