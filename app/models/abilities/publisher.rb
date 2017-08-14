@@ -23,6 +23,10 @@ module Abilities
       can :update, ::User,    id: user.id
       can :create, ::Comment
 
+      can :create, ::BusinessModel
+      can :update, ::BusinessModel
+      can :delete, ::BusinessModel, owner_id: user.id
+
       cannot [:activate, :deactivate], ::User, id: user.id
     end
   end
