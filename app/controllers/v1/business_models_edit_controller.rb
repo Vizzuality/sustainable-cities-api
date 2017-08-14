@@ -7,8 +7,9 @@ module V1
 
     def create
       authorize! :create, BusinessModel.new
+      @business_model = BusinessModel.create(business_model_params)
 
-      if @business_model = BusinessModel.create(business_model_params)
+      if !@business_model.errors.present?
         render json: { messages: [{
                                     status: 201, title: "Business Model successfully created!",
                                     link_share: @business_model.link_share,
