@@ -61,6 +61,10 @@ module V1
             clean_params[undescore_key] = clean_params[k]
             clean_params.delete(k)
 
+            if clean_params[undescore_key].is_a?(Array)
+              clean_params[undescore_key].first.transform_keys! { |key| key.underscore }
+            end
+
             if k.split('-').last == "ids"
               clean_params[undescore_key] = clean_params[undescore_key].pluck(:id)
             end
@@ -77,7 +81,7 @@ module V1
 
         return_params = clean_params.permit(:title, :description, :owner_id, :solution_id, enabling_ids: [],
                                             business_model_bmes_attributes: [:id, :bme_id, :_destroy, comment_attributes: [:body, :user_id, :id, :_destroy]],
-                                            bmes_attributes: [:id, :name, :private, :_destroy])
+                                            bmes_attributes: [:id, :name, :private, :_destroy, category_ids: []])
 
         return_params
       end
