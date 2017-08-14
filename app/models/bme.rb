@@ -43,6 +43,8 @@ class Bme < ApplicationRecord
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
 
+  default_scope { where(private: false) }
+
   scope :by_name_asc, -> { order('bmes.name ASC') }
 
   scope :by_category, -> {

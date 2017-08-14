@@ -51,8 +51,10 @@ module V1
         # clean_params["bmes_attributes"].each { |bme| bme["private"] = true } if clean_params["bmes_attributes"].present?
 
         return_params = params.require(:business_model).permit(:title, :description, :owner_id, :solution_id, enabling_ids: [],
-                                            business_model_bmes_attributes: [:id, :bme_id, :_destroy, comment_attributes: [:body, :user_id, :id, :_destroy]],
-                                            bmes_attributes: [:id, :name, :private, :_destroy, category_ids: []])
+                                            business_model_bmes_attributes: [:id, :bme_id, :_destroy, comment_attributes: [:body, :user_id, :id, :_destroy],
+                                            bme_attributes: [:name]],
+                                            bmes_attributes: [:id, :name, :private, :_destroy, category_ids: [],
+                                            business_model_bmes_attributes: [:id, :bme_id, :_destroy, comment_attributes: [:body, :user_id, :id, :_destroy]]])
 
         return_params[:owner_id] = current_user.id
 
@@ -63,6 +65,10 @@ module V1
 
         return_params["bmes_attributes"].each do |bme|
           bme["private"] = true
+
+          bme["business_model_bmes_attributes"].each do |bm_bme|
+            bm_bme["comment_attributes"]["user_id"] = current_user.id
+          end if bme["business_model_bmes_attributes"].present?
         end if return_params["bmes_attributes"].present?
 
         return_params
