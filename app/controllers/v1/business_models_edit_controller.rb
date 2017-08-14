@@ -48,28 +48,18 @@ module V1
       end
 
       def business_model_params
-        # clean_params["bmes_attributes"].each { |bme| bme["private"] = true } if clean_params["bmes_attributes"].present?
-
         return_params = params.require(:business_model).permit(:title, :description, :owner_id, :solution_id, enabling_ids: [],
                                             business_model_bmes_attributes: [:id, :bme_id, :_destroy, comment_attributes: [:body, :user_id, :id, :_destroy],
-                                            bme_attributes: [:name]],
-                                            bmes_attributes: [:id, :name, :private, :_destroy, category_ids: [],
-                                            business_model_bmes_attributes: [:id, :bme_id, :_destroy, comment_attributes: [:body, :user_id, :id, :_destroy]]])
+                                                                              bme_attributes: [:id, :name, :private, :_destroy, category_ids: []]])
 
         return_params[:owner_id] = current_user.id
 
-
-        return_params["business_model_bmes_attributes"].each do |bm_bme|
-          bm_bme["comment_attributes"]["user_id"] = current_user.id
-        end if return_params["business_model_bmes_attributes"].present?
-
-        return_params["bmes_attributes"].each do |bme|
-          bme["private"] = true
-
-          bme["business_model_bmes_attributes"].each do |bm_bme|
-            bm_bme["comment_attributes"]["user_id"] = current_user.id
-          end if bme["business_model_bmes_attributes"].present?
-        end if return_params["bmes_attributes"].present?
+        if return_params["business_model_bmes_attributes"].present?
+          return_params["business_model_bmes_attributes"].each do |bm_bme|
+            bm_bme["comment_attributes"]["user_id"] = current_user.id if bm_bme["comment_attributes"].present?
+            bm_bme["bme_attributes"]["private"] = true if bm_bme["bme_attributes"].present?
+          end
+        end
 
         return_params
       end

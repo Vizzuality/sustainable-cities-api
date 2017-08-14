@@ -10,6 +10,7 @@
 class BusinessModelBme < ApplicationRecord
   belongs_to :business_model
   belongs_to :bme
+  accepts_nested_attributes_for :bme
 
   has_one :comment, as: :commentable, dependent: :destroy
   accepts_nested_attributes_for :comment
