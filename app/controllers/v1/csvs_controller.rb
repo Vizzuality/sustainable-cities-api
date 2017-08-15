@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 module V1
-  class CsvsController < ApplicationController
+  class CsvsController < ActionController::API
     include ActionController::MimeResponds
     include ErrorSerializer
 
@@ -9,10 +9,7 @@ module V1
     PROJECT_BME_COLUMNS = %w(project_id project_name bme_name bme_description)
     BME_COLUMNS = %w(id name is_featured category_name category_description)
 
-
-
-    skip_before_action :authenticate
-
+    
     def projects
       @projects = build_projects
       respond_to do |format|
