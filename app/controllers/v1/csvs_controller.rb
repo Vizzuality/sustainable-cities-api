@@ -4,12 +4,12 @@ module V1
     include ActionController::MimeResponds
     include ErrorSerializer
 
-    PROJECT_COLUMNS = %w(id name situation solution category country city operational_year project_type
+    PROJECT_COLUMNS = %w(id name situation solution category city operational_year project_type
                          is_active deactivated_at publish_request published_at is_featured tag_line).freeze
     PROJECT_BME_COLUMNS = %w(project_id project_name bme_name bme_description)
     BME_COLUMNS = %w(id name is_featured category_name category_description)
 
-    
+
     def projects
       @projects = build_projects
       respond_to do |format|

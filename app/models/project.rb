@@ -37,6 +37,7 @@ class Project < ApplicationRecord
 
   has_many :project_cities
   has_many :cities, through: :project_cities
+  #has_one :city, ->() {limit(1)}, class_name: 'ProjectCity'
 
   has_many :project_users
   has_many :users, through: :project_users
@@ -87,6 +88,10 @@ class Project < ApplicationRecord
   scope :by_cities,      ( ->(cities)     { where('cities.id': cities)})
   scope :by_bmes,        ( ->(bmes)       { where('categories.id': bmes)})
   scope :by_solutions,   ( ->(solutions)  { where(category_id: solutions)})
+
+  def city
+    cities.first
+  end
 
   def self.fetch_csv(options={})
     projects = Project.includes(:cities, [bmes: :categories])
