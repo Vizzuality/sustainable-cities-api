@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 module V1
-  class BusinessModelResource < JSONAPI::Resource
+  class BusinessModelEditResource < JSONAPI::Resource
+    model_name 'BusinessModel'
     caching
 
     attributes :title, :description, :link_share, :link_edit, :solution_id

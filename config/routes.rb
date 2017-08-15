@@ -27,9 +27,10 @@ Rails.application.routes.draw do
     #get '/categories',                            to: 'categories#index', category_type: 'All'
 
     # Business Model
-    post '/business-models', to: 'business_models_edit#create'
-    patch '/business-models/:id', to: 'business_models_edit#update'
-    delete '/business-models/:id', to: 'business_models_edit#destroy'
+    post '/business-models', to: 'business_model_edits#create'
+    patch '/business-models/:id', to: 'business_model_edits#update'
+    delete '/business-models/:id', to: 'business_model_edits#destroy'
+    get 'business-model-edits/:id', to: 'business_model_edits#show'
 
     # Resources
     jsonapi_resources :users do; end
