@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 module V1
-  class BusinessModelsEditResource < JSONAPI::Resource
+  class BusinessModelEditResource < JSONAPI::Resource
     model_name 'BusinessModel'
     caching
 

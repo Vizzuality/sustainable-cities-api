@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 module V1
-  class BusinessModelsEditController < ApplicationController
+  class BusinessModelEditsController < ApplicationController
     include ErrorSerializer
     include JSONAPI::Utils
 
