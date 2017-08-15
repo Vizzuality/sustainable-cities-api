@@ -16,11 +16,9 @@
 class BusinessModel < ApplicationRecord
   extend FriendlyId
   friendly_id :link_share, use: [:finders]
-  # Only one finder at a time will work
-  # friendly_id :link_edit, use: [:finders]
 
-  belongs_to :solution, :class_name => "Category"
-  belongs_to :owner, :class_name => "User"
+  has_one :solution, :class_name => "Category", primary_key: :solution_id, foreign_key: :id
+  has_one :owner, :class_name => "User", primary_key: :owner_id, foreign_key: :id
 
   has_many :business_model_bmes
   has_many :bmes, through: :business_model_bmes
