@@ -31,9 +31,6 @@ module V1
       end
     end
 
-    def show
-      render json: BusinessModel.find_by(link_edit: params[:id]).to_json
-    end
 
     def destroy
       authorize! :delete, @business_model

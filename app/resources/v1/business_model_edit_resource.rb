@@ -2,9 +2,14 @@
 module V1
   class BusinessModelEditResource < JSONAPI::Resource
     model_name 'BusinessModel'
+    primary_key :link_edit
     caching
 
     attributes :title, :description, :link_share, :link_edit, :solution_id
+
+    def self.verify_key(key, context = nil)
+      key && String(key)
+    end
 
     has_one :owner
     has_one :solution
