@@ -23,7 +23,7 @@ class BusinessModel < ApplicationRecord
   belongs_to :owner, :class_name => "User"
 
   has_many :business_model_bmes
-  has_many :bmes, through: :business_model_bmes
+  has_many :bmes
 
   has_many :business_model_enablings
   has_many :enablings, through: :business_model_enablings
@@ -37,6 +37,10 @@ class BusinessModel < ApplicationRecord
   accepts_nested_attributes_for :bmes, allow_destroy: true
 
   after_create :set_links
+
+  def bmes
+    Bme.unscoped.where(id: business_model_bmes.pluck(:bme_id))
+  end
 
   def set_links
     update_column(:link_share, link_hash("share", id))
