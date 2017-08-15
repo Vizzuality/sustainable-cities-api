@@ -2,7 +2,6 @@
 module V1
   class BusinessModelEditsController < ApplicationController
     include ErrorSerializer
-    include JSONAPI::Utils
 
     before_action :set_business_model, only: [:update, :destroy]
 
@@ -33,7 +32,7 @@ module V1
     end
 
     def show
-      jsonapi_render json: BusinessModel.find_by(link_edit: params[:id])
+      render json: BusinessModel.find_by(link_edit: params[:id]).to_json
     end
 
     def destroy
