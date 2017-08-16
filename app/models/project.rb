@@ -37,6 +37,7 @@ class Project < ApplicationRecord
 
   has_many :project_cities
   has_many :cities, through: :project_cities
+  #has_one :city, ->() {limit(1)}, class_name: 'ProjectCity'
 
   has_many :project_users
   has_many :users, through: :project_users
@@ -84,6 +85,21 @@ class Project < ApplicationRecord
 
   scope :filter_by_name_or_solution, ->(search_term) { where('projects.name ilike ? or projects.solution ilike ?', "%#{search_term}%", "%#{search_term}%") }
 
+  scope :by_cities,      ( ->(cities)     { where('cities.id': cities)})
+  scope :by_bmes,        ( ->(bmes)       { where('categories.id': bmes)})
+  scope :by_solutions,   ( ->(solutions)  { where(category_id: solutions)})
+
+  def city
+    cities.first
+  end
+
+  def self.fetch_csv(options={})
+    projects = Project.includes(:cities, [bmes: :categories])
+    projects = projects.by_cities(options[:city_ids].split(',')) if options[:city_ids].present?
+    projects = projects.by_bmes(options[:bme_ids].split(',')) if options[:bme_ids].present?
+    projects = projects.by_solutions(options[:solution_ids].split(',')) if options[:solution_ids].present?
+    projects.distinct
+  end
 
   def link_impact_sources
     impacts.each do |impact|

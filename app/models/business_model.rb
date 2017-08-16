@@ -1,0 +1,52 @@
+# == Schema Information
+#
+# Table name: business_models
+#
+#  id          :integer          not null, primary key
+#  title       :string
+#  description :text
+#  solution_id :integer
+#  link_share  :string
+#  link_edit   :string
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  owner_id    :integer
+#
+
+class BusinessModel < ApplicationRecord
+  extend FriendlyId
+  friendly_id :link_share, use: [:finders]
+
+  has_one :solution, :class_name => "Category", primary_key: :solution_id, foreign_key: :id
+  has_one :owner, :class_name => "User", primary_key: :owner_id, foreign_key: :id
+
+  has_many :business_model_bmes
+  has_many :bmes
+
+  has_many :business_model_enablings
+  has_many :enablings, through: :business_model_enablings
+
+  has_many :business_model_users
+  has_many :users, through: :business_model_users
+
+  has_many :comments, as: :commentable, dependent: :destroy
+  accepts_nested_attributes_for :comments, allow_destroy: true
+  accepts_nested_attributes_for :business_model_bmes, allow_destroy: true
+  accepts_nested_attributes_for :bmes, allow_destroy: true
+
+  after_create :set_links
+
+  def bmes
+    Bme.unscoped.where(id: business_model_bmes.pluck(:bme_id))
+  end
+
+  def set_links
+    update_column(:link_share, link_hash("share", id))
+    update_column(:link_edit, link_hash("edit", id))
+  end
+
+  def link_hash(type, id)
+    values_string = ENV['BASE_HASH'] + id.to_s + type
+    Digest::SHA1.hexdigest(values_string)
+  end
+end
