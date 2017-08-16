@@ -3,6 +3,7 @@ module V1
   class BusinessModelEditsController < ApplicationController
     include ErrorSerializer
 
+    skip_before_action :authenticate, only: [:index, :show]
     before_action :set_business_model, only: [:update, :destroy]
 
     def create
@@ -49,9 +50,10 @@ module V1
       end
 
       def business_model_params
-        return_params = params.require(:business_model).permit(:title, :description, :owner_id, :solution_id, enabling_ids: [],
-                                            business_model_bmes_attributes: [:id, :bme_id, :_destroy, comment_attributes: [:body, :user_id, :id, :_destroy],
-                                                                              bme_attributes: [:id, :name, :private, :_destroy, category_ids: []]])
+        return_params = params.require(:business_model)
+                            .permit(:title, :description, :owner_id, :solution_id, enabling_ids: [],
+                                    business_model_bmes_attributes: [:id, :bme_id, :_destroy, comment_attributes: [:body, :user_id, :id, :_destroy],
+                                                                     bme_attributes: [:id, :name, :private, :_destroy, category_ids: []]])
 
         return_params[:owner_id] = current_user.id
 

@@ -46,6 +46,8 @@ class Bme < ApplicationRecord
 
   default_scope { where(private: false) }
 
+  scope :with_private, -> { unscope(where: :private) }
+
   scope :by_name_asc, -> { order('bmes.name ASC') }
 
   scope :by_category, -> {
