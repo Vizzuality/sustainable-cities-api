@@ -1,9 +1,15 @@
 # frozen_string_literal: true
 module V1
   class BusinessModelResource < JSONAPI::Resource
+    model_name 'BusinessModel'
+    primary_key :link_share
     caching
 
     attributes :title, :description, :link_share, :link_edit, :solution_id
+
+    def self.verify_key(key, context = nil)
+      key && String(key)
+    end
 
     has_one :owner
     has_one :solution
