@@ -30,7 +30,6 @@ Rails.application.routes.draw do
     post '/business-models', to: 'business_model_edits#create'
     patch '/business-models/:id', to: 'business_model_edits#update'
     delete '/business-models/:id', to: 'business_model_edits#destroy'
-    get 'business-model-edits/:id', to: 'business_model_edits#show'
 
     # Resources
     jsonapi_resources :users do; end
