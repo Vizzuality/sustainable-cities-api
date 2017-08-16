@@ -16,7 +16,7 @@
 #
 
 class Impact < ApplicationRecord
-  belongs_to :category, inverse_of: :impacts, touch: true
+  belongs_to :category, inverse_of: :impacts, touch: true, optional: false
   belongs_to :study_case, ->{ where(project_type: 'StudyCase') },
                               class_name: 'Project',
                               foreign_key: 'project_id',
@@ -29,7 +29,9 @@ class Impact < ApplicationRecord
 
   validates :impact_value, presence: true
 
-  attr_accessor :external_sources_index, :remove_external_sources
+  before_destroy :destroy_attacheable
+
+  attr_accessor :external_sources_index, :remove_external_sources, :external_sources_ids
 
   include Activable
 
@@ -45,5 +47,9 @@ class Impact < ApplicationRecord
       impacts = impacts.filter_by_name_or_description(search_term) if search_term.present?
       impacts
     end
+  end
+
+  def destroy_attacheable
+    attacheable_external_sources.destroy_all
   end
 end

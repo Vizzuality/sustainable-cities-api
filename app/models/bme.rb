@@ -33,22 +33,23 @@ class Bme < ApplicationRecord
   has_many :attacheable_external_sources, as: :attacheable
   has_many :external_sources, through: :attacheable_external_sources
 
-  after_save { categories.find_each(&:touch) }
-  after_save { projects.find_each(&:touch)   }
-  after_save { touch_cities                  }
+  has_many :photos, as: :attacheable, dependent: :destroy
 
   accepts_nested_attributes_for :categories
   accepts_nested_attributes_for :projects
   accepts_nested_attributes_for :external_sources, allow_destroy: true
+  accepts_nested_attributes_for :photos,           allow_destroy: true
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
+
+  validate :has_one_bme_category
 
   default_scope { where(private: false) }
 
   scope :by_name_asc, -> { order('bmes.name ASC') }
 
   scope :by_category, -> {
-    where(categories: { category_type: 'Bme' } ) 
+    where(categories: { category_type: 'Bme' } )
   }
 
   scope :is_private, -> { where(private: true) }
@@ -80,7 +81,14 @@ class Bme < ApplicationRecord
     end
   end
 
-  def touch_cities
-    projects.includes(:cities).map { |project| project.cities }.flatten.uniq.each(&:touch)
+
+  def has_one_bme_category
+    error_message = 'must have one and only one of type BME'
+    begin
+      errors[:categories] << error_message unless categories.to_a.pluck(:category_type).count{|x| x.eql?('Bme')} == 1
+    rescue
+      errors[:categories] << error_message
+    end
   end
+
 end

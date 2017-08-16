@@ -37,7 +37,7 @@ class Category < ApplicationRecord
   after_save { bmes.find_each(&:touch)     }
 
   validates :name,          presence: true, uniqueness: { case_sensitive: false, scope: :category_type         }
-  validates :category_type, presence: true, inclusion:  { in: %w(Category Solution Bme Impact Enabling Timing) }, on: :create
+  validates :category_type, presence: true, inclusion:  { in: %w(Category Solution Bme Impact Enabling Timing) }
 
   attr_accessor :skip_validation
   after_save :update_level unless :skip_validation
