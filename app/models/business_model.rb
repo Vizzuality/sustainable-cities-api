@@ -17,11 +17,11 @@ class BusinessModel < ApplicationRecord
   extend FriendlyId
   friendly_id :link_share, use: [:finders]
 
-  has_one :solution, :class_name => "Category", primary_key: :solution_id, foreign_key: :id
-  has_one :owner, :class_name => "User", primary_key: :owner_id, foreign_key: :id
+  belongs_to :solution, class_name: 'Category'
+  belongs_to :owner, class_name: 'User'
 
   has_many :business_model_bmes
-  has_many :bmes
+  has_many :bmes, ->{ with_private }, through: :business_model_bmes
 
   has_many :business_model_enablings
   has_many :enablings, through: :business_model_enablings
@@ -35,10 +35,6 @@ class BusinessModel < ApplicationRecord
   accepts_nested_attributes_for :bmes, allow_destroy: true
 
   after_create :set_links
-
-  def bmes
-    Bme.unscoped.where(id: business_model_bmes.pluck(:bme_id))
-  end
 
   def set_links
     update_column(:link_share, link_hash("share", id))
