@@ -31,6 +31,7 @@ Rails.application.routes.draw do
     patch '/business-models/:id', to: 'business_model_edits#update'
     delete '/business-models/:id', to: 'business_model_edits#destroy'
     get 'business-model-edits/:id', to: 'business_model_edits#show'
+    get '/business-model-categories', to: 'private_categories#index'
 
     # Resources
     jsonapi_resources :users do; end

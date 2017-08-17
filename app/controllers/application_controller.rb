@@ -42,6 +42,10 @@ class ApplicationController < ActionController::API
     end
   end
 
+  def context
+    { current_user: current_user }
+  end
+
   protected
 
     def check_access

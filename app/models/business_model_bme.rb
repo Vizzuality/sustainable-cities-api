@@ -13,5 +13,5 @@ class BusinessModelBme < ApplicationRecord
   accepts_nested_attributes_for :bme
 
   has_one :comment, as: :commentable, dependent: :destroy
-  accepts_nested_attributes_for :comment
+  accepts_nested_attributes_for :comment, allow_destroy: true
 end
