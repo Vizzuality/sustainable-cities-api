@@ -19,5 +19,12 @@ module V1
     has_many :enablings
     has_many :business_model_users
     has_many :users
+
+    def self.records(options = {})
+      context = options[:context]
+      BusinessModel.where(owner_id: context[:current_user].id)
+    end
+
+
   end
 end

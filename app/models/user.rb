@@ -49,6 +49,9 @@ class User < ApplicationRecord
   has_many :project_users
   has_many :projects, through: :project_users
 
+  has_many :business_model_users
+  has_many :business_model, through: :business_model_users
+
   after_destroy :remove_attachment_id_directory
 
   validates :nickname,    presence: true, uniqueness: { case_sensitive: false }
