@@ -42,10 +42,12 @@ class Category < ApplicationRecord
   attr_accessor :skip_validation
   after_save :update_level unless :skip_validation
 
+  default_scope { where(private: false) }
   scope :by_name_asc,   ->              { order('categories.name ASC')        }
   scope :by_type,       ->cat_type_name { where(category_type: cat_type_name) }
   scope :top_level,     ->              { where(parent_id: nil)               }
   scope :with_children, ->              { joins(:children).distinct           }
+  scope :with_private,  ->              { unscope(where: :private) }
   scope :second_level,	->							{ where(parent_id: nil).map {|c| c.children}.flatten }
 
   scope :filter_by_name_or_description, ->(search_term) { where('categories.name ilike ? or categories.description ilike ?', "%#{search_term}%", "%#{search_term}%") }

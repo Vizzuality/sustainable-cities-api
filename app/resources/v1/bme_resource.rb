@@ -9,6 +9,7 @@ module V1
     has_many :categories
     has_many :external_sources
     has_many :projects
+    has_many :private_categories
     filters :id, :name, :is_featured
 
     filter :category_id, apply: ->(records, value, _options) {
@@ -32,6 +33,10 @@ module V1
     filter :city_id, apply: ->(records, value, _options) {
       records.joins(projects: :cities).where("city_id = #{value[0]}")
     }
+
+    def private_categories
+      @model.categories.where(private: true)
+    end
 
     def category_level_1
       category = categories.select { |category| category.category_type == 'Bme' }[0]

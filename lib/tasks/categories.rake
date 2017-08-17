@@ -7,7 +7,8 @@ namespace :categories do
       Category.create(level: 3,
                       name: "#{category.name} custom elements",
                       parent_id: category.id,
-                      category_type: 'Bme')
+                      category_type: 'Bme',
+                      private: true)
     end
   end
 end

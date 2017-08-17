@@ -22,7 +22,7 @@ class Bme < ApplicationRecord
   has_many :enablings, through: :bme_enablings
 
   has_many :bme_categories
-  has_many :categories, through: :bme_categories
+  has_many :categories, ->{ with_private }, through: :bme_categories
 
   has_many :project_bmes
   has_many :projects, through: :project_bmes

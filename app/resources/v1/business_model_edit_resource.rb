@@ -5,7 +5,7 @@ module V1
     primary_key :link_edit
     caching
 
-    attributes :title, :description, :link_share, :link_edit, :solution_id
+    attributes :title, :description, :link_share, :link_edit, :solution_id, :private_bmes
 
     def self.verify_key(key, context = nil)
       key && String(key)
@@ -19,5 +19,11 @@ module V1
     has_many :enablings
     has_many :business_model_users
     has_many :users
+
+    def private_bmes
+      @model.bmes.where(private: true).map do |category|
+        JSONAPI::ResourceSerializer.new(BmeResource, include: ['categories']).serialize_to_hash(BmeResource.new(category, nil))
+      end
+    end
   end
 end
