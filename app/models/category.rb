@@ -42,6 +42,7 @@ class Category < ApplicationRecord
   attr_accessor :skip_validation
   after_save :update_level unless :skip_validation
 
+  default_scope { where(private: false) }
   scope :by_name_asc,   ->              { order('categories.name ASC')        }
   scope :by_type,       ->cat_type_name { where(category_type: cat_type_name) }
   scope :top_level,     ->              { where(parent_id: nil)               }
