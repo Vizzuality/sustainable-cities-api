@@ -25,5 +25,10 @@ module V1
         JSONAPI::ResourceSerializer.new(BmeResource, include: ['categories']).serialize_to_hash(BmeResource.new(category, nil))
       end
     end
+
+    def self.records(options = {})
+      context = options[:context]
+      BusinessModel.where(owner_id: context[:current_user].id)
+    end
   end
 end
