@@ -65,7 +65,7 @@ ActiveRecord::Schema.define(version: 20170816143846) do
   create_table "business_model_bmes", force: :cascade do |t|
     t.integer "business_model_id"
     t.integer "bme_id"
-    t.index ["bme_id", "business_model_id"], name: "index_business_model_bmes_on_bme_id_and_business_model_id", unique: true
+    t.index ["bme_id", "business_model_id"], name: "bme_bme_index", unique: true
   end
 
   create_table "business_model_enablings", force: :cascade do |t|
@@ -176,16 +176,6 @@ ActiveRecord::Schema.define(version: 20170816143846) do
     t.boolean "is_active", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "images", force: :cascade do |t|
-    t.string "image_file_name"
-    t.string "image_content_type"
-    t.integer "image_file_size"
-    t.datetime "image_updated_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "project_id"
   end
 
   create_table "impacts", force: :cascade do |t|
