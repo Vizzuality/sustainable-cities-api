@@ -5,7 +5,7 @@ module V1
     primary_key :link_share
     caching
 
-    attributes :title, :description, :link_share, :link_edit, :solution_id, :private_bmes
+    attributes :title, :description, :link_share, :solution_id, :private_bmes
 
     def self.verify_key(key, context = nil)
       key && String(key)
