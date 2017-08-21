@@ -27,8 +27,12 @@ module V1
     end
 
     def self.records(options = {})
-      context = options[:context]
-      BusinessModel.where(owner_id: context[:current_user].id)
+      if options[:context][:current_user]
+        context = options[:context]
+        BusinessModel.where(owner_id: context[:current_user].id)
+      else
+        BusinessModel.all
+      end
     end
   end
 end
