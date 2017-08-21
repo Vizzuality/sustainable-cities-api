@@ -10,6 +10,7 @@ module V1
     has_many :external_sources
     has_many :projects
     has_many :private_categories
+    has_many :photos
     filters :id, :name, :is_featured
 
     filter :category_id, apply: ->(records, value, _options) {
