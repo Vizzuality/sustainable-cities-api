@@ -10,6 +10,7 @@ module V1
     has_many :bmes
     has_many :projects
     has_many :enablings
+    has_one  :document
     filters  :id, :name, :slug, :category_type, :label, :level
 
     def custom_links(_)
