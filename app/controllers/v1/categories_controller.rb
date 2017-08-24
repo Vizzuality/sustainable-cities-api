@@ -68,8 +68,8 @@ module V1
         return_params = params.require(:category).permit(:name, :description, :category_type, :parent_id, :label,
                                          { document_attributes: [:id, :name, :attachment, :is_active, :_destroy] })
 
-        if return_params[:document_attributes][:attachment].present?
-          return_params[:document_attributes][:attachment] = process_file_base64(return_params[:document_attributes][:attachment].to_s)
+        if return_params[:document_attributes].present?
+          return_params[:document_attributes][:attachment] = process_file_base64(return_params[:document_attributes][:attachment].to_s) if return_params[:document_attributes][:attachment].present?
         end
 
         return_params
