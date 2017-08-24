@@ -32,6 +32,8 @@ class Category < ApplicationRecord
   has_many :bme_categories
   has_many :bmes, through: :bme_categories
 
+  has_one :document, as: :attacheable, dependent: :destroy
+
   after_save { children.find_each(&:touch) }
   after_save { projects.find_each(&:touch) }
   after_save { bmes.find_each(&:touch)     }
@@ -41,6 +43,8 @@ class Category < ApplicationRecord
 
   attr_accessor :skip_validation
   after_save :update_level unless :skip_validation
+
+  accepts_nested_attributes_for :document, allow_destroy: true
 
   default_scope { where(private: false) }
   scope :by_name_asc,   ->              { order('categories.name ASC')        }

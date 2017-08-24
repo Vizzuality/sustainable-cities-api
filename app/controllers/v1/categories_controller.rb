@@ -2,6 +2,7 @@
 module V1
   class CategoriesController < ApplicationController
     include ErrorSerializer
+    include ApiUploads
 
     skip_before_action :authenticate, only: [:index, :show]
     load_and_authorize_resource class: 'Category'
@@ -64,7 +65,14 @@ module V1
       end
 
       def category_params
-        params.require(:category).permit(:name, :description, :category_type, :parent_id, :label)
+        return_params = params.require(:category).permit(:name, :description, :category_type, :parent_id, :label,
+                                         { document_attributes: [:id, :name, :attachment, :is_active, :_destroy] })
+
+        if return_params[:document_attributes][:attachment].present?
+          return_params[:document_attributes][:attachment] = process_file_base64(return_params[:document_attributes][:attachment].to_s)
+        end
+
+        return_params
       end
   end
 end
