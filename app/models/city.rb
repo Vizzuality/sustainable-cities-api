@@ -88,7 +88,14 @@ class City < ApplicationRecord
         id: category_level_3.id,
         name: "#{category_level_3.name}",
         slug: "#{category_level_3.slug}",
-        quantity: (category_level_3.bmes & bmes).size
+        quantity: (category_level_3.bmes & bmes).size,
+        children: (category_level_3.bmes & bmes).map do |bme|
+          {
+            id: bme.id,
+            name: bme.name,
+            slug: bme.slug
+          }
+        end
       }
     end
   end
