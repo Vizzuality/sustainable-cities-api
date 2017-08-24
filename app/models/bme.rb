@@ -40,7 +40,7 @@ class Bme < ApplicationRecord
   accepts_nested_attributes_for :external_sources, allow_destroy: true
   accepts_nested_attributes_for :photos,           allow_destroy: true
 
-  validates :name, presence: true, uniqueness: { case_sensitive: false }
+  validates :name, presence: true, uniqueness: { case_sensitive: false }, if: '!private'
 
   validate :has_one_bme_category
 
