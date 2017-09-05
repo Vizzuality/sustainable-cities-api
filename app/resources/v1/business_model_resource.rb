@@ -37,7 +37,11 @@ module V1
         context = options[:context]
         BusinessModel.where(owner_id: context[:current_user].id)
       else
-        BusinessModel.all
+        if options[:context][:action] == "index"
+          BusinessModel.none
+        else
+          super
+        end
       end
     end
   end

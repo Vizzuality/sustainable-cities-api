@@ -43,7 +43,7 @@ class ApplicationController < ActionController::API
   end
 
   def context
-    { current_user: current_user }
+    { current_user: current_user, action: params[:action] }
   end
 
   protected
