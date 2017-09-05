@@ -77,17 +77,36 @@ class Category < ApplicationRecord
   end
 
   def children_bmes
-    if category_type == 'Bme'
-      if level == 3
-        bmes
-      elsif level == 2
-        children.map(&:bmes).flatten.uniq
-      else
-        children.map { |child| child.children.map(&:bmes).flatten }.flatten.uniq
-      end.sort_by { |bme| bme.name } rescue []
+    return [] unless category_type == 'Bme'
+
+    category_bmes = get_bmes.sort_by { |bme| bme.name } rescue []
+
+    if category_bmes.present?
+      category_bmes.map { |bme| bme_json(bme) }
     else
       []
     end
+  end
+
+  def get_bmes
+    if level == 3
+      bmes
+    elsif level == 2
+      children.map(&:bmes).flatten.uniq
+    else
+      children.map { |child| child.children.map(&:bmes).flatten }.flatten.uniq
+    end
+  end
+
+  def bme_json(bme)
+    {
+      id: bme.id,
+      name: bme.name,
+      description: bme.description,
+      is_featured: bme.is_featured,
+      slug: bme.slug,
+      parent_slug: bme.parent_bme_slug
+    }
   end
 
   def update_level
