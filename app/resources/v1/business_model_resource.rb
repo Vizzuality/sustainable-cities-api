@@ -5,7 +5,7 @@ module V1
     primary_key :link_share
     caching
 
-    attributes :title, :description, :link_share, :solution_id, :private_bmes
+    attributes :title, :description, :link_share, :solution_id, :private_bmes, :link_edit
 
     def self.verify_key(key, context = nil)
       key && String(key)
@@ -19,6 +19,12 @@ module V1
     has_many :enablings
     has_many :business_model_users
     has_many :users
+
+    def link_edit
+      if context[:current_user] && context[:current_user].id == owner_id
+        @model.link_edit
+      end
+    end
 
     def private_bmes
       @model.bmes.where(private: true).map do |category|
