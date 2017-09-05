@@ -83,6 +83,9 @@ class Bme < ApplicationRecord
     end
   end
 
+  def parent_bme_slug
+    categories.where(category_type: 'Bme').first.slug
+  end
 
   def has_one_bme_category
     error_message = 'must have one and only one of type BME'
