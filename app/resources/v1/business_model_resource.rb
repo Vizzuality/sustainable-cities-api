@@ -5,7 +5,7 @@ module V1
     primary_key :link_share
     caching
 
-    attributes :title, :description, :link_share, :solution_id, :private_bmes
+    attributes :title, :description, :link_share, :solution_id, :private_bmes, :link_edit
 
     def self.verify_key(key, context = nil)
       key && String(key)
@@ -20,6 +20,12 @@ module V1
     has_many :business_model_users
     has_many :users
 
+    def link_edit
+      if context[:current_user] && context[:current_user].id == owner_id
+        @model.link_edit
+      end
+    end
+
     def private_bmes
       @model.bmes.where(private: true).map do |category|
         JSONAPI::ResourceSerializer.new(BmeResource, include: ['categories']).serialize_to_hash(BmeResource.new(category, nil))
@@ -31,7 +37,11 @@ module V1
         context = options[:context]
         BusinessModel.where(owner_id: context[:current_user].id)
       else
-        BusinessModel.all
+        if options[:context][:action] == "index"
+          BusinessModel.none
+        else
+          super
+        end
       end
     end
   end
