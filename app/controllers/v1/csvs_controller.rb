@@ -13,14 +13,14 @@ module V1
     def projects
       @projects = build_projects
       respond_to do |format|
-        format.csv  { send_data to_project_csv }
+        format.csv  { send_data to_project_csv, filename: "projects.csv" }
       end
     end
 
     def bmes
       @bmes = build_bmes
       respond_to do |format|
-        format.csv { send_data to_bme_csv}
+        format.csv { send_data to_bme_csv, filename: "bmes.csv" }
       end
     end
 
