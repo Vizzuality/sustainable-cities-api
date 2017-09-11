@@ -86,7 +86,6 @@ class Project < ApplicationRecord
   scope :filter_by_name_or_solution, ->(search_term) { where('projects.name ilike ? or projects.solution ilike ?', "%#{search_term}%", "%#{search_term}%") }
 
   scope :by_cities,      ( ->(cities)     { where('cities.id': cities)})
-  scope :by_bmes,        ( ->(bmes)       { where('categories.id': bmes)})
   scope :by_solutions,   ( ->(solutions)  { where(category_id: solutions)})
 
   def city
@@ -96,9 +95,30 @@ class Project < ApplicationRecord
   def self.fetch_csv(options={})
     projects = Project.includes(:cities, [bmes: :categories])
     projects = projects.by_cities(options[:city_ids].split(',')) if options[:city_ids].present?
-    projects = projects.by_bmes(options[:bme_ids].split(',')) if options[:bme_ids].present?
     projects = projects.by_solutions(options[:solution_ids].split(',')) if options[:solution_ids].present?
-    projects.distinct
+    projects = with_bme_category(options[:bme_ids].split(','), projects) if options[:bme_ids].present?
+    projects
+  end
+
+  def self.with_bme_category(category_ids, projects)
+    category_projects = category_ids.map do |category_id|
+      category = Category.find(category_id)
+
+      if category.level == 1
+        children = category.children.map { |child| child.children }.flatten
+        bmes = children.map { |child| child.bmes }.flatten
+        bmes.map { |bme| bme.projects }.flatten.uniq
+      elsif category.level == 2
+        children = category.children
+        bmes = children.map { |child| child.bmes }.flatten
+        bmes.map { |bme| bme.projects }.flatten.uniq
+      else
+        bmes = category.bmes
+        bmes.map { |bme| bme.projects }.flatten.uniq
+      end
+    end.flatten rescue []
+
+    category_projects & projects
   end
 
   def link_impact_sources
