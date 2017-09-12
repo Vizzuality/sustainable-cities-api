@@ -43,7 +43,7 @@ class Project < ApplicationRecord
   has_many :users, through: :project_users
 
   has_many :project_bmes
-  has_many :bmes, through: :project_bmes, after_add: :touch
+  has_many :bmes, through: :project_bmes
 
   has_many :photos,           as: :attacheable,        dependent: :destroy
   has_many :documents,        as: :attacheable,        dependent: :destroy
