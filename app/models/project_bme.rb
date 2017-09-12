@@ -15,6 +15,4 @@
 class ProjectBme < ApplicationRecord
   belongs_to :project
   belongs_to :bme
-
-  after_save { project.touch }
 end
