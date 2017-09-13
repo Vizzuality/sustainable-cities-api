@@ -14,5 +14,5 @@
 
 class ProjectBme < ApplicationRecord
   belongs_to :project, touch: true
-  belongs_to :bme, touch: true
+  belongs_to :bme
 end

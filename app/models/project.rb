@@ -147,7 +147,7 @@ class Project < ApplicationRecord
   def bme_tree
     tree = []
     levels = {
-      fourth_level: bmes,
+      fourth_level: project_bmes.map(&:bme),
       third_level: Category.joins(:bmes).where(bmes: {id: bmes.pluck(:id)}, category_type: "Bme").uniq
     }
 
