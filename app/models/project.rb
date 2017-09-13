@@ -136,11 +136,11 @@ class Project < ApplicationRecord
     tree = []
     levels = {
       fourth_level: bmes,
-      third_level: bmes.map(&:categories).flatten.uniq.compact
+      third_level: Category.joins(:bmes).where(bmes: {id: bmes.pluck(:id)}, category_type: "Bme").uniq
     }
 
-    levels[:second_level] = levels[:third_level].map(&:parent).uniq.compact rescue []
-    levels[:first_level] = levels[:second_level].map(&:parent).uniq.compact rescue []
+    levels[:second_level] = Category.where(id: levels[:third_level].pluck(:parent_id).compact.uniq) rescue []
+    levels[:first_level] = Category.where(id: levels[:second_level].pluck(:parent_id).compact.uniq).includes(:children) rescue []
 
     levels[:first_level].each do |category|
       tree << {
