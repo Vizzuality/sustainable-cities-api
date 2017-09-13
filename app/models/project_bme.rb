@@ -13,6 +13,6 @@
 #
 
 class ProjectBme < ApplicationRecord
-  belongs_to :project
-  belongs_to :bme
+  belongs_to :project, touch: true
+  belongs_to :bme, touch: true
 end

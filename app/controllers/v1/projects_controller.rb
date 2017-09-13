@@ -11,7 +11,6 @@ module V1
 
     def update
       if @project.update(project_params)
-        @project.touch
         render json: { messages: [{ status: 200, title: "Project successfully updated!" }] }, status: 200
       else
         render json: ErrorSerializer.serialize(@project.errors, 422), status: 422
