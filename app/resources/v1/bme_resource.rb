@@ -3,7 +3,7 @@ module V1
   class BmeResource < JSONAPI::Resource
     caching
 
-    attributes :name, :description, :is_featured, :slug, :category_level_1, :private
+    attributes :name, :description, :is_featured, :slug, :category_level_1, :private, :parent_slug, :category_level_1_slug
 
     has_many :enablings
     has_many :categories
@@ -39,16 +39,28 @@ module V1
       @model.categories.where(private: true)
     end
 
-    def category_level_1
+    def parent_slug
+      @model.parent_bme_slug
+    end
+
+    def get_category_level_1
       category = categories.select { |category| category.category_type == 'Bme' }[0]
 
       if category.level == 1
-        category.name
+        category
       elsif category.level == 2
-        category.parent.name
+        category.parent
       elsif category.level == 3
-        category.parent.parent.name
+        category.parent.parent
       end rescue nil
+    end
+
+    def category_level_1
+      get_category_level_1.name rescue nil
+    end
+
+    def category_level_1_slug
+      get_category_level_1.slug rescue nil
     end
 
     def custom_links(_)
