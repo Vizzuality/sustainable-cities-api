@@ -92,7 +92,7 @@ module V1
     }
 
     def operational_year
-      object.operational_year.year rescue nil
+      @model.operational_year.year rescue nil
     end
 
     def category_level_2
