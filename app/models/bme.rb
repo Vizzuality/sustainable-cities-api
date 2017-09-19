@@ -89,7 +89,7 @@ class Bme < ApplicationRecord
   end
 
   def parent_bme_slug
-    categories.where(category_type: 'Bme').first.slug
+    categories.where(category_type: 'Bme').first.slug rescue nil
   end
 
   def has_one_bme_category
