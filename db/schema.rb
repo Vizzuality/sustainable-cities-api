@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170710134855) do
+ActiveRecord::Schema.define(version: 20170926083948) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,14 @@ ActiveRecord::Schema.define(version: 20170710134855) do
     t.integer "external_source_id"
     t.integer "attacheable_id"
     t.string "attacheable_type"
+  end
+
+  create_table "blogs", force: :cascade do |t|
+    t.string "title"
+    t.string "link"
+    t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "bme_categories", force: :cascade do |t|
@@ -59,6 +67,36 @@ ActiveRecord::Schema.define(version: 20170710134855) do
     t.integer "tmp_bme_id"
     t.boolean "is_featured", default: false
     t.string "slug"
+    t.boolean "private", default: false
+  end
+
+  create_table "business_model_bmes", force: :cascade do |t|
+    t.integer "business_model_id"
+    t.integer "bme_id"
+    t.index ["bme_id", "business_model_id"], name: "bme_bme_index", unique: true
+  end
+
+  create_table "business_model_enablings", force: :cascade do |t|
+    t.integer "business_model_id"
+    t.integer "enabling_id"
+    t.index ["enabling_id", "business_model_id"], name: "bm_enabling_index", unique: true
+  end
+
+  create_table "business_model_users", force: :cascade do |t|
+    t.integer "business_model_id"
+    t.integer "user_id"
+    t.boolean "is_owner", default: false
+  end
+
+  create_table "business_models", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.integer "solution_id"
+    t.string "link_share"
+    t.string "link_edit"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "owner_id"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -70,6 +108,9 @@ ActiveRecord::Schema.define(version: 20170710134855) do
     t.datetime "updated_at", null: false
     t.string "label"
     t.string "slug"
+    t.integer "level"
+    t.boolean "private", default: false
+    t.integer "order"
   end
 
   create_table "cities", force: :cascade do |t|
@@ -83,6 +124,14 @@ ActiveRecord::Schema.define(version: 20170710134855) do
     t.datetime "updated_at", null: false
     t.boolean "is_featured", default: false
     t.index ["country_id"], name: "index_cities_on_country_id"
+  end
+
+  create_table "city_supports", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "comments", force: :cascade do |t|
@@ -131,6 +180,14 @@ ActiveRecord::Schema.define(version: 20170710134855) do
     t.datetime "updated_at", null: false
     t.boolean "is_featured", default: false
     t.index ["category_id"], name: "index_enablings_on_category_id"
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.string "title"
+    t.string "link"
+    t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "external_sources", force: :cascade do |t|
@@ -235,6 +292,7 @@ ActiveRecord::Schema.define(version: 20170710134855) do
     t.string "tagline"
     t.string "slug"
     t.index ["category_id"], name: "index_projects_on_category_id"
+    t.index ["country_id"], name: "index_projects_on_country_id"
   end
 
   create_table "users", force: :cascade do |t|
