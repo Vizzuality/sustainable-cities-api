@@ -12,6 +12,9 @@
 #  updated_at    :datetime         not null
 #  label         :string
 #  slug          :string
+#  level         :integer
+#  private       :boolean          default(FALSE)
+#  order         :integer
 #
 
 class CategorySerializer < ActiveModel::Serializer
