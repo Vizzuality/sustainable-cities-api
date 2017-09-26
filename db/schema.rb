@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170825090118) do
+ActiveRecord::Schema.define(version: 20170926083948) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,14 @@ ActiveRecord::Schema.define(version: 20170825090118) do
     t.integer "external_source_id"
     t.integer "attacheable_id"
     t.string "attacheable_type"
+  end
+
+  create_table "blogs", force: :cascade do |t|
+    t.string "title"
+    t.string "link"
+    t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "bme_categories", force: :cascade do |t|
@@ -118,6 +126,14 @@ ActiveRecord::Schema.define(version: 20170825090118) do
     t.index ["country_id"], name: "index_cities_on_country_id"
   end
 
+  create_table "city_supports", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "comments", force: :cascade do |t|
     t.bigint "user_id"
     t.string "commentable_type"
@@ -164,6 +180,14 @@ ActiveRecord::Schema.define(version: 20170825090118) do
     t.datetime "updated_at", null: false
     t.boolean "is_featured", default: false
     t.index ["category_id"], name: "index_enablings_on_category_id"
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.string "title"
+    t.string "link"
+    t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "external_sources", force: :cascade do |t|

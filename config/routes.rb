@@ -36,6 +36,9 @@ Rails.application.routes.draw do
     # Resources
     jsonapi_resources :users do; end
     jsonapi_resources :cities do; end
+    jsonapi_resources :events do; end
+    jsonapi_resources :blogs do; end
+    jsonapi_resources :city_supports do; end
     jsonapi_resources :countries do; end
     jsonapi_resources :projects do; end
     jsonapi_resources :bmes, path: 'business-model-elements' do; end
