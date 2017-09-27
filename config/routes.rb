@@ -34,6 +34,9 @@ Rails.application.routes.draw do
     # Resources
     resources :users
     resources :cities
+    resources :events
+    resources :blogs
+    resources :city_supports
     resources :countries
     resources :projects, except: [:index, :show]
     resources :bmes, path: 'business-model-elements'

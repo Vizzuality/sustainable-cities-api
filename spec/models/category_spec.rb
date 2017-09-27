@@ -12,6 +12,8 @@
 #  label         :string
 #  slug          :string
 #  level         :integer
+#  private       :boolean          default(FALSE)
+#  order         :integer
 #
 
 require 'rails_helper'

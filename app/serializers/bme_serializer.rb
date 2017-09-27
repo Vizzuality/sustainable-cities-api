@@ -10,6 +10,8 @@
 #  updated_at  :datetime         not null
 #  tmp_bme_id  :integer
 #  is_featured :boolean          default(FALSE)
+#  slug        :string
+#  private     :boolean          default(FALSE)
 #
 
 class BmeSerializer < ActiveModel::Serializer
