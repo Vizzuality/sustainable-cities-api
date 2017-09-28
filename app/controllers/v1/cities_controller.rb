@@ -14,7 +14,7 @@ module V1
     end
 
     def show
-      render json: @city, serializer: CitySerializer, meta: { updated_at: @city.updated_at, created_at: @city.created_at }
+      render json: @city, serializer: CitySerializer, include: [:photos], meta: { updated_at: @city.updated_at, created_at: @city.created_at }
     end
 
     def update
@@ -49,7 +49,8 @@ module V1
       end
 
       def city_params
-        params.require(:city).permit(:name, :country_id, :is_featured, :iso, :lat, :lng, :province)
+        params.require(:city).permit(:name, :country_id, :is_featured, :iso, :lat, :lng, :province,
+                                      { photos_attributes: [:id, :name, :attachment, :is_active, :_destroy] })
       end
   end
 end
