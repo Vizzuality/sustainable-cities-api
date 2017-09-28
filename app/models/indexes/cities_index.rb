@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 class CitiesIndex
   DEFAULT_SORTING = { updated_at: :desc }
-  SORTABLE_FIELDS = [:name, :updated_at, :created_at]
+  SORTABLE_FIELDS = [:name, :province, :updated_at, :created_at, "countries.name"]
   PER_PAGE = 10
 
   delegate :params,     to: :controller
@@ -15,7 +15,7 @@ class CitiesIndex
 
   def cities
     @cities       ||= City.fetch_all(options_filter)
-    @cities_items ||= @cities.order(sort_params)
+    @cities_items ||= @cities.includes(:country).order(sort_params)
                              .paginate(page: current_page, per_page: per_page)
   end
 
