@@ -10,6 +10,7 @@
 #  tmp_bme_id  :integer
 #  is_featured :boolean          default(FALSE)
 #  slug        :string
+#  private     :boolean          default(FALSE)
 #
 
 FactoryGirl.define do
