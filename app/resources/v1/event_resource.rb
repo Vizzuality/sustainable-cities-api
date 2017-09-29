@@ -8,6 +8,10 @@ module V1
     has_many :photos
     filters :id, :title, :link, :date
 
+    def self.default_sort
+      [{field: 'date', direction: :desc}]
+    end
+
     def custom_links(_)
       { self: nil }
     end
