@@ -26,6 +26,7 @@ class City < ApplicationRecord
   accepts_nested_attributes_for :photos, allow_destroy: true
 
   validates :name, presence: true
+  validates_uniqueness_of :name, scope: %i[country_id province], message: "- country - province combination already exists."
 
   scope :by_name_asc, -> { order('cities.name ASC') }
 
