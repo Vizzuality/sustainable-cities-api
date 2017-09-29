@@ -3,7 +3,7 @@ module V1
   class CitySupportResource < JSONAPI::Resource
     caching
 
-    attributes :title, :description, :date
+    attributes :title, :description, :date, :image_source
 
     has_many :photos
     filters :id, :title, :description, :date
