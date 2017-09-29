@@ -11,7 +11,7 @@ module V1
 
     def index
       city_supports = CitySupportsIndex.new(self)
-      render json: city_supports.city_supports, each_serializer: CitySupportSerializer, include: [:photos],
+      render json: city_supports.city_supports, each_serializer: CitySupportSerializer, include: [:photos, :city_support_category],
              links: city_supports.links, meta: { total_items: city_supports.total_items }
     end
 
@@ -19,7 +19,7 @@ module V1
       render(
         json: @city_support,
         serializer: CitySupportSerializer,
-        include: [:photos],
+        include: [:photos, :city_support_category],
         meta: { updated_at: @city_support.updated_at, created_at: @city_support.created_at },
       )
     end
@@ -56,7 +56,7 @@ module V1
       end
 
       def city_support_params
-        return_params = params.require(:city_support).permit(:title, :description, :date, :image_source,
+        return_params = params.require(:city_support).permit(:title, :description, :date, :image_source, :city_support_category_id,
                                                             { photos_attributes: [:id, :name, :attachment, :is_active, :_destroy] })
 
         process_attachments_in(return_params, :photos_attributes)

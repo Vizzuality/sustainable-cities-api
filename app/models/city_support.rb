@@ -13,6 +13,7 @@
 
 class CitySupport < ApplicationRecord
   has_many :photos, as: :attacheable, dependent: :destroy
+  belongs_to :city_support_category
   
   accepts_nested_attributes_for :photos, allow_destroy: true
 

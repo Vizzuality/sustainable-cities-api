@@ -15,5 +15,6 @@
 class CitySupportSerializer < ActiveModel::Serializer
   attributes :id, :title, :description, :date, :image_source
 
+  belongs_to :city_support_category, serializer: CitySupportCategorySerializer
   has_many :photos, serializer: PhotoSerializer
 end
