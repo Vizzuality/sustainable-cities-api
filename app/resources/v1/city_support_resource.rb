@@ -5,6 +5,7 @@ module V1
 
     attributes :title, :description, :date, :image_source
 
+    belongs_to :city_support_category
     has_many :photos
     filters :id, :title, :description, :date
 

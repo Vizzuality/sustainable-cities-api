@@ -2,16 +2,19 @@
 #
 # Table name: city_supports
 #
-#  id          :integer          not null, primary key
-#  title       :string
-#  description :text
-#  date        :datetime
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  id                       :integer          not null, primary key
+#  title                    :string
+#  description              :text
+#  date                     :datetime
+#  created_at               :datetime         not null
+#  updated_at               :datetime         not null
+#  image_source             :string
+#  city_support_category_id :integer
 #
 
 class CitySupport < ApplicationRecord
   has_many :photos, as: :attacheable, dependent: :destroy
+  belongs_to :city_support_category
   
   accepts_nested_attributes_for :photos, allow_destroy: true
 
