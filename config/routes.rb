@@ -45,5 +45,6 @@ Rails.application.routes.draw do
     resources :enablings
     resources :comments, except: :show
     resources :external_sources
+    resources :city_support_categories, only: [:index]
   end
 end
