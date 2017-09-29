@@ -56,7 +56,8 @@ module V1
       end
 
       def city_support_params
-        return_params = params.require(:city_support).permit(:title, :description, :date, { photos_attributes: [:id, :name, :attachment, :is_active, :_destroy] })
+        return_params = params.require(:city_support).permit(:title, :description, :date, :image_source,
+                                                            { photos_attributes: [:id, :name, :attachment, :is_active, :_destroy] })
 
         process_attachments_in(return_params, :photos_attributes)
         process_attachments_in(return_params, :documents_attributes)
