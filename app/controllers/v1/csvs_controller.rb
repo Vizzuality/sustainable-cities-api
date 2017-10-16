@@ -7,7 +7,7 @@ module V1
     PROJECT_COLUMNS = %w(id name situation solution category city operational_year project_type
                          is_active deactivated_at publish_request published_at is_featured tag_line).freeze
     PROJECT_BME_COLUMNS = %w(project_id project_name bme_name bme_description)
-    BME_COLUMNS = %w(id name is_featured category_name category_description)
+    BME_COLUMNS = %w(id name description enablings projects)
 
 
     def projects
@@ -70,9 +70,11 @@ module V1
           BME_COLUMNS.each do |attribute|
             value = bme.attributes[attribute]
             csv_line << if value.blank?
-                          attribute.include?('name') ? \
-                              eval("bme.categories.where(category_type: 'Bme').first.name") \
-                              : eval("bme.categories.where(category_type: 'Bme').first.description") rescue ''
+                          if attribute == 'projects'
+                            bme.send(attribute).pluck(:name, :solution) rescue ''
+                          else
+                            bme.send(attribute).pluck(:name) rescue ''
+                          end
                         else
                           value
                         end
