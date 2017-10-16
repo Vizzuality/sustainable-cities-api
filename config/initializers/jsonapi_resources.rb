@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 JSONAPI.configure do |config|
-  config.default_paginator = :paged
-  config.default_page_size = 20
-  config.maximum_page_size = 1000
+  config.default_paginator = :none
   config.resource_cache = Rails.cache
 
   # Metadata
