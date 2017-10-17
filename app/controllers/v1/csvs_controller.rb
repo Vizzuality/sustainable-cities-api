@@ -7,7 +7,7 @@ module V1
     PROJECT_COLUMNS = %w(id name situation solution category city operational_year project_type
                          is_active deactivated_at publish_request published_at is_featured tag_line).freeze
     PROJECT_BME_COLUMNS = %w(project_id project_name bme_name bme_description)
-    BME_COLUMNS = %w(id name description enablings projects)
+    BME_COLUMNS = %w(id name description enablings projects external_sources category_tree)
 
 
     def projects
@@ -56,7 +56,8 @@ module V1
         csv << PROJECT_BME_COLUMNS
         @projects.each do |project|
           project.bmes.each do |bme|
-            csv << [project.id, project.name, bme.name, bme.description]
+            csv << [project.id, project.name, bme.name,
+                    bme.project_bmes.find_by(bme_id: bme.id, project_id: project.id).description]
           end
         end
       end
@@ -72,6 +73,14 @@ module V1
             csv_line << if value.blank?
                           if attribute == 'projects'
                             bme.send(attribute).pluck(:name, :solution) rescue ''
+                          elsif attribute == 'external_sources'
+                            bme.send(attribute).pluck(:name, :web_url) rescue ''
+                          elsif attribute == 'category_tree'
+                            third_category = bme.categories.find_by(category_type: 'Bme')
+                            second_category = third_category.parent
+                            first_category = second_category.parent
+
+                            "#{first_category.name}/#{second_category.name}/#{third_category.name}"
                           else
                             bme.send(attribute).pluck(:name) rescue ''
                           end
