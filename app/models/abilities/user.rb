@@ -5,6 +5,8 @@ module Abilities
 
     def initialize(user)
       can :read, :all
+      cannot :read, ::Contact
+      can    :create, ::Contact
       can :read, ::Project, project_type: 'StudyCase'
 
       can [:index_all, :show_project_and_bm], ::Project, project_users: { user_id: user.id }
