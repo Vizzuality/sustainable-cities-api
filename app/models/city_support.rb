@@ -2,14 +2,12 @@
 #
 # Table name: city_supports
 #
-#  id                       :integer          not null, primary key
-#  title                    :string
-#  description              :text
-#  date                     :datetime
-#  created_at               :datetime         not null
-#  updated_at               :datetime         not null
-#  image_source             :string
-#  city_support_category_id :integer
+#  id          :integer          not null, primary key
+#  title       :string
+#  description :text
+#  date        :datetime
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
 #
 
 class CitySupport < ApplicationRecord

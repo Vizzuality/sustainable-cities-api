@@ -13,19 +13,6 @@ Rails.application.routes.draw do
     get '/study-cases',         to: 'projects#index',     study_cases: true
     get '/study-cases/:id',     to: 'projects#show'
 
-    ## Categories
-    #get '/solution-categories',                   to: 'categories#index', category_type: 'Solution'
-    #get '/solution-categories/:id',               to: 'categories#show'
-    #get '/timing-categories',                     to: 'categories#index', category_type: 'Timing'
-    #get '/timing-categories/:id',                 to: 'categories#show'
-    #get '/business-model-element-categories',     to: 'categories#index', category_type: 'Bme'
-    #get '/business-model-element-categories/:id', to: 'categories#show'
-    #get '/impact-categories',                     to: 'categories#index', category_type: 'Impact'
-    #get '/impact-categories/:id',                 to: 'categories#show'
-    #get '/enabling-categories',                   to: 'categories#index', category_type: 'Enabling'
-    #get '/enabling-categories/:id',               to: 'categories#show'
-    #get '/categories',                            to: 'categories#index', category_type: 'All'
-
     # Business Model
     post '/business-models', to: 'business_model_edits#create'
     patch '/business-models/:id', to: 'business_model_edits#update'
@@ -48,7 +35,8 @@ Rails.application.routes.draw do
     jsonapi_resources :comments, except: :show do; end
     jsonapi_resources :external_sources do; end
     jsonapi_resources :business_models, except: [:create, :update] do; end
-    
+    jsonapi_resources :contacts do; end
+
     get '/csvs/projects', to: 'csvs#projects', defaults: { format: 'csv' }
     get '/csvs/bmes', to: 'csvs#bmes', defaults: { format: 'csv' }
   end

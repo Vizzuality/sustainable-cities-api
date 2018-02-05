@@ -5,6 +5,7 @@ module Abilities
 
     def initialize(user)
       can :read, :all
+      cannot :read, ::Contact
 
       can [:activate, :deactivate], ::Comment
       can [:activate, :deactivate], ::Project
