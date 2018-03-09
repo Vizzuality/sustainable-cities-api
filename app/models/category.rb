@@ -37,6 +37,13 @@ class Category < ApplicationRecord
   validates :name,          presence: true, uniqueness: { case_sensitive: false, scope: :category_type         }
   validates :category_type, presence: true, inclusion:  { in: %w(Category Solution Bme Impact Enabling Timing) }
 
+  after_save { children.find_each(&:touch) }
+  after_save { projects.find_each(&:touch) }
+  after_save { bmes.find_each(&:touch)     }
+
+  after_save :update_level
+
+
   scope :by_name_asc,   ->              { order('categories.name ASC')        }
   scope :by_type,       ->cat_type_name { where(category_type: cat_type_name) }
   scope :top_level,     ->              { where(parent_id: nil)               }
@@ -87,5 +94,18 @@ class Category < ApplicationRecord
 
   def is_root?
     self.parent.nil?
+  end
+
+  def update_level
+    new_level = if parent_id.nil? || parent.level.nil?
+                  1
+                else
+                  parent.level + 1
+                end
+
+    update_column :level, new_level
+    children.each do |child|
+      child.update_level
+    end
   end
 end
