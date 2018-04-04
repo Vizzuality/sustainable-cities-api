@@ -8,6 +8,9 @@ Rails.application.routes.draw do
     post  '/users/password',              to: 'passwords#update_by_token'
     patch '/users/current-user/password', to: 'passwords#update'
 
+    # Contact us
+    post '/contact-us', to: 'contact_us#create'
+
     # Helper requests
     get '/users/current-user',  to: 'current_user#show'
     get '/study-cases',         to: 'projects#index',     study_cases: true
