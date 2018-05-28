@@ -36,7 +36,7 @@ module V1
     end
 
     def show
-      render json: @category, serializer: CategorySerializer, meta: { updated_at: @category.updated_at, created_at: @category.created_at }
+      render json: @category, serializer: CategorySerializer, include: [:documents], meta: { updated_at: @category.updated_at, created_at: @category.created_at }
     end
 
     def update
