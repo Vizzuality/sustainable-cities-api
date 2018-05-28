@@ -35,6 +35,8 @@ class Category < ApplicationRecord
   has_many :bme_categories
   has_many :bmes, through: :bme_categories
 
+  accepts_nested_attributes_for :documents, allow_destroy: true
+
   validates :name,          presence: true, uniqueness: { case_sensitive: false, scope: :category_type         }
   validates :category_type, presence: true, inclusion:  { in: %w(Category Solution Bme Impact Enabling Timing) }
 
