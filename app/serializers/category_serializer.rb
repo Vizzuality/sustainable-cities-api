@@ -20,6 +20,7 @@
 class CategorySerializer < ActiveModel::Serializer
   attributes :id, :name, :slug, :description, :category_type, :label
 
-  belongs_to :parent,   serializer: CategorySerializer
-  has_many   :children, serializer: CategorySerializer
+  belongs_to :parent,    serializer: CategorySerializer
+  has_many   :children,  serializer: CategorySerializer
+  has_many   :documents, serializer: DocumentSerializer
 end

@@ -31,6 +31,7 @@ class Category < ApplicationRecord
   has_many :projects,  inverse_of: :category
   has_many :impacts,   inverse_of: :category
 
+  has_many :documents, as: :attacheable, dependent: :destroy
   has_many :bme_categories
   has_many :bmes, through: :bme_categories
 
